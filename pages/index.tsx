@@ -17,8 +17,9 @@ const Home: NextPage = () => {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
         <br />
-        <h2 className='text-blue-500 text-4xl hover:bg-blue-500 hover:text-white p-5'>Tailwind Test</h2>
-
+        <h2 className='p-5 text-4xl text-blue-500 hover:bg-blue-500 hover:text-white'>Tailwind Test</h2>
+        <br />
+        <button className='btn'>DaisyUI test</button>
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.tsx</code>
