@@ -3,9 +3,9 @@ import Footer from './Footer';
 
 const Layout = ({ children }: any) => {
   return (
-    <div className='px-5'>
+    <div className='px-20 py-5'>
       <Header />
-      <main className='grow-0'>
+      <main className='min-h-screen grow'>
         {children}
       </main>
       <Footer />
