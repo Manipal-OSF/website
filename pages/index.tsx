@@ -1,10 +1,13 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
-  return <></>;
+  return (
+    <div className='grid m-auto text-center place-self-center'>
+      <h1 className='text-7xl'>Manipal OSF</h1>
+    </div>
+  );
 };
 
 export default Home;
