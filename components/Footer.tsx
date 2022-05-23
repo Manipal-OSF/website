@@ -1,8 +1,13 @@
+import Image from 'next/image';
+import logo from '../public/logo.jpg';
+
 const Footer = () => {
   return (
-    <footer className='flex flex-row justify-between footer'>
-      <div className='grid-flow-col'>
-        <span>Icon here</span>
+    <footer className='items-center justify-between footer'>
+      <div className='items-center grid-flow-col'>
+        <div className='w-6 h-6'>
+          <Image className='rounded-full' src={logo} alt='logo' layout='responsive' />
+        </div>
         <p>Copyright © 2022 - All rights reserved</p>
       </div>
       <div className='grid-flow-col'>
