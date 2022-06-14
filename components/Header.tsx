@@ -17,7 +17,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className='flex flex-row items-center justify-between h-10 dark:text-white'>
+    <header className='grid items-center h-10 grid-cols-3 place-content-center dark:text-white'>
       <div className='w-12 h-12'>
         <Image
           className='rounded-full'
@@ -26,7 +26,7 @@ const Header = () => {
           layout='responsive'
         />
       </div>
-      <nav>
+      <nav className='place-self-center'>
         <ul className='grid grid-flow-col gap-5 text-lg'>
           <li>
             <a className='link link-hover' href='#'>
@@ -50,7 +50,7 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-2 place-content-end'>
         <FontAwesomeIcon icon={faMoon} size='lg' />
         <input
           className='toggle'
