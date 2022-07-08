@@ -21,7 +21,13 @@ const Footer = () => {
         <a href='#' className='link link-hover' aria-label='Instagram'>
           <FontAwesomeIcon icon={faInstagram} size='lg' />
         </a>
-        <a href='#' className='link link-hover' aria-label='Github'>
+        <a
+          href='https://github.com/Manipal-OSF'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='link link-hover'
+          aria-label='Github'
+        >
           <FontAwesomeIcon icon={faGithub} size='lg' />
         </a>
       </div>
