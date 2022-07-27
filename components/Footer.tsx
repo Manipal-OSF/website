@@ -18,7 +18,13 @@ const Footer = () => {
         <p>Copyright © 2022 - All rights reserved</p>
       </div>
       <div className='flex items-center justify-center w-full h-full'>
-        <a href='#' className='link link-hover' aria-label='Instagram'>
+        <a
+          href='https://www.instagram.com/manipalosf/'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='link link-hover'
+          aria-label='Instagram'
+        >
           <FontAwesomeIcon icon={faInstagram} size='lg' />
         </a>
         <a
