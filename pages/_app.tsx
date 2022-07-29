@@ -5,10 +5,6 @@ import { useEffect } from 'react';
 import { setTheme } from '../backend/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    setTheme();
-  }, []);
-
   return (
     <Layout>
       <Component {...pageProps} />

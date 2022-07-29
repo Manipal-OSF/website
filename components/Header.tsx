@@ -2,21 +2,44 @@ import { faMoon } from '@fortawesome/free-regular-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { setTheme } from '../backend/theme';
 import logo from '../public/logo.jpg';
 import { Disclosure } from '@headlessui/react';
 import Link from 'next/link';
 
+const Links = () => {
+  return (
+    <>
+      <li>
+        <Link href='/'>
+          <a className='link link-hover'>Home</a>
+        </Link>
+      </li>
+      <li>
+        <Link href='/about'>
+          <a className='link link-hover'>About</a>
+        </Link>
+      </li>
+      <li>
+        <a className='link link-hover' href='#'>
+          Syllabus
+        </a>
+      </li>
+      <li>
+        <a className='link link-hover' href='#'>
+          Blog
+        </a>
+      </li>
+    </>
+  );
+};
+
 const Header = () => {
   let checked = useRef(false);
 
   useEffect(() => {
-    if (localStorage.theme === 'light') {
-      checked.current = false;
-    } else {
-      checked.current = true;
-    }
+    localStorage.theme === 'light' ? false : true;
   }, []);
 
   return (
@@ -46,26 +69,7 @@ const Header = () => {
               <Disclosure.Panel className='absolute text-gray-500 md:hidden'>
                 <nav className='p-3 mt-5 border-2 border-black rounded-lg dark:text-white dark:border-white md:block place-self-center'>
                   <ul className='grid grid-flow-row gap-5 text-lg'>
-                    <li>
-                      <Link href='/'>
-                        <a className='link link-hover'>Home</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href='/about'>
-                        <a className='link link-hover'>About</a>
-                      </Link>
-                    </li>
-                    <li>
-                      <a className='link link-hover' href='#'>
-                        Syllabus
-                      </a>
-                    </li>
-                    <li>
-                      <a className='link link-hover' href='#'>
-                        Blog
-                      </a>
-                    </li>
+                    <Links />
                   </ul>
                 </nav>
               </Disclosure.Panel>
@@ -76,26 +80,7 @@ const Header = () => {
 
       <nav className='hidden md:block place-self-center'>
         <ul className='grid grid-flow-col gap-5 text-lg'>
-          <li>
-            <Link href='/'>
-              <a className='link link-hover'>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href='/about'>
-              <a className='link link-hover'>About</a>
-            </Link>
-          </li>
-          <li>
-            <a className='link link-hover' href='#'>
-              Syllabus
-            </a>
-          </li>
-          <li>
-            <a className='link link-hover' href='#'>
-              Blog
-            </a>
-          </li>
+          <Links />
         </ul>
       </nav>
 

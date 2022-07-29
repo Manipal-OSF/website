@@ -22,7 +22,7 @@ const Footer = () => {
           href='https://www.instagram.com/manipalosf/'
           target='_blank'
           rel='noopener noreferrer'
-          className='link link-hover hover:-translate-y-1 duration-300'
+          className='duration-300 link link-hover hover:-translate-y-1'
           aria-label='Instagram'
         >
           <FontAwesomeIcon icon={faInstagram} size='lg' />
@@ -31,7 +31,7 @@ const Footer = () => {
           href='https://github.com/Manipal-OSF'
           target='_blank'
           rel='noopener noreferrer'
-          className='link link-hover hover:-translate-y-1 duration-300'
+          className='duration-300 link link-hover hover:-translate-y-1'
           aria-label='Github'
         >
           <FontAwesomeIcon icon={faGithub} size='lg' />
