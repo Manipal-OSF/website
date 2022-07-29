@@ -22,14 +22,14 @@ const Links = () => {
         </Link>
       </li>
       <li>
-        <a className='link link-hover' href='#'>
-          Syllabus
-        </a>
+      <Link href='/syllabus'>
+          <a className='link link-hover'>Syllabus</a>
+        </Link>
       </li>
       <li>
-        <a className='link link-hover' href='#'>
-          Blog
-        </a>
+      <Link href='/blog'>
+          <a className='link link-hover'>Blog</a>
+        </Link>
       </li>
     </>
   );
@@ -46,7 +46,7 @@ const Header = () => {
     <header className='grid items-center h-10 grid-cols-2 md:grid-cols-3 place-content-center dark:text-white'>
       <div className='hidden w-12 h-12 md:block'>
         <Image
-          className='rounded-full'
+          className='duration-500 rounded-3xl hover:rounded-lg'
           src={logo}
           alt='logo'
           layout='responsive'

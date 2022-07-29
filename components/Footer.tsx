@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import Image from 'next/image';
 import logo from '../public/logo.jpg';
 
@@ -17,7 +17,7 @@ const Footer = () => {
         </div>
         <p>Copyright © 2022 - All rights reserved</p>
       </div>
-      <div className='flex items-center justify-center w-full h-full'>
+      <div className='flex items-center justify-center w-full h-full gap-2'>
         <a
           href='https://www.instagram.com/manipalosf/'
           target='_blank'
@@ -35,6 +35,15 @@ const Footer = () => {
           aria-label='Github'
         >
           <FontAwesomeIcon icon={faGithub} size='lg' />
+        </a>
+        <a
+          href='https://discord.gg/wk52CxvSj8'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='duration-300 link link-hover hover:-translate-y-1'
+          aria-label='Github'
+        >
+          <FontAwesomeIcon icon={faDiscord} size='lg' />
         </a>
       </div>
     </footer>

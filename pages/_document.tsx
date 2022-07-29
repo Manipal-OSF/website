@@ -5,7 +5,10 @@ class MyDocument extends Document {
     return (
       <Html lang='en'>
         <Head>
-          <meta name="description" content="The official website for Manipal OSF organisation." />
+          <meta
+            name='description'
+            content='The official website for Manipal OSF organisation.'
+          />
           <link rel='preconnect' href='https://fonts.googleapis.com' />
           <link
             rel='preconnect'
