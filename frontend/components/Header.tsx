@@ -3,7 +3,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRef, useEffect } from 'react';
-import { setTheme } from '../backend/theme';
+import { setTheme } from '../services/theme';
 import logo from '../public/logo.jpg';
 import { Disclosure } from '@headlessui/react';
 import Link from 'next/link';
@@ -22,12 +22,12 @@ const Links = () => {
         </Link>
       </li>
       <li>
-      <Link href='/syllabus'>
+        <Link href='/syllabus'>
           <a className='link link-hover'>Syllabus</a>
         </Link>
       </li>
       <li>
-      <Link href='/blog'>
+        <Link href='/blog'>
           <a className='link link-hover'>Blog</a>
         </Link>
       </li>

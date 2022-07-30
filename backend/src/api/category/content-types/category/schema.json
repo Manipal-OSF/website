@@ -16,10 +16,10 @@
       "required": true,
       "unique": true
     },
-    "restaurants": {
+    "blog": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::restaurant.restaurant",
+      "relation": "manyToOne",
+      "target": "api::blog.blog",
       "inversedBy": "categories"
     }
   }

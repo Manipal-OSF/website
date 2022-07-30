@@ -2,9 +2,7 @@ import type { NextPage } from 'next';
 import UnderDev from '../components/UnderDev';
 
 const Syllabus: NextPage = () => {
-    return (
-      <UnderDev />
-    );
-  };
+  return <UnderDev />;
+};
 
-  export default Syllabus;
+export default Syllabus;

@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Layout from '../components/Layout';
 import { useEffect } from 'react';
-import { setTheme } from '../backend/theme';
+import { setTheme } from '../services/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

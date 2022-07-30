@@ -1,5 +1,4 @@
-import Head from "next/head";
-
+import Head from 'next/head';
 
 const UnderDev = () => {
   return (
@@ -12,7 +11,9 @@ const UnderDev = () => {
           Hey there!
         </h1>
         <p className='text-2xl md:text-4xl lg:text-6xl'>
-          This section is still under development. If you find any bugs in the site please notify us on the GitHub repo or Discord server linked below.
+          This section is still under development. If you find any bugs in the
+          site please notify us on the GitHub repo or Discord server linked
+          below.
         </p>
       </div>
     </>
