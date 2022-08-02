@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
 import { serverUrl } from '../constants';
-import { BlogPost } from '../pages/blog';
+import type { BlogPost } from '../services/api';
 
 interface BlogCardProps {
   data: BlogPost;
