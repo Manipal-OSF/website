@@ -90,9 +90,11 @@ const Header = () => {
         <input
           className='toggle'
           defaultChecked={checked}
+          checked={checked}
           type='checkbox'
           aria-label='Theme switcher'
           onChange={() => {
+            setChecked(!checked);
             setTheme();
           }}
         />

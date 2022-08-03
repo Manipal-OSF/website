@@ -20,6 +20,15 @@ export interface BlogPost {
   categories: string[];
 }
 
+export const storeData = (posts: BlogPost[]): void => {
+  localStorage.setItem('blogposts', JSON.stringify(posts));
+};
+
+export const getData = (): BlogPost[] => {
+  let data: BlogPost[] = JSON.parse(localStorage.getItem('blogposts')!);
+  return data;
+};
+
 export const fetchData = async (): Promise<BlogPost[]> => {
   const res = await fetch(`${serverUrl}/api/blogs?populate=*`);
   const json = await res.json();
