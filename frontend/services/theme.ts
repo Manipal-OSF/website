@@ -14,4 +14,5 @@ export const setTheme = (mode: ThemeMode = ''): void => {
     document.documentElement.classList.remove('dark');
     localStorage.theme = 'light';
   }
+  console.log(localStorage.theme)
 };

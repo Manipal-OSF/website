@@ -2,7 +2,7 @@ import { faMoon } from '@fortawesome/free-regular-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, createRef, useState } from 'react';
 import { setTheme } from '../services/theme';
 import logo from '../public/logo.jpg';
 import { Disclosure } from '@headlessui/react';
@@ -36,10 +36,11 @@ const Links = () => {
 };
 
 const Header = () => {
-  let checked = useRef(false);
+  let [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
-    localStorage.theme === 'light' ? false : true;
+    setChecked(localStorage.theme === 'light' ? false : true);
+    setTheme(localStorage.theme);
   }, []);
 
   return (
@@ -88,7 +89,7 @@ const Header = () => {
         <FontAwesomeIcon icon={faMoon} size='lg' />
         <input
           className='toggle'
-          defaultChecked={checked.current}
+          defaultChecked={checked}
           type='checkbox'
           aria-label='Theme switcher'
           onChange={() => {
