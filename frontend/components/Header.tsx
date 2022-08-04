@@ -2,13 +2,13 @@ import { faMoon } from '@fortawesome/free-regular-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import { useRef, useEffect, createRef, useState } from 'react';
+import { useRef, useEffect, ReactElement, useState, FunctionComponent } from 'react';
 import { setTheme } from '../services/theme';
 import logo from '../public/logo.jpg';
 import { Disclosure } from '@headlessui/react';
 import Link from 'next/link';
 
-const Links = () => {
+const Links = (): ReactElement => {
   return (
     <>
       <li>
@@ -86,10 +86,9 @@ const Header = () => {
       </nav>
 
       <div className='flex items-center gap-2 place-content-end'>
-        <FontAwesomeIcon icon={faMoon} size='lg' />
+        <FontAwesomeIcon icon={faMoon} size='lg' className='max-w-[1.4rem]' />
         <input
           className='toggle'
-          defaultChecked={checked}
           checked={checked}
           type='checkbox'
           aria-label='Theme switcher'
