@@ -48,7 +48,11 @@ const IndividualBlogPage: NextPage = () => {
     } else {
       if (data.blog === undefined) {
         //! Add loader
-        return <div>hiiiii</div>;
+        return (
+          <div className='grid self-center gap-5 m-auto text-center dark:text-white'>
+            <h1 className='font-bold text-7xl'>Loading...</h1>
+          </div>
+        );
       } else {
         return (
           <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-16 gap-10'>
