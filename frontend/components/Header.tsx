@@ -73,8 +73,8 @@ const Header = () => {
                   }`}
                 ></FontAwesomeIcon>
               </Disclosure.Button>
-              <Disclosure.Panel className='absolute text-gray-500 md:hidden'>
-                <nav className='p-3 mt-5 border-2 border-black rounded-lg dark:text-white dark:border-white md:block place-self-center'>
+              <Disclosure.Panel className='absolute z-50 text-gray-500 md:hidden'>
+                <nav className='p-3 mt-5 bg-white border-2 border-black rounded-lg dark:bg-black dark:text-white dark:border-white md:block place-self-center'>
                   <ul className='grid grid-flow-row gap-5 text-lg'>
                     <Links />
                   </ul>

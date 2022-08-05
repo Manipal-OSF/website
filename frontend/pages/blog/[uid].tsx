@@ -51,8 +51,8 @@ const IndividualBlogPage: NextPage = () => {
         return <div>hiiiii</div>;
       } else {
         return (
-          <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-16 gap-10'>
-            <h1 className='text-6xl'>{data.blog.title}</h1>
+          <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-16 gap-10'>
+            <h1 className='text-5xl md:text-6xl'>{data.blog.title}</h1>
             <Image
               src={`${serverUrl}${data.blog.coverImage.url}`}
               alt={data.blog.coverImage.alt}
@@ -63,12 +63,12 @@ const IndividualBlogPage: NextPage = () => {
             ></Image>
             <div className='flex justify-between'>
               <div className='flex flex-col gap-1'>
-                <h2 className='text-lg font-bold'>WRITTEN BY</h2>
-                <h2 className='text-xl'>{data.blog.authors}</h2>
+                <h2 className='text-base font-bold md:text-lg'>WRITTEN BY</h2>
+                <h2 className='text-lg md:text-xl'>{data.blog.authors}</h2>
               </div>
               <div className='flex flex-col items-end gap-1'>
-                <h2 className='text-lg font-bold'>PUBLISHED ON</h2>
-                <h2 className='text-xl'>{data.blog.publishDate}</h2>
+                <h2 className='text-base font-bold md:text-lg'>PUBLISHED ON</h2>
+                <h2 className='text-lg md:text-xl'>{data.blog.publishDate}</h2>
               </div>
             </div>
             <hr />
@@ -78,10 +78,9 @@ const IndividualBlogPage: NextPage = () => {
               </ReactMarkdown>
             </div>
             <Link href='/blog'>
-              <button className='flex items-center justify-center gap-5 p-2 text-3xl text-white bg-black rounded-lg dark:text-black dark:bg-white max-w-'>
+              <button className='flex items-center justify-center gap-5 p-2 text-2xl text-white bg-black rounded-lg md:text-3xl dark:text-black dark:bg-white max-w-'>
                 <FontAwesomeIcon
                   icon={faArrowLeft}
-                  size='lg'
                   className='max-w-[1.4rem]'
                 />
                 <span>Return to blog</span>
