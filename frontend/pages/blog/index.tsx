@@ -20,9 +20,9 @@ const BlogPage: NextPage<{ data: BlogPost[] }> = (props) => {
       <Head>
         <title>Manipal OSF | Blog</title>
       </Head>
-      <div className='flex flex-col flex-grow-[1] gap-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 dark:text-white'>
+      <div className='flex flex-col flex-grow-[1] gap-10 dark:text-white'>
         <h1 className='text-5xl text-center'>Featured</h1>
-        <div className='grid grid-cols-3 gap-5'>
+        <div className='grid grid-cols-2 gap-5'>
           {posts.map((item: BlogPost, index) => (
             <BlogCard data={item} index={index} key={index} />
           ))}

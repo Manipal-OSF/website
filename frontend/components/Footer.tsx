@@ -29,7 +29,11 @@ const Footer = () => {
           className='duration-300 link link-hover hover:-translate-y-1'
           aria-label='Instagram'
         >
-          <FontAwesomeIcon icon={faInstagram} size='lg' className='max-w-[1.4rem]' />
+          <FontAwesomeIcon
+            icon={faInstagram}
+            size='lg'
+            className='max-w-[1.4rem]'
+          />
         </a>
         <a
           href='https://github.com/Manipal-OSF'
@@ -38,7 +42,11 @@ const Footer = () => {
           className='duration-300 link link-hover hover:-translate-y-1'
           aria-label='Github'
         >
-          <FontAwesomeIcon icon={faGithub} size='lg' className='max-w-[1.4rem]' />
+          <FontAwesomeIcon
+            icon={faGithub}
+            size='lg'
+            className='max-w-[1.4rem]'
+          />
         </a>
         <a
           href='https://discord.gg/wk52CxvSj8'
@@ -47,7 +55,11 @@ const Footer = () => {
           className='duration-300 link link-hover hover:-translate-y-1'
           aria-label='Github'
         >
-          <FontAwesomeIcon icon={faDiscord} size='lg' className='max-w-[1.4rem]' />
+          <FontAwesomeIcon
+            icon={faDiscord}
+            size='lg'
+            className='max-w-[1.4rem]'
+          />
         </a>
       </div>
     </footer>
