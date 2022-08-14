@@ -24,12 +24,14 @@ export const getStaticProps: any = async ({ params }: any) => {
   const data = await fetchOne(params.uid);
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 };
 
-const IndividualBlogPage: NextPage<{data: BlogPost}> = (props: {data: BlogPost}) => {
+const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
+  data: BlogPost;
+}) => {
   const content = () => {
     return (
       <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-16 gap-10'>
@@ -60,10 +62,7 @@ const IndividualBlogPage: NextPage<{data: BlogPost}> = (props: {data: BlogPost})
         </div>
         <Link href='/blog'>
           <button className='flex items-center justify-center gap-5 p-2 text-2xl text-white bg-black rounded-lg md:text-3xl dark:text-black dark:bg-white max-w-'>
-            <FontAwesomeIcon
-              icon={faArrowLeft}
-              className='max-w-[1.4rem]'
-            />
+            <FontAwesomeIcon icon={faArrowLeft} className='max-w-[1.4rem]' />
             <span>Return to blog</span>
           </button>
         </Link>
@@ -74,7 +73,7 @@ const IndividualBlogPage: NextPage<{data: BlogPost}> = (props: {data: BlogPost})
   return (
     <>
       <Head>
-        <title>{`Manipal OSF | ${props.data?.uid}`}</title>
+        <title>{`${props.data?.uid} | Manipal OSF`}</title>
       </Head>
       <div className='dark:text-white flex flex-col w-full flex-grow-[1] items-center gap-5'>
         {content()}

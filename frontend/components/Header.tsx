@@ -11,30 +11,87 @@ import {
 } from 'react';
 import { setTheme } from '../services/theme';
 import logo from '../public/logo.jpg';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Tab } from '@headlessui/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+enum Route {
+  Home,
+  About,
+  Syllabus,
+  Blog,
+}
 
 const Links = (): ReactElement => {
+  const router = useRouter();
+
+  const [selectedRoute, setSelectedRoute] = useState<Route>(Route.Home);
+
+  useEffect(() => {
+    switch (router.route) {
+      case '/': {
+        setSelectedRoute(Route.Home);
+        break;
+      }
+      case '/about': {
+        setSelectedRoute(Route.About);
+        break;
+      }
+      case '/syllabus': {
+        setSelectedRoute(Route.Syllabus);
+        break;
+      }
+      case '/blog': {
+        setSelectedRoute(Route.Blog);
+        break;
+      }
+    }
+  }, [router.route]);
+
   return (
     <>
       <li>
         <Link href='/'>
-          <a className='link link-hover'>Home</a>
+          <a
+            className={`link underline-offset-2 ${
+              selectedRoute === Route.Home ? 'decoration-2' : 'link-hover'
+            }`}
+          >
+            Home
+          </a>
         </Link>
       </li>
       <li>
         <Link href='/about'>
-          <a className='link link-hover'>About</a>
+          <a
+            className={`link underline-offset-2 ${
+              selectedRoute === Route.About ? 'decoration-2' : 'link-hover'
+            }`}
+          >
+            About
+          </a>
         </Link>
       </li>
       <li>
         <Link href='/syllabus'>
-          <a className='link link-hover'>Syllabus</a>
+          <a
+            className={`link underline-offset-2 ${
+              selectedRoute === Route.Syllabus ? 'decoration-2' : 'link-hover'
+            }`}
+          >
+            Syllabus
+          </a>
         </Link>
       </li>
       <li>
         <Link href='/blog'>
-          <a className='link link-hover'>Blog</a>
+          <a
+            className={`link underline-offset-2 ${
+              selectedRoute === Route.Blog ? 'decoration-2' : 'link-hover'
+            }`}
+          >
+            Blog
+          </a>
         </Link>
       </li>
     </>

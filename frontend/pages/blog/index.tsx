@@ -18,7 +18,7 @@ const BlogPage: NextPage<{ data: BlogPost[] }> = (props) => {
   return (
     <>
       <Head>
-        <title>Manipal OSF | Blog</title>
+        <title>Blog | Manipal OSF</title>
       </Head>
       <div className='flex flex-col flex-grow-[1] gap-10 dark:text-white'>
         <h1 className='text-5xl text-center'>Featured</h1>
