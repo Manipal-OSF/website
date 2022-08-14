@@ -3,9 +3,9 @@ import Head from 'next/head';
 import BlogCard from '../../components/BlogCard';
 import { BlogPost, fetchData } from '../../services/api';
 
-export async function getServerSideProps(
-  context: any
-): Promise<{ props: { data: BlogPost[] } }> {
+export async function getStaticProps(): Promise<{
+  props: { data: BlogPost[] };
+}> {
   return {
     props: {
       data: await fetchData(),

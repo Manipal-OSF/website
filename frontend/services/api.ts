@@ -20,14 +20,48 @@ export interface BlogPost {
   categories: string[];
 }
 
-export const storeData = (posts: BlogPost[]): void => {
-  localStorage.setItem('blogposts', JSON.stringify(posts));
+export const getUidList = async (): Promise<Array<any>> => {
+  const res = await fetch(`${serverUrl}/api/blogs?populate=*`);
+  const json = await res.json();
+  const uids = json.data.map((e: any) => {
+    return { params: { uid: e.attributes.uid } };
+  });
+
+  return uids;
 };
 
-export const getData = (): BlogPost[] => {
-  let data: BlogPost[] = JSON.parse(localStorage.getItem('blogposts')!);
-  return data;
-};
+export const fetchOne = async (uid: string): Promise<BlogPost> => {
+  const res = await fetch(`${serverUrl}/api/blogs?filters[uid][$eq]=${uid}&populate=*`);
+  const json = await res.json();
+  const data = json.data[0];
+
+  const coverImageData = data.attributes.cover_image.data.attributes;
+  const categories = data.attributes.categories.data.map(
+    (item: any) => item.attributes.name
+  );
+
+  const coverImage: Image = {
+    name: coverImageData.name,
+    alt: coverImageData.alternativeText,
+    width: coverImageData.width,
+    height: coverImageData.height,
+    ext: coverImageData.ext,
+    url: coverImageData.url,
+  };
+
+  const blog: BlogPost = {
+    id: data.id,
+    title: data.attributes.title,
+    uid: data.attributes.uid,
+    content: data.attributes.content,
+    publishDate: data.attributes.publish_date,
+    authors: data.attributes.authors.split(','),
+    coverImage: coverImage,
+    categories: categories,
+  };
+
+  return blog;
+}
 
 export const fetchData = async (): Promise<BlogPost[]> => {
   const res = await fetch(`${serverUrl}/api/blogs?populate=*`);
