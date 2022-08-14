@@ -3,103 +3,22 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import {
-  useRef,
   useEffect,
   ReactElement,
   useState,
-  FunctionComponent,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 import { setTheme } from '../services/theme';
 import logo from '../public/logo.jpg';
 import { Disclosure, Tab } from '@headlessui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-enum Route {
-  Home,
-  About,
-  Syllabus,
-  Blog,
-}
-
-const Links = (): ReactElement => {
-  const router = useRouter();
-
-  const [selectedRoute, setSelectedRoute] = useState<Route>(Route.Home);
-
-  useEffect(() => {
-    switch (router.route) {
-      case '/': {
-        setSelectedRoute(Route.Home);
-        break;
-      }
-      case '/about': {
-        setSelectedRoute(Route.About);
-        break;
-      }
-      case '/syllabus': {
-        setSelectedRoute(Route.Syllabus);
-        break;
-      }
-      case '/blog': {
-        setSelectedRoute(Route.Blog);
-        break;
-      }
-    }
-  }, [router.route]);
-
-  return (
-    <>
-      <li>
-        <Link href='/'>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Home ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Home
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/about'>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.About ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            About
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/syllabus'>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Syllabus ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Syllabus
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/blog'>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Blog ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Blog
-          </a>
-        </Link>
-      </li>
-    </>
-  );
-};
+import Links, { Route } from './Links';
 
 const Header = () => {
   let [checked, setChecked] = useState<boolean>(false);
+  let state = useState<Route>(Route.Home);
 
   useEffect(() => {
     setChecked(localStorage.theme === 'light' ? false : true);
@@ -107,7 +26,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className='grid items-center h-10 grid-cols-2 md:grid-cols-3 place-content-center dark:text-white'>
+    <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center dark:text-white'>
       <div className='hidden w-12 h-12 md:block'>
         <Image
           className='duration-500 rounded-3xl hover:rounded-lg'
@@ -133,7 +52,7 @@ const Header = () => {
               <Disclosure.Panel className='absolute z-50 text-gray-500 md:hidden'>
                 <nav className='p-3 mt-5 bg-white border-2 border-black rounded-lg dark:bg-black dark:text-white dark:border-white md:block place-self-center'>
                   <ul className='grid grid-flow-row gap-5 text-lg'>
-                    <Links />
+                    <Links state={state} />
                   </ul>
                 </nav>
               </Disclosure.Panel>
@@ -142,9 +61,14 @@ const Header = () => {
         </Disclosure>
       </div>
 
+      <span className='text-center md:hidden'>
+        {/* Make more readable */}
+        {Object.values(Route)[state[0]].toString()}
+      </span>
+
       <nav className='hidden md:block place-self-center'>
         <ul className='grid grid-flow-col gap-5 text-lg'>
-          <Links />
+          <Links state={state} />
         </ul>
       </nav>
 

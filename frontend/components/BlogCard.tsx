@@ -24,7 +24,6 @@ const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
           ></Image>
           <div className='p-3 flex flex-col flex-grow-[1]'>
             <h2 className='text-2xl'>{props.data.title}</h2>
-            {/* <p className='text-lg text-ellipsis'>{props.data.content}</p> */}
           </div>
           <div className='flex flex-row justify-between p-3'>
             <p>{props.data.authors}</p>
