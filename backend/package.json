@@ -1,32 +1,55 @@
 {
   "name": "backend",
-  "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
-  "scripts": {
-    "develop": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi"
-  },
-  "devDependencies": {},
+  "private": true,
   "dependencies": {
-    "@strapi/plugin-i18n": "4.3.0",
-    "@strapi/plugin-users-permissions": "4.3.0",
-    "@strapi/strapi": "4.3.0",
-    "better-sqlite3": "7.4.6",
-    "pg": "^8.7.3",
-    "pg-connection-string": "^2.5.0"
+    "@camberi/firecms": "^2.0.0-alpha.29",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5",
+    "@mui/lab": "^5.0.0-alpha.98",
+    "@mui/material": "^5",
+    "@mui/x-date-pickers": "^5.0.0-beta.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "firebase": "^9",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^6",
+    "react-router-dom": "^6",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0"
   },
-  "author": {
-    "name": "A Strapi developer"
+  "scripts": {
+    "start": "react-scripts start",
+    "format": "prettier . -w",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "strapi": {
-    "uuid": "3d70bf8d-eb47-413a-a56b-f40691dedf4f"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
-  "engines": {
-    "node": ">=12.x.x <=16.x.x",
-    "npm": ">=6.0.0"
-  },
-  "license": "MIT"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
