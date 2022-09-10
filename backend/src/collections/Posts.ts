@@ -1,62 +1,79 @@
-import { CollectionConfig } from 'payload/types';
+import { CollectionConfig } from "payload/types";
 
 const Posts: CollectionConfig = {
-  slug: 'posts',
+  slug: "posts",
   admin: {
-    defaultColumns: ['title', 'author', 'category', 'tags', 'status'],
-    useAsTitle: 'title',
+    defaultColumns: ["title", "author", "category", "tags", "status"],
+    useAsTitle: "title",
+    disableDuplicate: true,
   },
   access: {
     read: () => true,
+    create: () => true,
+    update: () => true,
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
+      name: "title",
+      type: "text",
+      required: true,
     },
     {
-      name: 'author',
-      type: 'relationship',
-      relationTo: 'users',
+      name: "authors",
+      type: "relationship",
+      relationTo: "users",
+      required: true,
     },
     {
-      name: 'publishedDate',
-      type: 'date',
+      name: "publishedDate",
+      type: "date",
     },
     {
-      name: 'category',
-      type: 'relationship',
-      relationTo: 'categories'
+      name: "category",
+      type: "relationship",
+      relationTo: "categories",
     },
     {
-      name: 'tags',
-      type: 'relationship',
-      relationTo: 'tags',
+      name: "tags",
+      type: "relationship",
+      relationTo: "tags",
       hasMany: true,
     },
     {
-      name: 'content',
-      type: 'richText'
+      name: "content",
+      type: "richText",
+      required: true,
     },
     {
-      name: 'status',
-      type: 'select',
+      name: "estimatedTime",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "coverImage",
+      type: "upload",
+      required: true,
+      relationTo: "media",
+    },
+    {
+      name: "status",
+      type: "select",
       options: [
         {
-          value: 'draft',
-          label: 'Draft',
+          value: "draft",
+          label: "Draft",
         },
         {
-          value: 'published',
-          label: 'Published',
+          value: "published",
+          label: "Published",
         },
       ],
-      defaultValue: 'draft',
+      defaultValue: "draft",
       admin: {
-        position: 'sidebar',
-      }
-    }
+        position: "sidebar",
+      },
+    },
   ],
-}
+};
 
 export default Posts;
