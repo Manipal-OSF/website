@@ -6,18 +6,18 @@ import { getStorage, ref } from "firebase/storage";
 require("dotenv").config();
 const app = express();
 
-const firebaseConfig = {
-  apiKey: process.env.APIKEY,
-  authDomain: "osf-cms.firebaseapp.com",
-  projectId: "osf-cms",
-  storageBucket: "osf-cms.appspot.com",
-  messagingSenderId: process.env.MESSAGINGSENDERID,
-  appId: process.env.APPID,
-  measurementId: process.env.MEASUREMENTID,
-};
+// const firebaseConfig = {
+//   apiKey: process.env.APIKEY,
+//   authDomain: "osf-cms.firebaseapp.com",
+//   projectId: "osf-cms",
+//   storageBucket: "osf-cms.appspot.com",
+//   messagingSenderId: process.env.MESSAGINGSENDERID,
+//   appId: process.env.APPID,
+//   measurementId: process.env.MEASUREMENTID,
+// };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const storage = getStorage(firebaseApp);
+// const firebaseApp = initializeApp(firebaseConfig);
+// const storage = getStorage(firebaseApp);
 
 // Redirect root to Admin panel
 app.get("/", (_, res) => {
