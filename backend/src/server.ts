@@ -1,7 +1,7 @@
 import express from "express";
 import payload from "payload";
-import { initializeApp } from 'firebase/app';
-import { getStorage, ref } from "firebase/storage";
+// import { initializeApp } from 'firebase/app';
+// import { getStorage, ref } from "firebase/storage";
 
 require("dotenv").config();
 const app = express();
