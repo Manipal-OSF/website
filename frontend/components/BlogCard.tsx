@@ -15,7 +15,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
       <a>
         <div className='border-2 dark:border-gray-500 card flex max-h-[20rem] cursor-pointer hover:-translate-y-1 duration-300'>
           <Image
-            src={`${serverUrl}${props.data.coverImage.url}`}
+            src={`https://osf-site-cms.herokuapp.com${props.data.coverImage.url}`}
             alt={props.data.coverImage.alt}
             height={props.data.coverImage.height}
             width={props.data.coverImage.width}

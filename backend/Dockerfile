@@ -1,5 +1,0 @@
-FROM node:lts
-
-WORKDIR /
-
-EXPOSE 1337

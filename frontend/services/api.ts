@@ -67,8 +67,12 @@ export const fetchOne = async (uid: string): Promise<BlogPost> => {
 
 export const fetchData = async (): Promise<BlogPost[]> => {
   const res = await fetch(`${serverUrl}/api/blogs?populate=*`);
+  console.log(`${serverUrl}/api/blogs?populate=*`);
+
   const json = await res.json();
   const data = json.data;
+
+  console.log(json);
 
   return data.map((item: any) => {
     const coverImageData = item.attributes.cover_image.data.attributes;

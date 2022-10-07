@@ -1,30 +1,32 @@
 {
-  "name": "backend",
-  "private": true,
-  "version": "0.1.0",
-  "description": "A Strapi application",
+  "name": "payload-blog-typescript",
+  "description": "Blog template",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "license": "MIT",
   "scripts": {
-    "develop": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi"
+    "dev": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts nodemon",
+    "build:payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload build",
+    "build:server": "tsc",
+    "build": "yarn copyfiles && yarn build:payload && yarn build:server",
+    "serve": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/server.js",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
+    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
+    "generate:graphQLSchema": "PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:graphQLSchema",
+    "format": "prettier -w ."
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.3.0",
-    "@strapi/plugin-users-permissions": "4.3.0",
-    "@strapi/plugin-i18n": "4.3.0",
-    "better-sqlite3": "7.4.6"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "firebase": "^9.9.4",
+    "payload": "^1.0.35"
   },
-  "author": {
-    "name": "A Strapi developer"
-  },
-  "strapi": {
-    "uuid": "3d70bf8d-eb47-413a-a56b-f40691dedf4f"
-  },
-  "engines": {
-    "node": ">=12.x.x <=16.x.x",
-    "npm": ">=6.0.0"
-  },
-  "license": "MIT"
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
 }

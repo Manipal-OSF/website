@@ -1,7 +1,7 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { serverUrl } from '../../constants';
 import { BlogPost, fetchData, fetchOne, getUidList } from '../../services/api';
 import ReactMarkdown from 'react-markdown';
@@ -37,7 +37,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
       <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-16 gap-10'>
         <h1 className='text-5xl md:text-6xl'>{props.data.title}</h1>
         <Image
-          src={`${serverUrl}${props.data.coverImage.url}`}
+          src={`https://osf-site-cms.herokuapp.com${props.data.coverImage.url}`}
           alt={props.data.coverImage.alt}
           layout='responsive'
           height={props.data.coverImage.height}
