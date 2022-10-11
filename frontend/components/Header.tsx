@@ -26,7 +26,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center dark:text-white'>
+    <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center text-secondary dark:text-secondary-dark'>
       <div className='hidden w-12 h-12 md:block'>
         <Image
           className='duration-500 rounded-3xl hover:rounded-lg'
@@ -50,7 +50,7 @@ const Header = () => {
                 ></FontAwesomeIcon>
               </Disclosure.Button>
               <Disclosure.Panel className='absolute z-50 text-gray-500 md:hidden'>
-                <nav className='p-3 mt-5 bg-white border-2 border-black rounded-lg dark:bg-black dark:text-white dark:border-white md:block place-self-center'>
+                <nav className='p-3 mt-5 border-2 rounded-lg bg-primary dark:bg-primary-dark text-secondary dark:text-secondary-dark border-secondary dark:border-secondary-dark md:block place-self-center'>
                   <ul className='grid grid-flow-row gap-5 text-lg'>
                     <Links state={state} />
                   </ul>

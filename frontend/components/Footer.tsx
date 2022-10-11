@@ -9,7 +9,7 @@ import logo from '../public/logo.jpg';
 
 const Footer = () => {
   return (
-    <footer className='justify-center gap-2 md:justify-between footer dark:text-white'>
+    <footer className='justify-center gap-2 md:justify-between footer text-secondary dark:text-secondary-dark'>
       <div className='flex items-center h-full'>
         <div className='w-6 h-6'>
           <Image
