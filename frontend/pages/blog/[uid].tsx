@@ -1,9 +1,6 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
-import { serverUrl } from '../../constants';
-import { BlogPost, fetchData, fetchOne, getUidList } from '../../services/api';
+import { BlogPost, fetchOne, getUidList } from '../../services/api';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
