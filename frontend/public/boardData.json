@@ -1,7 +1,7 @@
 [
   {
     "name": "Lance",
-    "key": "a",
+    "key": 1,
     "url": "https://placeimg.com/192/191/people",
     "links": [
       {
@@ -12,7 +12,7 @@
   },
   {
     "name": "KP",
-    "key": "b",
+    "key": 2,
     "url": "https://placeimg.com/192/190/people",
     "links": [
       {
@@ -23,7 +23,7 @@
   },
   {
     "name": "Shichi",
-    "key": "c",
+    "key": 3,
     "url": "https://placeimg.com/191/189/people",
     "links": [
       {
@@ -34,7 +34,7 @@
   },
   {
     "name": "Raghav",
-    "key": "d",
+    "key": 4,
     "url": "https://placeimg.com/193/188/people",
     "links": [
       {
@@ -45,7 +45,7 @@
   },
   {
     "name": "Deep",
-    "key": "e",
+    "key": 5,
     "url": "https://placeimg.com/192/187/people",
     "links": [
       {
@@ -56,7 +56,7 @@
   },
   {
     "name": "Mawa",
-    "key": "f",
+    "key": 6,
     "url": "https://placeimg.com/192/187/people",
     "links": [
       {
