@@ -68,12 +68,14 @@ const rotateLeft = (
   setBoard(temp);
 };
 
+
 const BoardCarousel = () => {
   const [board, setBoard] = useState(boardData);
 
   return (
     <div className=' '>
-      <FlipMove className='grid grid-cols-5 gap-10'>
+      {/* FIXME: https://github.com/joshwcomeau/react-flip-move/issues/273 */}
+      {/* <FlipMove className='grid grid-cols-5 gap-10'> */}
       {board.slice(0, 5).map((value, index) => {
         // console.log(JSON.stringify(value));
         if (index === 2) {
@@ -91,7 +93,7 @@ const BoardCarousel = () => {
           <BoardCarouselItem key={value.key} index={index} value={value} />
         );
       })}
-      </FlipMove>
+      {/* </FlipMove> */}
     </div>
   );
 };
@@ -115,7 +117,7 @@ const MiddleBoardCarouselItem = forwardRef<HTMLDivElement, MiddleProps>(
           <div ref={ref} className={`avatar ${getPlacement(props.index)}`}>
             <div
               className={`
-                  grayscale hover:grayscale-0 bg-white/30 mask mask-squircle ${getStyle(props.index)}`}
+                   mask mask-squircle ${getStyle(props.index)}`}
             >
               <img alt='e' src={props.value.url} />
             </div>
