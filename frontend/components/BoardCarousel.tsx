@@ -73,7 +73,7 @@ const BoardCarousel = () => {
   const [board, setBoard] = useState(boardData);
 
   return (
-    <div className=' '>
+    <div className='grid grid-cols-5 gap-10'>
       {/* FIXME: https://github.com/joshwcomeau/react-flip-move/issues/273 */}
       {/* <FlipMove className='grid grid-cols-5 gap-10'> */}
       {board.slice(0, 5).map((value, index) => {
