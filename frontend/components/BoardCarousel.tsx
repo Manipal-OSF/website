@@ -1,4 +1,13 @@
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faGithub,
+  faInstagram,
+  faLinkedin,
+} from '@fortawesome/free-brands-svg-icons';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faLink,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   useState,
@@ -170,6 +179,16 @@ const BoardCarousel = () => {
   );
 };
 
+const getIcon = (site: string) => {
+  if (site === 'github') {
+    return faGithub;
+  } else if (site === 'instagram') {
+    return faInstagram;
+  } else {
+    return faLinkedin;
+  }
+};
+
 const MiddleBoardCarouselItem = forwardRef<HTMLDivElement, MiddleProps>(
   (props, ref) => {
     return (
@@ -196,7 +215,6 @@ const MiddleBoardCarouselItem = forwardRef<HTMLDivElement, MiddleProps>(
                    mask mask-squircle ${getStyle(props.index)}`}
             >
               <img alt='e' src={props.value.url} />
-              <div></div>
             </div>
           </div>
 
@@ -209,6 +227,17 @@ const MiddleBoardCarouselItem = forwardRef<HTMLDivElement, MiddleProps>(
           </button>
         </div>
         <p className='text-xl'>{props.value.name}</p>
+        <div className='z-50 flex flex-row items-center justify-center gap-2'>
+          {props.value.links.map(
+            ({ site, url }: { site: string; url: string }, index: number) => {
+              return (
+                <a key={index} href={url} aria-label='Link'>
+                  <FontAwesomeIcon size='lg' icon={getIcon(site)} />
+                </a>
+              );
+            }
+          )}
+        </div>
       </div>
     );
   }
