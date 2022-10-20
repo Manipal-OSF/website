@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import Image from 'next/image';
 import logo from '../public/logo.jpg';
-
+const date = new Date().getFullYear()
 const Footer = () => {
   return (
     <footer className='justify-center gap-2 md:justify-between footer text-secondary dark:text-secondary-dark'>
@@ -19,7 +19,7 @@ const Footer = () => {
             layout='responsive'
           />
         </div>
-        <p>Copyright © 2022 - All rights reserved</p>
+        <p>Copyright © {date} - All rights reserved</p>
       </div>
       <div className='flex items-center justify-center w-full h-full gap-2'>
         <a
