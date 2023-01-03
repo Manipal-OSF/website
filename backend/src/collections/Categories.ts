@@ -1,5 +1,7 @@
 import { CollectionConfig } from "payload/types";
 
+// * Blog or Announcement
+
 const Categories: CollectionConfig = {
   slug: "categories",
   admin: {

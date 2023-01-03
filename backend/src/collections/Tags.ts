@@ -1,5 +1,7 @@
 import { CollectionConfig } from "payload/types";
 
+// * Post tags like Misc, Informative, Dev, etc
+
 const Tags: CollectionConfig = {
   slug: "tags",
   admin: {
