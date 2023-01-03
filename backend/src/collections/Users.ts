@@ -11,7 +11,7 @@ const Users: CollectionConfig = {
     read: () => true,
   },
   fields: [
-    // Email added by default
+    // * Email added by default
     {
       name: "name",
       type: "text",

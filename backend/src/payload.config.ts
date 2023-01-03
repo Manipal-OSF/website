@@ -7,7 +7,7 @@ import Users from "./collections/Users";
 import Media from "./collections/Media";
 
 export default buildConfig({
-  serverURL: "http://139.59.70.127",
+  serverURL: process.env.ADMIN_URL ?? "http://localhost:8000",
   admin: {
     user: Users.slug,
   },
