@@ -7,7 +7,7 @@ export enum Route {
   Home,
   About,
   Syllabus,
-  // Blog,
+  Blog,
 }
 
 const Links = (props: any): ReactElement => {
@@ -29,10 +29,10 @@ const Links = (props: any): ReactElement => {
         setSelectedRoute(Route.Syllabus);
         break;
       }
-      // case '/blog': {
-      //   setSelectedRoute(Route.Blog);
-      //   break;
-      // }
+      case '/blog': {
+        setSelectedRoute(Route.Blog);
+        break;
+      }
     }
   }, [router.route]);
 
@@ -71,8 +71,7 @@ const Links = (props: any): ReactElement => {
           </a>
         </Link>
       </li>
-      {/* TODO: Uncomment once a CMS backend has been set up */}
-      {/* <li>
+      <li>
         <Link href='/blog'>
           <a
             className={`link underline-offset-2 ${
@@ -82,7 +81,7 @@ const Links = (props: any): ReactElement => {
             Blog
           </a>
         </Link>
-      </li> */}
+      </li>
     </>
   );
 };

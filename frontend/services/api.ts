@@ -3,6 +3,7 @@ import { serverUrl } from '../constants';
 export interface Image {
   name: string;
   alt: string;
+
   width: number;
   height: number;
   ext: string;
@@ -19,6 +20,8 @@ export interface BlogPost {
   coverImage: Image;
   categories: string[];
 }
+
+// FIXME: Convert to payload config
 
 export const getUidList = async (): Promise<Array<any>> => {
   const res = await fetch(`${serverUrl}/api/blogs?populate=*`);

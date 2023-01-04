@@ -12,7 +12,7 @@ export default buildConfig({
     user: Users.slug,
   },
   collections: [Posts, Categories, Tags, Users, Media],
-  cors: ["*"],
+  cors: "*",
   typescript: {
     outputFile: path.resolve(__dirname, "payload-types.ts"),
   },
