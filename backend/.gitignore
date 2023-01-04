@@ -167,3 +167,4 @@ dist
 
 src/media/
 build/
+*pem
