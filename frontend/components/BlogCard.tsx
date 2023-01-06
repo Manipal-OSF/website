@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
-import { serverUrl } from '../constants';
 import type { BlogPost } from '../services/api';
 
 interface BlogCardProps {
@@ -11,11 +10,11 @@ interface BlogCardProps {
 
 const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
   return (
-    <Link href={`/blog/${props.data.uid}`}>
+    <Link href={`/blog/${props.data.id}`}>
       <a>
         <div className='border-2 dark:border-gray-500 card flex max-h-[20rem] cursor-pointer hover:-translate-y-1 duration-300'>
           <Image
-            src={`https://osf-site-cms.herokuapp.com${props.data.coverImage.url}`}
+            src={props.data.coverImage.sizes[0].url}
             alt={props.data.coverImage.alt}
             height={props.data.coverImage.height}
             width={props.data.coverImage.width}
