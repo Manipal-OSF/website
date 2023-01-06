@@ -1,33 +1,48 @@
 import { serverUrl } from '../constants';
 
-export interface Image {
-  name: string;
-  alt: string;
+type PostStatus = 'published' | 'draft';
 
+interface ImageSize {
+  url: string;
   width: number;
   height: number;
-  ext: string;
+  mimeType: string;
+}
+
+export interface Image {
+  title: string;
+  alt: string;
+  width: number;
+  height: number;
+  mimeType: string;
   url: string;
+  sizes: ImageSize[];
+}
+
+export interface Tag {
+  id: string;
+  name: string;
 }
 
 export interface BlogPost {
   id: number;
   title: string;
-  uid: string;
   content: string;
   publishDate: string;
   authors: string[];
   coverImage: Image;
-  categories: string[];
+  category: string;
+  tags: Tag[];
+  estimatedTime: number;
 }
 
 // FIXME: Convert to payload config
 
 export const getUidList = async (): Promise<Array<any>> => {
-  const res = await fetch(`${serverUrl}/api/blogs?populate=*`);
-  const json = await res.json();
-  const uids = json.data.map((e: any) => {
-    return { params: { uid: e.attributes.uid } };
+  const res = await fetch(`${serverUrl}/api/posts?populate=*`);
+  const json = (await res.json())['docs'];
+  const uids = json.map((e: any) => {
+    return { params: { id: e.id } };
   });
 
   return uids;
@@ -35,74 +50,117 @@ export const getUidList = async (): Promise<Array<any>> => {
 
 export const fetchOne = async (uid: string): Promise<BlogPost> => {
   const res = await fetch(
-    `${serverUrl}/api/blogs?filters[uid][$eq]=${uid}&populate=*`
+    `${serverUrl}/api/posts/${uid}?populate=*`
   );
+  console.log(`${serverUrl}/api/posts/${uid}?populate=*`);
   const json = await res.json();
-  const data = json.data[0];
+  const data = json;
 
-  const coverImageData = data.attributes.cover_image.data.attributes;
-  const categories = data.attributes.categories.data.map(
-    (item: any) => item.attributes.name
-  );
+  const imageData = data.coverImage;
+  const category = data.category;
+  console.log(data)
+  const tags = data.tags.map((item: any) => {
+    const tag: Tag = {
+      id: item.id,
+      name: item.name,
+    };
+    return tag;
+  });
+  const thumbnailSize: ImageSize = {
+    width: imageData.sizes.thumbnail.width,
+    height: imageData.sizes.thumbnail.height,
+    mimeType: imageData.sizes.thumbnail.ext,
+    url: imageData.sizes.thumbnail.url,
+  };
+
+  const tabletSize: ImageSize = {
+    width: imageData.sizes.tablet.width,
+    height: imageData.sizes.tablet.height,
+    mimeType: imageData.sizes.tablet.ext,
+    url: imageData.sizes.tablet.url,
+  };
 
   const coverImage: Image = {
-    name: coverImageData.name,
-    alt: coverImageData.alternativeText,
-    width: coverImageData.width,
-    height: coverImageData.height,
-    ext: coverImageData.ext,
-    url: coverImageData.url,
+    title: imageData.title,
+    alt: imageData.alt,
+    width: imageData.width,
+    height: imageData.height,
+    mimeType: imageData.mimeType,
+    url: imageData.url,
+    sizes: [thumbnailSize, tabletSize],
   };
 
-  const blog: BlogPost = {
+  const post: BlogPost = {
     id: data.id,
-    title: data.attributes.title,
-    uid: data.attributes.uid,
-    content: data.attributes.content,
-    publishDate: data.attributes.publish_date,
-    authors: data.attributes.authors.split(','),
+    title: data.title,
+    content: data.content,
+    publishDate: data.publishedDate,
+    authors: data.authors.name,
     coverImage: coverImage,
-    categories: categories,
+    category: category,
+    tags: tags,
+    estimatedTime: data.estimatedTime,
   };
 
-  return blog;
+  return post;
 };
 
 export const fetchData = async (): Promise<BlogPost[]> => {
-  const res = await fetch(`${serverUrl}/api/blogs?populate=*`);
-  console.log(`${serverUrl}/api/blogs?populate=*`);
+  const res = await fetch(`${serverUrl}/api/posts?populate=*`);
+  console.log(`${serverUrl}/api/posts?populate=*`);
 
   const json = await res.json();
-  const data = json.data;
+  const data = json.docs;
 
-  console.log(json);
+  return data
+    .filter((item: any) => item.status == 'published')
+    .map((item: any) => {
+      const imageData = item.coverImage;
+      const category = item.category;
+      const tags = item.tags.map((item: any) => {
+        const tag: Tag = {
+          id: item.id,
+          name: item.name,
+        };
+        return tag;
+      });
 
-  return data.map((item: any) => {
-    const coverImageData = item.attributes.cover_image.data.attributes;
-    const categories = item.attributes.categories.data.map(
-      (item: any) => item.attributes.name
-    );
+      const thumbnailSize: ImageSize = {
+        width: imageData.sizes.thumbnail.width,
+        height: imageData.sizes.thumbnail.height,
+        mimeType: imageData.sizes.thumbnail.mimeType,
+        url: imageData.sizes.thumbnail.url,
+      };
 
-    const coverImage: Image = {
-      name: coverImageData.name,
-      alt: coverImageData.alternativeText,
-      width: coverImageData.width,
-      height: coverImageData.height,
-      ext: coverImageData.ext,
-      url: coverImageData.url,
-    };
+      const tabletSize: ImageSize = {
+        width: imageData.sizes.tablet.width,
+        height: imageData.sizes.tablet.height,
+        mimeType: imageData.sizes.tablet.mimeType,
+        url: imageData.sizes.tablet.url,
+      };
 
-    const blog: BlogPost = {
-      id: item.id,
-      title: item.attributes.title,
-      uid: item.attributes.uid,
-      content: item.attributes.content,
-      publishDate: item.attributes.publish_date,
-      authors: item.attributes.authors.split(','),
-      coverImage: coverImage,
-      categories: categories,
-    };
+      const coverImage: Image = {
+        title: imageData.title,
+        alt: imageData.alt,
+        width: imageData.width,
+        height: imageData.height,
+        mimeType: imageData.mimeType,
+        url: imageData.url,
+        sizes: [thumbnailSize, tabletSize],
+      };
 
-    return blog;
-  });
+      const post: BlogPost = {
+        id: item.id,
+        title: item.title,
+        content: item.content,
+        publishDate: item.publishedDate,
+        authors: item.authors.name,
+        coverImage: coverImage,
+        category: category,
+        tags: tags,
+        estimatedTime: item.estimatedTime,
+      };
+
+      return post;
+    });
 };

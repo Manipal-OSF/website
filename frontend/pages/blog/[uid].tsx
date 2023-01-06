@@ -7,22 +7,27 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GetStaticProps, GetStaticPaths } from 'next'
 
 interface Response {
   blog?: BlogPost;
   error: boolean;
-}
-
-export const getStaticPaths: any = async () => {
-  return { paths: await getUidList(), fallback: false };
 };
 
-export const getStaticProps: any = async ({ params }: any) => {
-  const data = await fetchOne(params.uid);
+// * Incremental Static Regeneration enabled (ISR)
+// * https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = await getUidList();
+  return { paths: paths, fallback: 'blocking' };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }: any) => {
+  const data = await fetchOne(params.id);
   return {
     props: {
       data,
     },
+    revalidate: 10,
   };
 };
 
@@ -34,7 +39,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
       <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-16 gap-10'>
         <h1 className='text-5xl md:text-6xl'>{props.data.title}</h1>
         <Image
-          src={`https://osf-site-cms.herokuapp.com${props.data.coverImage.url}`}
+          src={props.data.coverImage.url}
           alt={props.data.coverImage.alt}
           layout='responsive'
           height={props.data.coverImage.height}
@@ -70,7 +75,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
   return (
     <>
       <Head>
-        <title>{`${props.data?.uid} | Manipal OSF`}</title>
+        <title>{`${props.data?.id} | Manipal OSF`}</title>
       </Head>
       <div className='dark:text-white flex flex-col w-full flex-grow-[1] items-center gap-5'>
         {content()}
