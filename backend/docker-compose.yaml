@@ -22,8 +22,8 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
       - URL=manipalosf.com
-      - SUBDOMAINS=cms,
-      - VALIDATION=http
+      - SUBDOMAINS=cms,www.cms
+      - VALIDATION=http # ? Possibly change to dns?
     ports:
       - 443:443
       - 80:80
