@@ -23,6 +23,7 @@ services:
       - TZ=Asia/Kolkata
       - URL=manipalosf.com
       - SUBDOMAINS=cms,www.cms
+      - ONLY_SUBDOMAINS=true
       - VALIDATION=http # ? Possibly change to dns?
     ports:
       - 443:443
