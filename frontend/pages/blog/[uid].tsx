@@ -22,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  const data = await fetchOne(params.id);
+  const data = await fetchOne(params.uid);
   return {
     props: {
       data,
@@ -53,7 +53,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
           </div>
           <div className='flex flex-col items-end gap-1'>
             <h2 className='text-base font-bold md:text-lg'>PUBLISHED ON</h2>
-            <h2 className='text-lg md:text-xl'>{props.data.publishDate}</h2>
+            <h2 className='text-lg md:text-xl'>{props.data.publishDate.substring(0, 10)}</h2>
           </div>
         </div>
         <hr />
