@@ -12,21 +12,21 @@ const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
   return (
     <Link href={`/blog/${props.data.id}`}>
       <a>
-        <div className='border-2 dark:border-gray-500 card flex max-h-[20rem] cursor-pointer hover:-translate-y-1 duration-300'>
+        <div className='border-2 dark:border-gray-500 card flex max-h-[20rem] cursor-pointer hover:-translate-y-1 duration-300 rounded-2xl hover:rounded-none'>
           <Image
-            src={props.data.coverImage.sizes[0].url}
+            src={props.data.coverImage.url}
             alt={props.data.coverImage.alt}
             height={props.data.coverImage.height}
             width={props.data.coverImage.width}
             layout='responsive'
-            className='duration-300 hover:scale-110 max-h-[10rem]'
+            className='duration-300 hover:scale-110 max-h-[10rem] rounded-t-xl'
           ></Image>
           <div className='p-3 flex flex-col flex-grow-[1]'>
             <h2 className='text-2xl'>{props.data.title}</h2>
           </div>
           <div className='flex flex-row justify-between p-3'>
             <p>{props.data.authors}</p>
-            <p>{props.data.publishDate}</p>
+            <p>{props.data.publishDate.substring(0, 10)}</p>
           </div>
         </div>
       </a>

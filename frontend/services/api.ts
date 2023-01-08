@@ -36,13 +36,12 @@ export interface BlogPost {
   estimatedTime: number;
 }
 
-// FIXME: Convert to payload config
-
 export const getUidList = async (): Promise<Array<any>> => {
   const res = await fetch(`${serverUrl}/api/posts?populate=*`);
   const json = (await res.json())['docs'];
+
   const uids = json.map((e: any) => {
-    return { params: { id: e.id } };
+    return { params: { uid: e.id } };
   });
 
   return uids;
@@ -52,13 +51,12 @@ export const fetchOne = async (uid: string): Promise<BlogPost> => {
   const res = await fetch(
     `${serverUrl}/api/posts/${uid}?populate=*`
   );
-  console.log(`${serverUrl}/api/posts/${uid}?populate=*`);
   const json = await res.json();
   const data = json;
 
   const imageData = data.coverImage;
+
   const category = data.category;
-  console.log(data)
   const tags = data.tags.map((item: any) => {
     const tag: Tag = {
       id: item.id,
@@ -69,14 +67,14 @@ export const fetchOne = async (uid: string): Promise<BlogPost> => {
   const thumbnailSize: ImageSize = {
     width: imageData.sizes.thumbnail.width,
     height: imageData.sizes.thumbnail.height,
-    mimeType: imageData.sizes.thumbnail.ext,
+    mimeType: imageData.sizes.thumbnail.mimeType,
     url: imageData.sizes.thumbnail.url,
   };
 
   const tabletSize: ImageSize = {
     width: imageData.sizes.tablet.width,
     height: imageData.sizes.tablet.height,
-    mimeType: imageData.sizes.tablet.ext,
+    mimeType: imageData.sizes.tablet.mimeType,
     url: imageData.sizes.tablet.url,
   };
 
@@ -107,7 +105,6 @@ export const fetchOne = async (uid: string): Promise<BlogPost> => {
 
 export const fetchData = async (): Promise<BlogPost[]> => {
   const res = await fetch(`${serverUrl}/api/posts?populate=*`);
-  console.log(`${serverUrl}/api/posts?populate=*`);
 
   const json = await res.json();
   const data = json.docs;
