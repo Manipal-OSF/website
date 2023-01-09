@@ -1,8 +1,14 @@
 import express from "express";
+import cors from "cors";
 import payload from "payload";
 
 require("dotenv").config();
 const app = express();
+
+app.use(cors({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+}));
 
 app.get("/", (_, res) => {
   res.redirect("/admin");
