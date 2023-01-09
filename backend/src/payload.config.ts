@@ -7,9 +7,12 @@ import Users from "./collections/Users";
 import Media from "./collections/Media";
 
 export default buildConfig({
-  serverURL: process.env.ADMIN_URL ?? "http://localhost:8000",
+  serverURL: "http://localhost:8000",
   admin: {
     user: Users.slug,
+  },
+  routes: {
+    admin: process.env.ADMIN_URL,
   },
   collections: [Posts, Categories, Tags, Users, Media],
   cors: "*",
