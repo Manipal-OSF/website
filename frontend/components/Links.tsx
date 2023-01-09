@@ -6,7 +6,7 @@ import { ReactElement } from 'react-markdown/lib/react-markdown';
 export enum Route {
   Home,
   About,
-  Syllabus,
+  Team,
   // Blog,
 }
 
@@ -25,8 +25,8 @@ const Links = (props: any): ReactElement => {
         setSelectedRoute(Route.About);
         break;
       }
-      case '/syllabus': {
-        setSelectedRoute(Route.Syllabus);
+      case '/team': {
+        setSelectedRoute(Route.Team);
         break;
       }
       // case '/blog': {
@@ -61,13 +61,13 @@ const Links = (props: any): ReactElement => {
         </Link>
       </li>
       <li>
-        <Link href='/syllabus'>
+        <Link href='/team'>
           <a
             className={`link underline-offset-2 ${
-              selectedRoute === Route.Syllabus ? 'decoration-2' : 'link-hover'
+              selectedRoute === Route.Team ? 'decoration-2' : 'link-hover'
             }`}
           >
-            Syllabus
+            Team
           </a>
         </Link>
       </li>

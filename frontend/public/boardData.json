@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Lance",
+    "key": 1,
+    "url": "https://placeimg.com/192/191/people",
+    "links": [
+      {
+        "site": "github",
+        "url": "..."
+      }
+    ]
+  },
+  {
+    "name": "KP",
+    "key": 2,
+    "url": "https://placeimg.com/192/190/people",
+    "links": [
+      {
+        "site": "github",
+        "url": "..."
+      }
+    ]
+  },
+  {
+    "name": "Shichi",
+    "key": 3,
+    "url": "https://placeimg.com/191/189/people",
+    "links": [
+      {
+        "site": "github",
+        "url": "..."
+      },
+      {
+        "site": "linkedin",
+        "url": ".."
+      }
+    ]
+  },
+  {
+    "name": "Raghav",
+    "key": 4,
+    "url": "https://placeimg.com/193/188/people",
+    "links": [
+      {
+        "site": "github",
+        "url": "..."
+      }
+    ]
+  },
+  {
+    "name": "Deep",
+    "key": 5,
+    "url": "https://placeimg.com/192/187/people",
+    "links": [
+      {
+        "site": "github",
+        "url": "..."
+      }
+    ]
+  }
+]
