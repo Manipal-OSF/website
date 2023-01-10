@@ -1,3 +1,5 @@
+# Replace azureuser with VM username
+
 version: "3.9"
 services:
   cms:
@@ -9,6 +11,8 @@ services:
       - ./.env
     ports:
       - 8000:8000
+    volumes:
+      - /home/azureuser/appdata/media:/dist/media
 
   swag:
     image: lscr.io/linuxserver/swag:latest
@@ -22,7 +26,7 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
       - URL=manipalosf.com
-      - SUBDOMAINS=cms,www.cms
+      - SUBDOMAINS=cms
       - ONLY_SUBDOMAINS=true
       - VALIDATION=http # ? Possibly change to dns?
     ports:
