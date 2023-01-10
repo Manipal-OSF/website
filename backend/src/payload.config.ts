@@ -11,9 +11,6 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  routes: {
-    admin: process.env.ADMIN_URL,
-  },
   collections: [Posts, Categories, Tags, Users, Media],
   cors: "*",
   typescript: {

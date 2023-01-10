@@ -10,9 +10,6 @@ export enum Route {
   Blog,
 }
 
-const a = (b: {a: number, b: string}) => {
-}
-
 const Links = (props: any): ReactElement => {
   const router = useRouter();
 
