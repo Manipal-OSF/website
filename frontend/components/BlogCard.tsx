@@ -20,6 +20,9 @@ const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
             width={props.data.coverImage.width}
             layout='responsive'
             className='duration-300 hover:scale-110 max-h-[10rem] rounded-t-xl'
+            priority={true}
+            blurDataURL='../public/logo.jpg'
+            placeholder='blur'
           ></Image>
           <div className='p-3 flex flex-col flex-grow-[1]'>
             <h2 className='text-2xl'>{props.data.title}</h2>

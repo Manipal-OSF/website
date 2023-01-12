@@ -45,6 +45,9 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
           height={props.data.coverImage.height}
           width={props.data.coverImage.width}
           className='duration-300 hover:scale-110 max-h-[5rem] rounded-2xl'
+          priority={true}
+          blurDataURL='../public/logo.jpg'
+          placeholder='blur'
         ></Image>
         <div className='flex justify-between'>
           <div className='flex flex-col gap-1'>

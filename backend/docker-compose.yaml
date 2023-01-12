@@ -12,7 +12,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - /home/azureuser/appdata/media:/dist/media
+      - /home/appdata/media:/app/dist/media
 
   swag:
     image: lscr.io/linuxserver/swag:latest
@@ -34,4 +34,4 @@ services:
       - 80:80
     restart: unless-stopped
     volumes:
-      - /home/azureuser/appdata/swag:/config
+      - /home/appdata/swag:/config
