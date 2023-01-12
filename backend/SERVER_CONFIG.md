@@ -28,5 +28,5 @@
 
 ## Note
 
-- Can add prometheus and grafana to docker-compose to log and monitor the server
-- Can possibly move mongodb after we get sufficient funds to the server so as to avoid the headache of configuring the IP.
+- Can add Prometheus and Grafana to log and monitor the server
+- Can possibly move MongoDB to the server so as to avoid the headache of configuring the IP.
