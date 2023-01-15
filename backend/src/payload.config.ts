@@ -7,7 +7,7 @@ import Users from "./collections/Users";
 import Media from "./collections/Media";
 
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_URL ?? "https://cms.manipalosf.com",
+  serverURL: process.env.PAYLOAD_PUBLIC_URL ?? "https://cms.manipalosf.org",
   admin: {
     user: Users.slug,
   },
