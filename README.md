@@ -10,6 +10,6 @@ A prerequisite knowledge of [React](https://beta.reactjs.org/), [Next.js](https:
 
 Although if you are not familiar with any/all of these, you can still contibute in a particular domain or by finding bugs in the site.
 
-## Development
+## Additional Information
 
-TODO
+- If you are a sysadmin, check out [the configuration document](./backend/SERVER_CONFIG.md).
