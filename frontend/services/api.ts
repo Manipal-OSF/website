@@ -48,9 +48,7 @@ export const getUidList = async (): Promise<Array<any>> => {
 };
 
 export const fetchOne = async (uid: string): Promise<BlogPost> => {
-  const res = await fetch(
-    `${serverUrl}/api/posts/${uid}?populate=*`
-  );
+  const res = await fetch(`${serverUrl}/api/posts/${uid}?populate=*`);
   const json = await res.json();
   const data = json;
 

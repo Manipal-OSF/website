@@ -7,12 +7,12 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { GetStaticProps, GetStaticPaths } from 'next'
+import { GetStaticProps, GetStaticPaths } from 'next';
 
 interface Response {
   blog?: BlogPost;
   error: boolean;
-};
+}
 
 // * Incremental Static Regeneration enabled (ISR)
 // * https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
@@ -56,7 +56,9 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
           </div>
           <div className='flex flex-col items-end gap-1'>
             <h2 className='text-base font-bold md:text-lg'>PUBLISHED ON</h2>
-            <h2 className='text-lg md:text-xl'>{props.data.publishDate.substring(0, 10)}</h2>
+            <h2 className='text-lg md:text-xl'>
+              {props.data.publishDate.substring(0, 10)}
+            </h2>
           </div>
         </div>
         <hr />
