@@ -20,7 +20,7 @@ const BlogPage: NextPage<{ data: BlogPost[] }> = (props) => {
       <Head>
         <title>Blog | Manipal OSF</title>
       </Head>
-      <div className='flex flex-col gap-10 dark:text-white lg:w-[60rem]'>
+      <div className='flex flex-col gap-10 dark:text-white w-[25rem] md:w-[50rem] lg:w-[55rem]'>
         <h1 className='text-center text-5xl'>Featured</h1>
         <div className='grid grid-cols-1 gap-5 md:grid-cols-2 '>
           {posts.map((item: BlogPost, index) => (
