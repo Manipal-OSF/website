@@ -8,6 +8,7 @@ import Head from 'next/head';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GetStaticProps, GetStaticPaths } from 'next';
+import CustomImage from '../../components/CustomImage';
 
 interface Response {
   blog?: BlogPost;
@@ -36,19 +37,9 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
 }) => {
   const content = () => {
     return (
-      <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-16 gap-10'>
+      <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-10 lg:w-[60rem] gap-10'>
         <h1 className='text-5xl md:text-6xl'>{props.data.title}</h1>
-        <Image
-          src={props.data.coverImage.url}
-          alt={props.data.coverImage.alt}
-          layout='responsive'
-          height={props.data.coverImage.height}
-          width={props.data.coverImage.width}
-          className='duration-300 hover:scale-110 max-h-[5rem] rounded-2xl'
-          priority={true}
-          blurDataURL='../public/logo.jpg'
-          placeholder='blur'
-        ></Image>
+        <CustomImage data={props.data.coverImage} />
         <div className='flex justify-between'>
           <div className='flex flex-col gap-1'>
             <h2 className='text-base font-bold md:text-lg'>WRITTEN BY</h2>
