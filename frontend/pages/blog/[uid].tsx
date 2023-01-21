@@ -54,7 +54,9 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
         <hr />
         <div className='flex flex-col gap-5'>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {props.data.content}
+            {JSON.parse(JSON.stringify(props.data.content))
+              .map((e: { children: { text: string }[] }) => e.children[0].text)
+              .join('\n')}
           </ReactMarkdown>
         </div>
         <Link href='/blog'>
