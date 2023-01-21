@@ -7,7 +7,7 @@ const About: NextPage = () => {
       <Head>
         <title>About | Manipal OSF</title>
       </Head>
-      <div className='grid gap-10 m-auto text-center place-self-center dark:text-white'>
+      <div className='grid gap-10 m-auto text-center place-self-center dark:text-white lg:w-[60rem]'>
         <h1 className='text-3xl font-bold md:text-5xl lg:text-7xl'>
           Our vision
         </h1>

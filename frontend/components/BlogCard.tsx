@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
 import type { BlogPost } from '../services/api';
+import CustomImage from './CustomImage';
 
 interface BlogCardProps {
   data: BlogPost;
@@ -13,17 +14,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
     <Link href={`/blog/${props.data.id}`}>
       <a>
         <div className='border-2 dark:border-gray-500 card flex max-h-[20rem] cursor-pointer hover:-translate-y-1 duration-300 rounded-2xl hover:rounded-none'>
-          <Image
-            src={props.data.coverImage.url}
-            alt={props.data.coverImage.alt}
-            height={props.data.coverImage.height}
-            width={props.data.coverImage.width}
-            layout='responsive'
-            className='duration-300 hover:scale-110 max-h-[10rem] rounded-t-xl'
-            priority={true}
-            blurDataURL='../public/logo.jpg'
-            placeholder='blur'
-          ></Image>
+          <CustomImage data={props.data.coverImage} />
           <div className='p-3 flex flex-col flex-grow-[1]'>
             <h2 className='text-2xl'>{props.data.title}</h2>
           </div>
