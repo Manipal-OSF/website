@@ -9,9 +9,9 @@ import logo from '../public/logo.jpg';
 
 const Footer = () => {
   return (
-    <footer className='justify-center gap-2 md:justify-between footer dark:text-white'>
-      <div className='flex items-center h-full'>
-        <div className='w-6 h-6'>
+    <footer className='footer justify-center gap-2 dark:text-white md:justify-between'>
+      <div className='flex h-full items-center'>
+        <div className='h-6 w-6'>
           <Image
             className='rounded-full'
             src={logo}
@@ -21,12 +21,12 @@ const Footer = () => {
         </div>
         <p>Copyright © 2022 - All rights reserved</p>
       </div>
-      <div className='flex items-center justify-center w-full h-full gap-2'>
+      <div className='flex h-full w-full items-center justify-center gap-2'>
         <a
           href='https://www.instagram.com/manipalosf/'
           target='_blank'
           rel='noopener noreferrer'
-          className='duration-300 link link-hover hover:-translate-y-1'
+          className='link-hover link duration-300 hover:-translate-y-1'
           aria-label='Instagram'
         >
           <FontAwesomeIcon
@@ -39,7 +39,7 @@ const Footer = () => {
           href='https://github.com/Manipal-OSF'
           target='_blank'
           rel='noopener noreferrer'
-          className='duration-300 link link-hover hover:-translate-y-1'
+          className='link-hover link duration-300 hover:-translate-y-1'
           aria-label='Github'
         >
           <FontAwesomeIcon
@@ -52,7 +52,7 @@ const Footer = () => {
           href='https://discord.gg/wk52CxvSj8'
           target='_blank'
           rel='noopener noreferrer'
-          className='duration-300 link link-hover hover:-translate-y-1'
+          className='link-hover link duration-300 hover:-translate-y-1'
           aria-label='Github'
         >
           <FontAwesomeIcon
