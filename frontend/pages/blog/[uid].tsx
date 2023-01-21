@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import { BlogPost, fetchOne, getUidList } from '../../services/api';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -37,7 +36,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
 }) => {
   const content = () => {
     return (
-      <div className='dark:text-white flex flex-col w-full flex-grow-[1] px-3 md:px-10 lg:w-[60rem] gap-10'>
+      <div className='flex w-full flex-grow-[1] flex-col gap-10 px-3 dark:text-white md:px-10 lg:w-[60rem]'>
         <h1 className='text-5xl md:text-6xl'>{props.data.title}</h1>
         <CustomImage data={props.data.coverImage} />
         <div className='flex justify-between'>
@@ -59,7 +58,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
           </ReactMarkdown>
         </div>
         <Link href='/blog'>
-          <button className='flex items-center justify-center gap-5 p-2 text-2xl text-white bg-black rounded-lg md:text-3xl dark:text-black dark:bg-white max-w-'>
+          <button className='max-w- flex items-center justify-center gap-5 rounded-lg bg-black p-2 text-2xl text-white dark:bg-white dark:text-black md:text-3xl'>
             <FontAwesomeIcon icon={faArrowLeft} className='max-w-[1.4rem]' />
             <span>Return to blog</span>
           </button>
@@ -73,7 +72,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
       <Head>
         <title>{`${props.data?.id} | Manipal OSF`}</title>
       </Head>
-      <div className='dark:text-white flex flex-col w-full flex-grow-[1] items-center gap-5'>
+      <div className='flex w-full flex-grow-[1] flex-col items-center gap-5 dark:text-white'>
         {content()}
       </div>
     </>

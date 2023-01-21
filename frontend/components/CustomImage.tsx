@@ -18,7 +18,7 @@ const CustomImage: FunctionComponent<CustomImageProps> = (
         layout='responsive'
         height={600}
         width={1200}
-        className='duration-300 hover:scale-110 max-h-[10rem] rounded-t-xl'
+        className='max-h-[10rem] rounded-t-xl duration-300 hover:scale-110'
       ></Image>
     );
   } else {
@@ -29,7 +29,7 @@ const CustomImage: FunctionComponent<CustomImageProps> = (
         height={props.data.height}
         width={props.data.width}
         layout='responsive'
-        className='duration-300 hover:scale-110 max-h-[10rem] rounded-t-xl'
+        className='max-h-[10rem] rounded-t-xl duration-300 hover:scale-110'
         priority={true}
         blurDataURL='../public/placeholder.jpg'
         placeholder='blur'
