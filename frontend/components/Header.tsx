@@ -2,10 +2,7 @@ import { faMoon } from '@fortawesome/free-regular-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import {
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 import { setTheme } from '../services/theme';
 import logo from '../public/logo.jpg';
 import { Disclosure } from '@headlessui/react';

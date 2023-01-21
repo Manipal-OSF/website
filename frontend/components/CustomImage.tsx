@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import type { ImageData } from '../services/api';
 import Image from 'next/image';
+import placeholder from '../public/placeholder.png';
 
 export interface CustomImageProps {
   data: ImageData | string;
@@ -13,7 +14,7 @@ const CustomImage: FunctionComponent<CustomImageProps> = (
     // Placeholder
     return (
       <Image
-        src={'/../public/placeholder.png'}
+        src={placeholder}
         alt='image'
         layout='responsive'
         height={600}
