@@ -1,4 +1,5 @@
 import { CollectionConfig } from "payload/types";
+import { isAdmin } from "../access/isAdmin";
 
 const Users: CollectionConfig = {
   slug: "users",
@@ -9,6 +10,9 @@ const Users: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     // * Email added by default
