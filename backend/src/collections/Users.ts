@@ -21,6 +21,17 @@ const Users: CollectionConfig = {
       type: "text",
       required: true,
     },
+    {
+      name: 'roles',
+      type: 'select',
+      hasMany: false,
+      defaultValue: ['member'],
+      required: true,
+      options: [
+        'admin',
+        'member'
+      ]
+    }
   ],
 };
 
