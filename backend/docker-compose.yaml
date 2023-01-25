@@ -9,8 +9,6 @@ services:
       - ./.env
     ports:
       - 8000:8000
-    volumes:
-      - /home/appdata/cms:/app/dist
 
   swag:
     image: lscr.io/linuxserver/swag:latest

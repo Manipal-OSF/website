@@ -1,9 +1,11 @@
 import { CollectionConfig } from "payload/types";
+import { isAdmin } from "../access/isAdmin";
 
 const Media: CollectionConfig = {
   slug: "media",
   access: {
     read: (): boolean => true,
+    delete: isAdmin,
   },
   admin: {
     useAsTitle: "title",
