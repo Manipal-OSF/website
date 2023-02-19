@@ -8,6 +8,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import CustomImage from '../../components/CustomImage';
+import RichTextRenderer from '../../components/RichTextRenderer';
 
 interface Response {
   blog?: BlogPost;
@@ -53,11 +54,13 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
         </div>
         <hr />
         <div className='flex flex-col gap-5'>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {/* For future markdown use */}
+          {/* <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {JSON.parse(JSON.stringify(props.data.content))
               .map((e: { children: { text: string }[] }) => e.children[0].text)
               .join('\n')}
-          </ReactMarkdown>
+          </ReactMarkdown> */}
+          <RichTextRenderer md={props.data.content}></RichTextRenderer>
         </div>
         <Link href='/blog'>
           <button className='max-w- flex items-center justify-center gap-5 rounded-lg bg-black p-2 text-2xl text-white dark:bg-white dark:text-black md:text-3xl'>
