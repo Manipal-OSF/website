@@ -1,5 +1,6 @@
 import Header from './Header';
 import Footer from './Footer';
+import { useEffect, useLayoutEffect } from 'react';
 
 const Layout = ({ children }: any) => {
   return (

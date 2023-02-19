@@ -19,6 +19,10 @@ class MyDocument extends Document {
             href='https://fonts.googleapis.com/css2?family=League+Spartan&display=swap'
             rel='stylesheet'
           />
+          <link
+            rel='stylesheet'
+            href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css'
+          />
         </Head>
         <body>
           <Main />
