@@ -39,7 +39,7 @@ const Links = (props: any): ReactElement => {
   return (
     <>
       <li>
-        <Link href='/'>
+        <Link href='/' scroll={false}>
           <a
             className={`link underline-offset-2 ${
               selectedRoute === Route.Home ? 'decoration-2' : 'link-hover'
@@ -50,7 +50,7 @@ const Links = (props: any): ReactElement => {
         </Link>
       </li>
       <li>
-        <Link href='/about'>
+        <Link href='/about' scroll={false}>
           <a
             className={`link underline-offset-2 ${
               selectedRoute === Route.About ? 'decoration-2' : 'link-hover'
@@ -61,7 +61,7 @@ const Links = (props: any): ReactElement => {
         </Link>
       </li>
       <li>
-        <Link href='/syllabus'>
+        <Link href='/syllabus' scroll={false}>
           <a
             className={`link underline-offset-2 ${
               selectedRoute === Route.Syllabus ? 'decoration-2' : 'link-hover'
@@ -72,7 +72,7 @@ const Links = (props: any): ReactElement => {
         </Link>
       </li>
       <li>
-        <Link href='/blog'>
+        <Link href='/blog' scroll={false}>
           <a
             className={`link underline-offset-2 ${
               selectedRoute === Route.Blog ? 'decoration-2' : 'link-hover'

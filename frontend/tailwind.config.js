@@ -8,16 +8,20 @@ module.exports = {
     extend: {
       colors: {
         'primary': {
-          DEFAULT: '#fdfffe',
+          DEFAULT: '#a3dffd ',
           dark:'#333049'
         },
         'secondary': {
-          DEFAULT:'#13304b',
-          dark:'#fdfffe'
+          DEFAULT:'#090a66  ',
+          dark:'#f3ecff'
         },
         'accent':  {
-          DEFAULT:'#42b6a2',
-          dark:'#42b6a2'
+          DEFAULT:'#4436fe',
+          dark:'#b3c055'
+        },
+        'neutral': {
+          DEFAULT:'#474554',
+          dark:'#f5f5f5'
         }
       }
    },
