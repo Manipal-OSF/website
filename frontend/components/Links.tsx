@@ -5,9 +5,10 @@ import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 export enum Route {
   Home,
-  About,
-  Syllabus,
+  Services,
+  Team,
   Blog,
+  Events
 }
 
 const Links = (props: any): ReactElement => {
@@ -21,16 +22,20 @@ const Links = (props: any): ReactElement => {
         setSelectedRoute(Route.Home);
         break;
       }
-      case '/about': {
-        setSelectedRoute(Route.About);
+      case '/services': {
+        setSelectedRoute(Route.Services);
         break;
       }
-      case '/syllabus': {
-        setSelectedRoute(Route.Syllabus);
+      case '/team': {
+        setSelectedRoute(Route.Team);
         break;
       }
       case '/blog': {
         setSelectedRoute(Route.Blog);
+        break;
+      }
+      case '/events': {
+        setSelectedRoute(Route.Events);
         break;
       }
     }
@@ -50,24 +55,24 @@ const Links = (props: any): ReactElement => {
         </Link>
       </li>
       <li>
-        <Link href='/about' scroll={false}>
+        <Link href='/services' scroll={false}>
           <a
             className={`link underline-offset-2 ${
-              selectedRoute === Route.About ? 'decoration-2' : 'link-hover'
+              selectedRoute === Route.Services ? 'decoration-2' : 'link-hover'
             }`}
           >
-            About
+            Services
           </a>
         </Link>
       </li>
       <li>
-        <Link href='/syllabus' scroll={false}>
+        <Link href='/team' scroll={false}>
           <a
             className={`link underline-offset-2 ${
-              selectedRoute === Route.Syllabus ? 'decoration-2' : 'link-hover'
+              selectedRoute === Route.Team ? 'decoration-2' : 'link-hover'
             }`}
           >
-            Syllabus
+            Team
           </a>
         </Link>
       </li>
@@ -79,6 +84,17 @@ const Links = (props: any): ReactElement => {
             }`}
           >
             Blog
+          </a>
+        </Link>
+      </li>
+      <li>
+        <Link href='/events' scroll={false}>
+          <a
+            className={`link underline-offset-2 ${
+              selectedRoute === Route.Events ? 'decoration-2' : 'link-hover'
+            }`}
+          >
+            Events
           </a>
         </Link>
       </li>

@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-const About: NextPage = () => {
+const Services: NextPage = () => {
   return (
     <>
       <Head>
-        <title>About | Manipal OSF</title>
+        <title>Services | Manipal OSF</title>
       </Head>
       <div className='grid gap-10 m-auto text-center place-self-center text-accent dark:text-accent-dark'>
         <h1 className='text-3xl font-bold md:text-5xl lg:text-7xl'>
@@ -48,4 +48,4 @@ const About: NextPage = () => {
   );
 };
 
-export default About;
+export default Services;
