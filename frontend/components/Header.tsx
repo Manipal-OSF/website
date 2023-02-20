@@ -66,7 +66,14 @@ const Header = () => {
         </ul>
       </nav>
 
-      <div className='flex place-content-end items-center gap-2'>
+      <motion.div 
+        className='flex place-content-end items-center gap-2'
+        initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+
+        >
         <FontAwesomeIcon icon={faMoon} size='lg' className='max-w-[1.4rem]' />
         <input
           className='toggle'
@@ -78,7 +85,7 @@ const Header = () => {
             setTheme();
           }}
         />
-      </div>
+      </motion.div>
     </header>
   );
 };

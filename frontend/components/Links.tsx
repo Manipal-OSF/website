@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
+import { motion } from 'framer-motion';
 
 export enum Route {
   Home,
@@ -10,7 +11,31 @@ export enum Route {
   Blog,
   Events
 }
-
+interface navLinkProp {
+  selectedRoute: Route;
+  i: number;
+  route: String | Route;
+}
+const NavLink  = ({selectedRoute,i,route}: navLinkProp): ReactElement => {
+  return (
+    <motion.li
+    initial={{ opacity: 0, y: -30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 , delay: 0.10 * i  }}
+    viewport={{ once: true }}
+    >
+      <Link href={`/${route.toString().toLowerCase() === "home" ? "/" : route.toString().toLowerCase() }`} scroll={false}>
+          <a
+            className={`link underline-offset-2 ${
+              selectedRoute === route ? 'decoration-2' : 'link-hover'
+            }`}
+            >
+            {route.toString()}
+          </a>
+        </Link>
+    </motion.li>
+  );
+};
 const Links = (props: any): ReactElement => {
   const router = useRouter();
 
@@ -43,61 +68,9 @@ const Links = (props: any): ReactElement => {
 
   return (
     <>
-      <li>
-        <Link href='/' scroll={false}>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Home ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Home
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/services' scroll={false}>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Services ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Services
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/team' scroll={false}>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Team ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Team
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/blog' scroll={false}>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Blog ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Blog
-          </a>
-        </Link>
-      </li>
-      <li>
-        <Link href='/events' scroll={false}>
-          <a
-            className={`link underline-offset-2 ${
-              selectedRoute === Route.Events ? 'decoration-2' : 'link-hover'
-            }`}
-          >
-            Events
-          </a>
-        </Link>
-      </li>
+      {Object.values(Route).filter((v) => isNaN(Number(v))).map((route, i) => (
+        <NavLink selectedRoute={selectedRoute} i={i + 5} route={route} key={i} /> // i + 5 to offset the delay
+      ))}
     </>
   );
 };
