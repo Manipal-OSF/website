@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import Image from 'next/image';
 import logo from '../public/logo.jpg';
+
 const date = new Date().getFullYear()
 const Footer = () => {
   return (

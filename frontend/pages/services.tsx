@@ -15,34 +15,6 @@ const Services: NextPage = () => {
           To reshape MIT Manipal&apos;s brand image in academics and to develop
           a holistic learning community within MIT Manipal
         </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
-          To reshape MIT Manipal&apos;s brand image in academics and to develop
-          a holistic learning community within MIT Manipal
-        </p>
       </div>
     </>
   );
