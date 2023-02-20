@@ -7,6 +7,7 @@ import { setTheme } from '../services/theme';
 import Logo from './Logo';
 import { Disclosure } from '@headlessui/react';
 import Links, { Route } from './Links';
+import { motion } from 'framer-motion';
 
 const Header = () => {
   let [checked, setChecked] = useState<boolean>(false);
@@ -19,9 +20,15 @@ const Header = () => {
 
   return (
     <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center text-secondary dark:text-secondary-dark'>
-      <div className='hidden w-12 h-12 md:block'>
+      <motion.div 
+        className='hidden w-12 h-12 md:block'
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
         <Logo/>
-      </div>
+      </motion.div>
 
       <div className='md:hidden'>
         <Disclosure>
