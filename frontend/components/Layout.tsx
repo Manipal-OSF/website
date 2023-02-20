@@ -10,7 +10,7 @@ const Layout = ({ children }: any) => {
     exit: { opacity: 0, x: 0, y: 200 },
   }
   return (
-    <div className='flex flex-col min-h-screen gap-20 px-5 py-5 md:px-20 bg-primary dark:bg-primary-dark'>
+    <div className='flex overflow-hidden flex-col min-h-screen gap-20 px-5 py-5 md:px-20 bg-primary dark:bg-primary-dark'>
       <Header />
       <motion.main className='flex w-full grow justify-center overflow-hidden'
         variants={variants} 
