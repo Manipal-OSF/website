@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { setTheme } from '../services/theme';
-import logo from '../public/logo.jpg';
+import Logo from './Logo';
 import { Disclosure } from '@headlessui/react';
 import Links, { Route } from './Links';
 
@@ -20,12 +20,7 @@ const Header = () => {
   return (
     <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center text-secondary dark:text-secondary-dark'>
       <div className='hidden w-12 h-12 md:block'>
-        <Image
-          className='rounded-3xl duration-500 hover:rounded-lg'
-          src={logo}
-          alt='logo'
-          layout='responsive'
-        />
+        <Logo/>
       </div>
 
       <div className='md:hidden'>
