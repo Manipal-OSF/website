@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import UnderDev from '../components/UnderDev';
 
-const Syllabus: NextPage = () => {
+const Team: NextPage = () => {
   return <UnderDev />;
 };
 
-export default Syllabus;
+export default Team;

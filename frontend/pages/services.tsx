@@ -1,17 +1,17 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-const About: NextPage = () => {
+const Services: NextPage = () => {
   return (
     <>
       <Head>
-        <title>About | Manipal OSF</title>
+        <title>Services | Manipal OSF</title>
       </Head>
-      <div className='m-auto grid gap-10 place-self-center text-center dark:text-white lg:w-[60rem]'>
+      <div className='grid gap-10 m-auto text-center place-self-center text-accent dark:text-accent-dark'>
         <h1 className='text-3xl font-bold md:text-5xl lg:text-7xl'>
           Our vision
         </h1>
-        <p className='text-2xl md:text-4xl lg:text-6xl'>
+        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
           To reshape MIT Manipal&apos;s brand image in academics and to develop
           a holistic learning community within MIT Manipal
         </p>
@@ -20,4 +20,4 @@ const About: NextPage = () => {
   );
 };
 
-export default About;
+export default Services;

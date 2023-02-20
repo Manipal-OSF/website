@@ -1,12 +1,26 @@
 import Header from './Header';
 import Footer from './Footer';
 import { useEffect, useLayoutEffect } from 'react';
+import {motion} from 'framer-motion';
 
 const Layout = ({ children }: any) => {
+  const variants = {
+    hidden: { opacity: 0, x: 0, y: -200 },
+    enter: { opacity: 1, x: 0, y: 0 },
+    exit: { opacity: 0, x: 0, y: 200 },
+  }
   return (
-    <div className='flex min-h-screen flex-col gap-20 px-5 py-5 dark:bg-black md:px-20'>
+    <div className='flex overflow-hidden flex-col min-h-screen gap-20 px-5 py-5 md:px-20 bg-primary dark:bg-primary-dark'>
       <Header />
-      <main className='flex w-full grow justify-center'>{children}</main>
+      <motion.main className='flex w-full grow justify-center overflow-hidden'
+        variants={variants} 
+        initial="hidden" 
+        animate="enter" 
+        exit="exit" 
+        transition={{ type: 'linear' }} 
+      >
+        {children}
+      </motion.main>
       <Footer />
     </div>
   );

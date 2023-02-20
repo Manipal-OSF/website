@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { setTheme } from '../services/theme';
-import logo from '../public/logo.jpg';
+import Logo from './Logo';
 import { Disclosure } from '@headlessui/react';
 import Links, { Route } from './Links';
 
@@ -18,14 +18,9 @@ const Header = () => {
   }, []);
 
   return (
-    <header className='grid h-10 grid-cols-3 place-content-center items-center dark:text-white md:grid-cols-3'>
-      <div className='hidden h-12 w-12 md:block'>
-        <Image
-          className='rounded-3xl duration-500 hover:rounded-lg'
-          src={logo}
-          alt='logo'
-          layout='responsive'
-        />
+    <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center text-secondary dark:text-secondary-dark'>
+      <div className='hidden w-12 h-12 md:block'>
+        <Logo/>
       </div>
 
       <div className='md:hidden'>
@@ -42,7 +37,7 @@ const Header = () => {
                 ></FontAwesomeIcon>
               </Disclosure.Button>
               <Disclosure.Panel className='absolute z-50 text-gray-500 md:hidden'>
-                <nav className='mt-5 place-self-center rounded-lg border-2 border-black bg-white p-3 dark:border-white dark:bg-black dark:text-white md:block'>
+                <nav className='p-3 mt-5 border-2 rounded-lg bg-primary dark:bg-primary-dark text-secondary dark:text-secondary-dark border-secondary dark:border-secondary-dark md:block place-self-center'>
                   <ul className='grid grid-flow-row gap-5 text-lg'>
                     <Links state={state} />
                   </ul>

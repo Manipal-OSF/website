@@ -5,21 +5,17 @@ import {
   faInstagram,
 } from '@fortawesome/free-brands-svg-icons';
 import Image from 'next/image';
-import logo from '../public/logo.jpg';
+import Logo from './Logo';
 
+const date = new Date().getFullYear()
 const Footer = () => {
   return (
-    <footer className='footer justify-center gap-2 dark:text-white md:justify-between'>
-      <div className='flex h-full items-center'>
-        <div className='h-6 w-6'>
-          <Image
-            className='rounded-full'
-            src={logo}
-            alt='logo'
-            layout='responsive'
-          />
+    <footer className='justify-center gap-2 md:justify-between footer text-secondary dark:text-secondary-dark'>
+      <div className='flex items-center h-full'>
+        <div className='w-6 h-6'>
+            <Logo />
         </div>
-        <p>Copyright © 2022 - All rights reserved</p>
+        <p>Copyright © {date} - All rights reserved</p>
       </div>
       <div className='flex h-full w-full items-center justify-center gap-2'>
         <a
