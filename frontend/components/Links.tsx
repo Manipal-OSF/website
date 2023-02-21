@@ -27,7 +27,7 @@ const NavLink  = ({selectedRoute,i,route}: navLinkProp): ReactElement => {
       <Link href={`/${route.toString().toLowerCase() === "home" ? "/" : route.toString().toLowerCase() }`} scroll={false}>
           <a
             className={`link underline-offset-2 ${
-              Route[selectedRoute] === route ? 'decoration-2' : 'link-hover'
+              selectedRoute === route ? 'decoration-2' : 'link-hover'
             }`}
             >
             {route.toString()}
