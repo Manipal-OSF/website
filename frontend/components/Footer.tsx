@@ -17,7 +17,7 @@ const Footer = () => {
         </div>
         <p>Copyright © {date} - All rights reserved</p>
       </div>
-      <div className='flex h-full w-full items-center justify-center gap-2'>
+      <div className='flex h-full w-full items-center justify-center gap-4'>
         <a
           href='https://www.instagram.com/manipalosf/'
           target='_blank'
@@ -27,8 +27,8 @@ const Footer = () => {
         >
           <FontAwesomeIcon
             icon={faInstagram}
-            size='lg'
-            className='max-w-[1.4rem]'
+            size='xl'
+            className='max-w-[1.8rem]'
           />
         </a>
         <a
@@ -40,8 +40,8 @@ const Footer = () => {
         >
           <FontAwesomeIcon
             icon={faGithub}
-            size='lg'
-            className='max-w-[1.4rem]'
+            size='xl'
+            className='max-w-[1.8rem]'
           />
         </a>
         <a
@@ -53,8 +53,8 @@ const Footer = () => {
         >
           <FontAwesomeIcon
             icon={faDiscord}
-            size='lg'
-            className='max-w-[1.4rem]'
+            size='xl'
+            className='max-w-[1.8rem]'
           />
         </a>
       </div>

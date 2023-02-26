@@ -24,7 +24,7 @@ const NavLink  = ({selectedRoute,i,route}: navLinkProp): ReactElement => {
     transition={{ duration: 0.3 , delay: 0.10 * i  }}
     viewport={{ once: true }}
     >
-      <Link href={`/${route.toString().toLowerCase() === "home" ? "/" : route.toString().toLowerCase() }`} scroll={false}>
+      <Link href={`${route.toString().toLowerCase()}` === "home" ? "/" : '/' + `${route.toString().toLowerCase()}`} scroll={false}>
           <a
             className={`link underline-offset-2 ${
               Route[selectedRoute] === route ? 'decoration-2' : 'link-hover'
@@ -36,7 +36,7 @@ const NavLink  = ({selectedRoute,i,route}: navLinkProp): ReactElement => {
     </motion.li>
   );
 };
-const Links = (props: any): ReactElement => {
+const Links = (props: any): ReactElement => {   
   const router = useRouter();
 
   const [selectedRoute, setSelectedRoute] = props.state;

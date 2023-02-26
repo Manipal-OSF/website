@@ -60,7 +60,7 @@ const serialize = (children: any) =>
             <h1 className='text-[3rem] leading-tight' key={i}>
               {serialize(node.children)}
             </h1>
-            <hr className='opacity-30' />
+            <hr className="border-gray-900 dark:border-gray-300 opacity-50"/>
           </Fragment>
         );
       case 'h2':

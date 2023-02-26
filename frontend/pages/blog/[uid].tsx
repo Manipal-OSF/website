@@ -52,7 +52,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
             </h2>
           </div>
         </div>
-        <hr />
+        <hr className="border-gray-900 dark:border-gray-300 opacity-50"/>
         <div className='flex flex-col gap-5'>
           {/* For future markdown use */}
           {/* <ReactMarkdown remarkPlugins={[remarkGfm]}>
