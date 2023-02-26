@@ -4,6 +4,7 @@
 /node_modules/
 /.pnp
 .pnp.js
+/.yarn
 
 # testing
 /coverage
@@ -35,3 +36,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 .env
+/.yarnrc.yml

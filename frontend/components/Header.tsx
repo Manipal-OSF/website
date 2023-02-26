@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { setTheme } from '../services/theme';
-import logo from '../public/logo.jpg';
+import Logo from './Logo';
 import { Disclosure } from '@headlessui/react';
 import Links, { Route } from './Links';
+import { motion } from 'framer-motion';
 
 const Header = () => {
   let [checked, setChecked] = useState<boolean>(false);
@@ -18,15 +19,16 @@ const Header = () => {
   }, []);
 
   return (
-    <header className='grid h-10 grid-cols-3 place-content-center items-center dark:text-white md:grid-cols-3'>
-      <div className='hidden h-12 w-12 md:block'>
-        <Image
-          className='rounded-3xl duration-500 hover:rounded-lg'
-          src={logo}
-          alt='logo'
-          layout='responsive'
-        />
-      </div>
+    <header className='grid items-center h-10 grid-cols-3 md:grid-cols-3 place-content-center text-secondary dark:text-secondary-dark'>
+      <motion.div 
+        className='hidden w-12 h-12 md:block'
+        initial={{ opacity: 0, x: -200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+      >
+        <Logo/>
+      </motion.div>
 
       <div className='md:hidden'>
         <Disclosure>
@@ -42,7 +44,7 @@ const Header = () => {
                 ></FontAwesomeIcon>
               </Disclosure.Button>
               <Disclosure.Panel className='absolute z-50 text-gray-500 md:hidden'>
-                <nav className='mt-5 place-self-center rounded-lg border-2 border-black bg-white p-3 dark:border-white dark:bg-black dark:text-white md:block'>
+                <nav className='p-3 mt-5 border-2 rounded-lg bg-primary dark:bg-primary-dark text-secondary dark:text-secondary-dark border-secondary dark:border-secondary-dark md:block place-self-center'>
                   <ul className='grid grid-flow-row gap-5 text-lg'>
                     <Links state={state} />
                   </ul>
@@ -64,7 +66,14 @@ const Header = () => {
         </ul>
       </nav>
 
-      <div className='flex place-content-end items-center gap-2'>
+      <motion.div 
+        className='flex place-content-end items-center gap-2'
+        initial={{ opacity: 0, x: 200 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        viewport={{ once: true }}
+
+        >
         <FontAwesomeIcon icon={faMoon} size='lg' className='max-w-[1.4rem]' />
         <input
           className='toggle'
@@ -76,7 +85,7 @@ const Header = () => {
             setTheme();
           }}
         />
-      </div>
+      </motion.div>
     </header>
   );
 };

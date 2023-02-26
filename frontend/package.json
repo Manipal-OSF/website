@@ -17,7 +17,8 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@headlessui/react": "^1.6.6",
     "daisyui": "^2.15.0",
-    "escape-html": "^1.0.3",
+    
+    "framer-motion": "^9.0.4",
     "highlight.js": "^11.7.0",
     "html-escaper": "^3.0.3",
     "next": "^12.1.6",

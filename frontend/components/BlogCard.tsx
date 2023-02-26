@@ -12,7 +12,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
   return (
     <Link href={`/blog/${props.data.id}`}>
       <a>
-        <div className='card flex max-h-[20rem] cursor-pointer rounded-2xl border-2 duration-300 hover:-translate-y-1 hover:rounded-none dark:border-gray-500'>
+        <div className='card flex max-h-[20rem] cursor-pointer rounded-2xl border-2 duration-300 hover:-translate-y-1 hover:rounded-none border-secondary dark:border-secondary-dark'>
           <CustomImage data={props.data.coverImage} />
           <div className='flex flex-grow-[1] flex-col p-3'>
             <h2 className='text-2xl'>{props.data.title}</h2>
