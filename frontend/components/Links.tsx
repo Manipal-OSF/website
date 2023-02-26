@@ -11,12 +11,12 @@ export enum Route {
   Blog,
   Events
 }
-interface navLinkProp {
+interface NavLinkProp {
   selectedRoute: Route;
   i: number;
   route: String | Route;
 }
-const NavLink  = ({selectedRoute,i,route}: navLinkProp): ReactElement => {
+const NavLink  = ({selectedRoute,i,route}: NavLinkProp): ReactElement => {
   return (
     <motion.li
     initial={{ opacity: 0, y: -30 }}
@@ -24,7 +24,7 @@ const NavLink  = ({selectedRoute,i,route}: navLinkProp): ReactElement => {
     transition={{ duration: 0.3 , delay: 0.10 * i  }}
     viewport={{ once: true }}
     >
-      <Link href={`${route.toString().toLowerCase()}` === "home" ? "/" : '/' + `${route.toString().toLowerCase()}`} scroll={false}>
+      <Link href={`${route.toString().toLowerCase()}` === "home" ? "/" : `/${route.toString().toLowerCase()}`} scroll={false}>
           <a
             className={`link underline-offset-2 ${
               Route[selectedRoute] === route ? 'decoration-2' : 'link-hover'
