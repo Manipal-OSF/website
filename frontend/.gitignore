@@ -37,6 +37,7 @@ yarn-error.log*
 
 .env
 
+
 # yarn v1
 .pnp.*
 .yarn/*
