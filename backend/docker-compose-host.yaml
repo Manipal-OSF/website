@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  cms:
+    image: ghcr.io/Manipal-OSF/website:main
+    container_name: cms
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    depends_on:
+      - cms
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - URL=manipalosf.org
+      - SUBDOMAINS=cms
+      - ONLY_SUBDOMAINS=true
+      - VALIDATION=http # ? Possibly change to dns?
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+    volumes:
+      - /home/appdata/swag:/config
