@@ -2,7 +2,7 @@ name: Docker
 
 on:
   push:
-    branches: [ "main", "feat/cms-package" ]
+    branches: [ "main" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -33,7 +33,7 @@ jobs:
         uses: sigstore/cosign-installer@f3c664df7af409cb4873aa5068053ba9d61a57b6 #v2.6.0
         with:
           cosign-release: 'v1.13.1'
-          
+
       - name: Change directory
         run: cd backend/
 
