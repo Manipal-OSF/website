@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   cms:
-    image: ghcr.io/Manipal-OSF/website:main
+    image: ghcr.io/manipal-osf/website:main
     container_name: cms
     env_file:
       - ./.env
