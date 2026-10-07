@@ -1,11 +1,8 @@
 import type { NextPage } from 'next';
 import { BlogPost, fetchOne, getUidList } from '../../services/api';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import Head from 'next/head';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ArrowLeft } from 'lucide-react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import CustomImage from '../../components/CustomImage';
 import RichTextRenderer from '../../components/RichTextRenderer';
@@ -64,7 +61,7 @@ const IndividualBlogPage: NextPage<{ data: BlogPost }> = (props: {
         </div>
         <Link href='/blog'>
           <button className='max-w- flex items-center justify-center gap-5 rounded-lg bg-black p-2 text-2xl text-white dark:bg-white dark:text-black md:text-3xl'>
-            <FontAwesomeIcon icon={faArrowLeft} className='max-w-[1.4rem]' />
+            <ArrowLeft className='size-4' />
             <span>Return to blog</span>
           </button>
         </Link>

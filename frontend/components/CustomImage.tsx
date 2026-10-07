@@ -1,42 +1,35 @@
-import { FunctionComponent } from 'react';
-import type { ImageData } from '../services/api';
 import Image from 'next/image';
+import type { ImageData } from '../services/api';
 import placeholder from '../public/placeholder.png';
 
 export interface CustomImageProps {
   data: ImageData | string;
 }
 
-const CustomImage: FunctionComponent<CustomImageProps> = (
-  props: CustomImageProps
-) => {
-  if (typeof props.data === 'string') {
-    // Placeholder
+const className = 'h-auto max-h-40 w-full object-cover';
+
+const CustomImage = ({ data }: CustomImageProps) => {
+  if (typeof data === 'string') {
     return (
       <Image
         src={placeholder}
-        alt='image'
-        layout='responsive'
-        height={600}
-        width={1200}
-        className='max-h-[10rem] rounded-t-xl duration-300 hover:scale-110'
-      ></Image>
-    );
-  } else {
-    return (
-      <Image
-        src={props.data.url}
-        alt={props.data.alt}
-        height={props.data.height}
-        width={props.data.width}
-        layout='responsive'
-        className='max-h-[10rem] rounded-t-xl duration-300 hover:scale-110'
-        priority={true}
-        blurDataURL='../public/placeholder.jpg'
+        alt=''
         placeholder='blur'
-      ></Image>
+        className={className}
+      />
     );
   }
+
+  return (
+    <Image
+      src={data.url}
+      alt={data.alt}
+      width={data.width}
+      height={data.height}
+      sizes='(min-width: 640px) 16rem, 100vw'
+      className={className}
+    />
+  );
 };
 
 export default CustomImage;

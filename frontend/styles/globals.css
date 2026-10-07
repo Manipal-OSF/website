@@ -1,39 +1,63 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import '@fontsource-variable/cascadia-code';
+@import './typography.css';
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
-  font-family: 'League Spartan', sans-serif;
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme inline {
+  --font-sans:
+    'Cascadia Code Variable', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    'Cascadia Code Variable', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* light theme corresponds to nord palette */
+:root {
+  --background: #eceff4;
+  --foreground: #2e3440;
+  --primary: #5e81ac;
+  --primary-foreground: #eceff4;
+  --muted: #e5e9f0;
+  --muted-foreground: #4c566a;
+  --destructive: #bf616a;
+  --destructive-foreground: #eceff4;
+  --border: #d8dee9;
+  --ring: #88c0d0;
 }
 
-* {
-  box-sizing: border-box;
+/* whereas dark is catpuccin's */
+[data-theme='dark'] {
+  --background: #1e1e2e;
+  --foreground: #cdd6f4;
+  --primary: #cba6f7;
+  --primary-foreground: #11111b;
+  --muted: #181825;
+  --muted-foreground: #a6adc8;
+  --destructive: #f38ba8;
+  --destructive-foreground: #11111b;
+  --border: #313244;
+  --ring: #b4befe;
 }
 
-h1 {
-  @apply text-3xl;
-}
-
-h2 {
-  @apply text-xl;
-}
-
-@media screen and (min-width: 768px) {
-  h1 {
-    @apply text-4xl;
-  }
-
-  h2 {
-    @apply text-2xl;
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    @apply border-border outline-ring/50 tracking-tight;
   }
 }

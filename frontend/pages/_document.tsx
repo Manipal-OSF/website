@@ -1,36 +1,29 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { Html, Head, Main, NextScript } from 'next/document';
 
-class MyDocument extends Document {
-  render() {
-    return (
-      <Html lang='en'>
-        <Head>
-          <meta
-            name='description'
-            content='The official website for Manipal OSF organisation.'
-          />
-          <link rel='preconnect' href='https://fonts.googleapis.com' />
-          <link
-            rel='preconnect'
-            href='https://fonts.gstatic.com'
-            crossOrigin=''
-          />
-          <link
-            href='https://fonts.googleapis.com/css2?family=League+Spartan&display=swap'
-            rel='stylesheet'
-          />
-          <link
-            rel='stylesheet'
-            href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css'
-          />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+const themeScript = `
+(function () {
+  try {
+    localStorage.removeItem('theme');
+    var t = sessionStorage.getItem('theme');
+    if (t !== 'light' && t !== 'dark') {
+      t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+`;
+
+export default function Document() {
+return (
+<Html lang='en' suppressHydrationWarning>
+<Head>
+<link rel='icon' href='/logo.png' type='image/png' />
+</Head>
+<body className='bg-background text-foreground'>
+<script dangerouslySetInnerHTML={{ __html: themeScript }} />
+<Main />
+<NextScript />
+</body>
+</Html>
+  );
 }
-
-export default MyDocument;
