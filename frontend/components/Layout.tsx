@@ -1,25 +1,24 @@
+import { motion } from 'framer-motion';
+import type { ReactNode } from 'react';
 
-import { useEffect, useLayoutEffect } from 'react';
-import {motion} from 'framer-motion';
+const variants = {
+  hidden: { opacity: 0, y: -50 },
+  enter: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 200 },
+};
 
-const Layout = ({ children }: any) => {
-  const variants = {
-    hidden: { opacity: 0, x: 0, y: -50 },
-    enter: { opacity: 1, x: 0, y: 0 },
-    exit: { opacity: 0, x: 0, y: 200 },
-  }
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    
-      <motion.main className='flex w-full grow justify-center overflow-hidden'
-        variants={variants} 
-        initial="hidden" 
-        animate="enter" 
-        exit="exit" 
-        transition={{ type: 'linear' }} 
-      >
-        {children}
-      </motion.main>
-
+    <motion.main
+      className='mx-auto flex w-full max-w-5xl grow flex-col gap-y-6 overflow-hidden px-4'
+      variants={variants}
+      initial='hidden'
+      animate='enter'
+      exit='exit'
+      transition={{ type: 'tween' }}
+    >
+      {children}
+    </motion.main>
   );
 };
 

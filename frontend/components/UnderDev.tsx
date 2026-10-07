@@ -6,13 +6,13 @@ const UnderDev = () => {
       <Head>
         <title>Under development</title>
       </Head>
-      <div className='grid gap-10 m-auto text-center place-self-center text-accent dark:text-accent-dark '>
-        <h1 className='text-3xl font-bold md:text-5xl lg:text-7xl '>
+      <div className='m-auto grid max-w-2xl gap-4 py-16 text-center'>
+        <h1 className='text-foreground text-3xl font-medium md:text-4xl'>
           Hey there!
         </h1>
-        <p className='text-2xl md:text-4xl lg:text-6xl text-secondary dark:text-secondary-dark'>
+        <p className='text-muted-foreground text-base md:text-lg'>
           This section is still under development. If you find any bugs in the
-          site please notify us on the GitHub repo or Discord server linked
+          site, please let us know on the GitHub repo or Discord server linked
           below.
         </p>
       </div>

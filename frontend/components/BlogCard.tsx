@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { FunctionComponent } from 'react';
 import type { BlogPost } from '../services/api';
 import CustomImage from './CustomImage';
 
@@ -8,21 +7,23 @@ interface BlogCardProps {
   index: number;
 }
 
-const BlogCard: FunctionComponent<BlogCardProps> = (props: BlogCardProps) => {
+const BlogCard = ({ data }: BlogCardProps) => {
   return (
-    <Link href={`/blog/${props.data.id}`}>
-      <a>
-        <div className='card flex max-h-[20rem] cursor-pointer rounded-2xl border-2 duration-300 hover:-translate-y-1 hover:rounded-none border-secondary dark:border-secondary-dark'>
-          <CustomImage data={props.data.coverImage} />
-          <div className='flex flex-grow-[1] flex-col p-3'>
-            <h2 className='text-2xl'>{props.data.title}</h2>
-          </div>
-          <div className='flex flex-row justify-between p-3'>
-            <p>{props.data.authors}</p>
-            <p>{props.data.publishDate.substring(0, 10)}</p>
-          </div>
+    <Link
+      href={`/blog/${data.id}`}
+      className='hover:bg-muted/50 flex flex-col gap-4 rounded-xl border p-4 transition-colors sm:flex-row'
+    >
+      <div className='w-full shrink-0 overflow-hidden rounded-md sm:w-64'>
+        <CustomImage data={data.coverImage} />
+      </div>
+      <div className='flex flex-col gap-1'>
+        <h2 className='text-foreground text-lg font-medium'>{data.title}</h2>
+        <div className='text-muted-foreground flex flex-wrap items-center gap-x-2 text-xs'>
+          <span>{data.authors}</span>
+          <span className='bg-border h-3 w-px' />
+          <span>{data.publishDate.substring(0, 10)}</span>
         </div>
-      </a>
+      </div>
     </Link>
   );
 };

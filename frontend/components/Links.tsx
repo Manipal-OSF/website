@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { ReactElement } from 'react-markdown/lib/react-markdown';
+import { useEffect, type Dispatch, type ReactElement, type SetStateAction } from 'react';
 import { motion } from 'framer-motion';
 
 export enum Route {
@@ -9,68 +8,53 @@ export enum Route {
   Services,
   Team,
   Blog,
-  Events
+  Events,
 }
-interface NavLinkProp {
-  selectedRoute: Route;
-  i: number;
-  route: String | Route;
-}
-const NavLink  = ({selectedRoute,i,route}: NavLinkProp): ReactElement => {
-  return (
-    <motion.li
-    initial={{ opacity: 0, y: -30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 , delay: 0.10 * i  }}
-    viewport={{ once: true }}
-    >
-      <Link href={`${route.toString().toLowerCase()}` === "home" ? "/" : `/${route.toString().toLowerCase()}`} scroll={false}>
-          <a
-            className={`link underline-offset-2 ${
-              Route[selectedRoute] === route ? 'decoration-2' : 'link-hover'
-            }`}
-            >
-            {route.toString()}
-          </a>
-        </Link>
-    </motion.li>
-  );
-};
-const Links = (props: any): ReactElement => {   
-  const router = useRouter();
 
-  const [selectedRoute, setSelectedRoute] = props.state;
+const routeNames = Object.values(Route).filter(
+  (v): v is string => typeof v === 'string'
+);
+
+const pathFor = (name: string) =>
+  name === 'Home' ? '/' : `/${name.toLowerCase()}`;
+
+interface LinksProps {
+  state: [Route, Dispatch<SetStateAction<Route>>];
+}
+
+const Links = ({ state }: LinksProps): ReactElement => {
+  const router = useRouter();
+  const [selectedRoute, setSelectedRoute] = state;
 
   useEffect(() => {
-    switch (router.route) {
-      case '/': {
-        setSelectedRoute(Route.Home);
-        break;
-      }
-      case '/services': {
-        setSelectedRoute(Route.Services);
-        break;
-      }
-      case '/team': {
-        setSelectedRoute(Route.Team);
-        break;
-      }
-      case '/blog': {
-        setSelectedRoute(Route.Blog);
-        break;
-      }
-      case '/events': {
-        setSelectedRoute(Route.Events);
-        break;
-      }
-    }
-  }, [router.route]);
+    const match = routeNames.find((name) => pathFor(name) === router.route);
+    if (match) setSelectedRoute(Route[match as keyof typeof Route]);
+  }, [router.route, setSelectedRoute]);
 
   return (
     <>
-      {Object.values(Route).filter((v) => isNaN(Number(v))).map((route, i) => (
-        <NavLink selectedRoute={selectedRoute} i={i + 5} route={route} key={i} /> // i + 5 to offset the delay
-      ))}
+      {routeNames.map((name, i) => {
+        const active = Route[selectedRoute] === name;
+        return (
+          <motion.li
+            key={name}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.05 * i }}
+          >
+            <Link
+              href={pathFor(name)}
+              scroll={false}
+              aria-current={active ? 'page' : undefined}
+              className={`transition-colors ${
+                active ? 'text-foreground' : 'hover:text-foreground'
+              }`}
+            >
+              {name}
+            </Link>
+          </motion.li>
+        );
+      })}
     </>
   );
 };
