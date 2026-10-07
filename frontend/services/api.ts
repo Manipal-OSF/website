@@ -1,7 +1,5 @@
 import { serverUrl } from '../constants';
 
-type PostStatus = 'published' | 'draft';
-
 export interface ImageData {
   title: string;
   alt: string;
@@ -34,114 +32,70 @@ export interface UidPayload {
   };
 }
 
-export const getUidList = async (): Promise<UidPayload[]> => {
-  const res = await fetch(`${serverUrl}/api/posts?populate=*`);
-  const json = (await res.json())['docs'];
-
-  const uids = json.map((e: any) => {
-    return { params: { uid: e.id } };
-  });
-
-  return uids;
-};
-
-export const fetchOne = async (uid: string): Promise<BlogPost> => {
-  const res = await fetch(`${serverUrl}/api/posts/${uid}?populate=*`);
-  const data = await res.json();
-
-  const imageData = data.coverImage;
-
-  const category = data.category;
-  const tags = data.tags.map((item: any) => {
-    const tag: Tag = {
-      id: item.id,
-      name: item.name,
-    };
-    return tag;
-  });
-
-  let coverImage: ImageData | string;
+const getJson = async (path: string): Promise<any | null> => {
   try {
-    if (imageData.title === undefined) {
-      throw TypeError('No image present');
-    }
-
-    coverImage = {
-      title: imageData.title,
-      alt: imageData.alt,
-      width: imageData.width,
-      height: imageData.height,
-      mimeType: imageData.mimeType,
-      url: imageData.url,
-    };
-  } catch (error: any) {
-    coverImage = imageData;
+    const res = await fetch(`${serverUrl}${path}`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
   }
-
-  const post: BlogPost = {
-    id: data.id,
-    title: data.title,
-    content: data.content,
-    publishDate: data.publishedDate,
-    authors: data.authors.name,
-    coverImage: coverImage,
-    category: category,
-    tags: tags,
-    estimatedTime: data.estimatedTime,
-  };
-
-  return post;
 };
 
-export const fetchData = async (): Promise<BlogPost[]> => {
-  const res = await fetch(`${serverUrl}/api/posts?populate=*`);
-
-  const json = await res.json();
-  const data = json.docs;
-
-  return data
-    .filter((item: any) => item.status == 'published')
-    .map((item: any) => {
-      const imageData = item.coverImage;
-      const category = item.category;
-      const tags = item.tags.map((item: any) => {
-        const tag: Tag = {
-          id: item.id,
-          name: item.name,
-        };
-        return tag;
-      });
-
-      let coverImage: ImageData | string;
-      try {
-        if (imageData.title === undefined) {
-          throw TypeError('No image present');
-        }
-
-        coverImage = {
+const toPost = (item: any): BlogPost => {
+  const imageData = item.coverImage;
+  const coverImage: ImageData | string =
+    imageData && imageData.title !== undefined
+      ? {
           title: imageData.title,
           alt: imageData.alt,
           width: imageData.width,
           height: imageData.height,
           mimeType: imageData.mimeType,
           url: imageData.url,
-        };
-      } catch (error: any) {
-        coverImage = imageData;
+        }
+      : imageData;
+
+  return {
+    id: item.id,
+    title: item.title,
+    content: item.content,
+    publishDate: item.publishedDate,
+    authors: item.authors?.name,
+    coverImage,
+    category: item.category,
+    tags: (item.tags ?? []).map((t: any): Tag => ({ id: t.id, name: t.name })),
+    estimatedTime: item.estimatedTime,
+  };
+};
+
+export const getUidList = async (): Promise<UidPayload[]> => {
+  const json = await getJson('/api/posts?populate=*');
+  const docs: any[] = json?.docs ?? [];
+  return docs.map((e) => ({ params: { uid: String(e.id) } }));
+};
+
+export const fetchOne = async (uid: string): Promise<BlogPost | null> => {
+  const data = await getJson(`/api/posts/${uid}?populate=*`);
+  if (!data) return null;
+  try {
+    return toPost(data);
+  } catch {
+    return null;
+  }
+};
+
+export const fetchData = async (): Promise<BlogPost[]> => {
+  const json = await getJson('/api/posts?populate=*');
+  const docs: any[] = json?.docs ?? [];
+  return docs
+    .filter((item) => item.status === 'published')
+    .map((item) => {
+      try {
+        return toPost(item);
+      } catch {
+        return null;
       }
-
-      const post: BlogPost = {
-        id: item.id,
-        title: item.title,
-        content: item.content,
-        publishDate: item.publishedDate,
-        authors: item.authors.name,
-        coverImage: coverImage,
-        category: category,
-        tags: tags,
-        estimatedTime: item.estimatedTime,
-      };
-
-      return post;
-    });
+    })
+    .filter((p): p is BlogPost => p !== null);
 };
