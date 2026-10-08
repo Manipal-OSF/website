@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from './TransitionLink';
 import type { BlogPost } from '../types/blog';
 import CustomImage from './CustomImage';
 
@@ -10,6 +10,7 @@ const BlogCard = ({ data }: BlogCardProps) => {
   return (
     <Link
       href={`/blog/${data.id}`}
+      scroll={false}
       className='hover:bg-muted/50 flex flex-col gap-4 rounded-xl border p-4 transition-colors sm:flex-row'
     >
       <div className='w-full shrink-0 overflow-hidden rounded-md sm:w-64'>

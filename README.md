@@ -1,6 +1,6 @@
 # Manipal OSF website
 
-The official Manipal OSF website is a single Next.js application at the repository root. It uses TypeScript, React, Tailwind CSS, and the Pages Router. Blog posts live in the repository as Markdown files.
+The official Manipal OSF website is a single Next.js application at the repository root. It uses TypeScript, React, Tailwind CSS, and the App Router. Blog posts live in the repository as Markdown files.
 
 ## Development
 
@@ -29,9 +29,13 @@ See [website configuration](./WEBSITE_CONFIG.md) for the Markdown format, images
 
 ## Server features
 
-Add server endpoints in `pages/api/`, using Next.js `NextApiRequest` and `NextApiResponse`. Keep private environment variables server-side and put reusable server logic in `lib/`. The filesystem blog loader is called directly by `getStaticProps` and `getStaticPaths`; it does not make HTTP calls.
+Add server endpoints as Route Handlers in `app/**/route.ts`, using the Web `Request` and `Response` APIs or Next.js `NextRequest` and `NextResponse`. Keep private environment variables server-side and put reusable server logic in `lib/`. Async Server Components, post metadata, and `generateStaticParams` call the server-only filesystem blog loader directly; it does not make HTTP calls.
 
-Use a deployment that supports the Next.js Node.js runtime when adding API routes or request-time server rendering.
+Use a deployment that supports the Next.js Node.js runtime when adding Route Handlers or request-time server rendering.
+
+## Page transitions
+
+Internal site links use `components/TransitionLink` and `next-transition-router` to finish the current page's exit animation before navigating, then reset scroll and animate the new page in. The shared header and footer stay mounted. Browser Back/Forward uses native navigation and scroll restoration without page transitions. Use the transition-aware Link with `scroll={false}` when adding site navigation; external links and Markdown anchors retain normal browser behavior.
 
 ## Contributing
 

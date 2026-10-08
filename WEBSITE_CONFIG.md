@@ -33,6 +33,6 @@ The directory initially contains only `.gitkeep`, so the blog shows “No posts 
 
 ## Publish
 
-Change `status` to `published`, commit the Markdown and any images, and deploy. Blog pages are generated during the production build; additions, edits, and removals require a rebuild and deployment. During development, the content loader reads files on each page request.
+Change `status` to `published`, commit the Markdown and any images, and deploy. App Router Server Components and `generateStaticParams` generate blog pages during the production build; additions, edits, and removals require a rebuild and deployment. During development, the content loader reads files on each page request. Reload the page to see content changes; new published IDs work without restarting the dev server.
 
 Unknown or draft post URLs return 404. Historical hosted posts must be exported and converted to this format separately, preserving their IDs if their existing URLs need to keep working.

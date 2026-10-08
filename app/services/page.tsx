@@ -1,12 +1,10 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
+import type { Metadata } from 'next';
 
-const Services: NextPage = () => {
+export const metadata: Metadata = { title: 'Services | Manipal OSF' };
+
+const Services = () => {
   return (
     <>
-      <Head>
-        <title>Services | Manipal OSF</title>
-      </Head>
       <div className='grid gap-10 m-auto text-center place-self-center text-accent dark:text-accent-dark'>
         <h1 className='text-3xl font-bold md:text-5xl lg:text-7xl'>
           Our vision

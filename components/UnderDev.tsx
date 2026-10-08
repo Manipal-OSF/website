@@ -1,11 +1,6 @@
-import Head from 'next/head';
-
 const UnderDev = () => {
   return (
     <>
-      <Head>
-        <title>Under development</title>
-      </Head>
       <div className='m-auto grid max-w-2xl gap-4 py-16 text-center'>
         <h1 className='text-foreground text-3xl font-medium md:text-4xl'>
           Hey there!

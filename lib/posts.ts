@@ -1,5 +1,5 @@
-// Import only from getStaticProps, getStaticPaths, or API routes.
-// Next.js removes those server functions and imports from browser bundles.
+import 'server-only';
+import { cache } from 'react';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
@@ -106,6 +106,6 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
     }));
 }
 
-export async function getPost(id: string): Promise<BlogPost | null> {
+export const getPost = cache(async (id: string): Promise<BlogPost | null> => {
   return (await getPublishedPosts()).find((post) => post.id === id) ?? null;
-}
+});

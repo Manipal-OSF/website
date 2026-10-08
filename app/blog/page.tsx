@@ -1,23 +1,13 @@
-import type { GetStaticProps, NextPage } from 'next';
-import Head from 'next/head';
+import type { Metadata } from 'next';
 import BlogCard from '../../components/BlogCard';
-import type { BlogPost } from '../../types/blog';
 import { getPublishedPosts } from '../../lib/posts';
 
-export const getStaticProps: GetStaticProps<{
-  data: BlogPost[];
-}> = async () => {
-  return {
-    props: { data: await getPublishedPosts() },
-  };
-};
+export const metadata: Metadata = { title: 'Blog | Manipal OSF' };
 
-const BlogPage: NextPage<{ data: BlogPost[] }> = ({ data: posts }) => {
+const BlogPage = async () => {
+  const posts = await getPublishedPosts();
   return (
     <>
-      <Head>
-        <title>Blog | Manipal OSF</title>
-      </Head>
       <section className='flex flex-col gap-6'>
         <h1 className='text-foreground text-2xl font-medium'>Featured</h1>
         {posts.length === 0 ? (

@@ -1,40 +1,30 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, type Dispatch, type ReactElement, type SetStateAction } from 'react';
+'use client';
+
+import Link from './TransitionLink';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 
-export enum Route {
-  Home,
-  Services,
-  Team,
-  Blog,
-  Events,
-}
-
-const routeNames = Object.values(Route).filter(
-  (v): v is string => typeof v === 'string'
-);
+const routeNames = ['Home', 'Services', 'Team', 'Blog', 'Events'];
 
 const pathFor = (name: string) =>
   name === 'Home' ? '/' : `/${name.toLowerCase()}`;
 
-interface LinksProps {
-  state: [Route, Dispatch<SetStateAction<Route>>];
+export function routeNameFor(pathname: string) {
+  return routeNames.find((name) => {
+    const path = pathFor(name);
+    return (
+      pathname === path || (path !== '/' && pathname.startsWith(`${path}/`))
+    );
+  });
 }
 
-const Links = ({ state }: LinksProps): ReactElement => {
-  const router = useRouter();
-  const [selectedRoute, setSelectedRoute] = state;
-
-  useEffect(() => {
-    const match = routeNames.find((name) => pathFor(name) === router.route);
-    if (match) setSelectedRoute(Route[match as keyof typeof Route]);
-  }, [router.route, setSelectedRoute]);
+const Links = () => {
+  const selectedRoute = routeNameFor(usePathname());
 
   return (
     <>
       {routeNames.map((name, i) => {
-        const active = Route[selectedRoute] === name;
+        const active = selectedRoute === name;
         return (
           <motion.li
             key={name}

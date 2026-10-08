@@ -1,8 +1,11 @@
+'use client';
+
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Logo from './Logo';
 import { Disclosure } from '@headlessui/react';
-import Links, { Route } from './Links';
+import Links, { routeNameFor } from './Links';
+import { usePathname } from 'next/navigation';
 
 type Theme = 'light' | 'dark';
 
@@ -14,11 +17,11 @@ const applyTheme = (t: Theme) =>
   document.documentElement.setAttribute('data-theme', t);
 
 const Header = () => {
-  const state = useState<Route>(Route.Home);
+  const routeName = routeNameFor(usePathname()) ?? 'Manipal OSF';
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    // Read the theme set by _document after hydration to keep server markup stable.
+    // Read the theme set by the root layout after hydration to keep markup stable.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(
       document.documentElement.getAttribute('data-theme') === 'dark'
@@ -67,7 +70,7 @@ const Header = () => {
               <Disclosure.Panel className='absolute z-50 md:hidden'>
                 <nav className='bg-background mt-3 rounded-lg border p-3'>
                   <ul className='grid grid-flow-row gap-4 text-base'>
-                    <Links state={state} />
+                    <Links />
                   </ul>
                 </nav>
               </Disclosure.Panel>
@@ -76,13 +79,11 @@ const Header = () => {
         </Disclosure>
       </div>
 
-      <span className='text-center md:hidden'>
-        {Object.values(Route)[state[0]].toString()}
-      </span>
+      <span className='text-center md:hidden'>{routeName}</span>
 
       <nav className='hidden place-self-center md:block'>
         <ul className='text-muted-foreground grid grid-flow-col gap-5 text-sm'>
-          <Links state={state} />
+          <Links />
         </ul>
       </nav>
       <div className='flex items-center justify-end'>
