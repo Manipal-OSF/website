@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import placeholder from '../public/placeholder.png';
 
-export interface CustomImageProps {
+interface CustomImageProps {
   data: string | null;
   alt?: string;
 }
