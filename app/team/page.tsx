@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
-import UnderDev from '../../components/UnderDev';
+import UnderDev from '@/components/common/UnderDev';
 
-export const metadata: Metadata = { title: 'Under development' };
+export const metadata: Metadata = { title: 'Team' };
 
-const Team = () => {
+export default function TeamPage() {
   return <UnderDev />;
-};
-
-export default Team;
+}

@@ -1,10 +1,22 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from '../../../components/TransitionLink';
-import { ArrowLeft } from 'lucide-react';
-import { getPost, getPublishedPosts } from '../../../lib/posts';
-import CustomImage from '../../../components/CustomImage';
-import MarkdownRenderer from '../../../components/MarkdownRenderer';
+import AuthorProfiles from '@/components/authors/AuthorProfiles';
+import CoverImage from '@/components/blog/CoverImage';
+import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
+import PostHeader from '@/components/blog/PostHeader';
+import PostNavigation from '@/components/blog/PostNavigation';
+import {
+  TableOfContentsDropdown,
+  TableOfContentsSidebar,
+} from '@/components/blog/TableOfContents';
+import Breadcrumbs from '@/components/common/Breadcrumbs';
+import Container from '@/components/common/Container';
+import { resolveAuthors } from '@/lib/content/authors';
+import {
+  getAdjacentPosts,
+  getPost,
+  getPublishedPosts,
+} from '@/lib/content/posts';
 
 export const dynamicParams = false;
 
@@ -25,41 +37,66 @@ export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
   const post = await loadPost(params);
-  return { title: `${post.title} | Manipal OSF` };
+  const authors = await resolveAuthors(post.authors);
+  const description = post.description ?? undefined;
+  return {
+    title: post.title,
+    description,
+    authors: authors.map((author) => ({
+      name: author.name,
+      url: author.isRegistered ? `/authors/${author.id}` : undefined,
+    })),
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description,
+      publishedTime: post.publishDate,
+      authors: authors.map((author) => author.name),
+      tags: post.tags,
+    },
+  };
 }
 
-const IndividualBlogPage = async ({ params }: PostPageProps) => {
-  const data = await loadPost(params);
-  return (
-    <>
-      <article className='flex w-full flex-grow-[1] flex-col gap-10 px-3 dark:text-white md:px-10'>
-        <h1 className='text-5xl md:text-6xl'>{data.title}</h1>
-        <CustomImage data={data.coverImage} alt={data.title} />
-        <div className='flex justify-between gap-4'>
-          <div className='flex flex-col gap-1'>
-            <h2 className='text-base font-bold md:text-lg'>WRITTEN BY</h2>
-            <p className='text-lg md:text-xl'>{data.authors.join(', ')}</p>
-          </div>
-          <div className='flex flex-col items-end gap-1'>
-            <h2 className='text-base font-bold md:text-lg'>PUBLISHED ON</h2>
-            <time dateTime={data.publishDate} className='text-lg md:text-xl'>
-              {data.publishDate}
-            </time>
-          </div>
-        </div>
-        <hr className='border-gray-900 opacity-50 dark:border-gray-300' />
-        <MarkdownRenderer content={data.content} />
-        <Link
-          href='/blog'
-          scroll={false}
-          className='flex w-fit items-center justify-center gap-5 rounded-lg bg-black p-2 text-2xl text-white dark:bg-white dark:text-black md:text-3xl'
-        >
-          <ArrowLeft className='size-4' />
-          <span>Return to blog</span>
-        </Link>
-      </article>
-    </>
-  );
-};
+export default async function PostPage({ params }: PostPageProps) {
+  const post = await loadPost(params);
+  const [authors, { newer, older }] = await Promise.all([
+    resolveAuthors(post.authors),
+    getAdjacentPosts(post.id),
+  ]);
 
-export default IndividualBlogPage;
+  return (
+    // data-wide widens the site's main column so the sidebar fits beside the text.
+    <article data-wide className='flex w-full flex-col gap-6'>
+      <Container>
+        <Breadcrumbs
+          items={[{ label: 'Blog', href: '/blog' }, { label: post.title }]}
+        />
+      </Container>
+      <CoverImage
+        src={post.coverImage}
+        alt={post.title}
+        sizes='(min-width: 64rem) 64rem, 100vw'
+        preload
+        className='mx-auto aspect-[1200/630] w-full max-w-5xl rounded-xl'
+      />
+      <Container className='flex flex-col gap-6'>
+        <PostHeader post={post} authors={authors} />
+        <PostNavigation newer={newer} older={older} />
+      </Container>
+      <div className='grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_48rem_minmax(0,1fr)]'>
+        <aside className='hidden xl:block'>
+          <TableOfContentsSidebar headings={post.headings} className='pr-8' />
+        </aside>
+        <Container className='flex flex-col gap-6'>
+          <TableOfContentsDropdown
+            headings={post.headings}
+            className='xl:hidden'
+          />
+          <MarkdownRenderer content={post.content} />
+          <AuthorProfiles authors={authors} />
+          <PostNavigation newer={newer} older={older} />
+        </Container>
+      </div>
+    </article>
+  );
+}

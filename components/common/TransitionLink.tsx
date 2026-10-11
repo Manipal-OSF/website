@@ -13,7 +13,6 @@ export default function TransitionLink({
     <Link
       {...props}
       onClick={(event) => {
-        onClick?.(event);
         if (
           stage !== 'none' &&
           event.button === 0 &&
@@ -24,6 +23,7 @@ export default function TransitionLink({
         ) {
           event.preventDefault();
         }
+        onClick?.(event);
       }}
     />
   );
