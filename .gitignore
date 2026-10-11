@@ -26,12 +26,19 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
+.env*
+!.env.example
+
+# React Email preview and exported templates
+/.react-email/
+/email-out/
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
+/next-env.d.ts
 
-.env
+/.yarn
+/.yarnrc.yml
