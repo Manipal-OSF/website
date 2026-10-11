@@ -23,7 +23,6 @@ pnpm format
 
 CI runs the production build with `pnpm build`. A deployed Node.js application starts with `pnpm start`. Configure hosting to use the repository root, with `pnpm install --frozen-lockfile` as the install command and `pnpm build` as the build command.
 
-
 See [website configuration](./WEBSITE_CONFIG.md) for the Markdown format, images, and publishing instructions. The blog initially displays “No posts yet.” Add your own content to `content/posts/`; existing hosted content is not copied automatically.
 
 The `@next/mdx` component registry lives in `mdx-components.tsx` at the repository root, beside `app/`, as required by Next.js. Keep it there when adding MDX components. The filesystem blog continues to render Markdown using `MarkdownRenderer`.
