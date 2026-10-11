@@ -4,6 +4,8 @@ import { motion, useAnimate } from 'framer-motion';
 import { useCallback, useRef, type ReactNode } from 'react';
 import { TransitionRouter } from 'next-transition-router';
 
+const transition = { duration: 0.3, type: 'tween' } as const;
+
 const variants = {
   hidden: { opacity: 0, y: -50 },
   enter: { opacity: 1, y: 0 },
@@ -27,7 +29,7 @@ const Layout = ({ children, header, footer }: LayoutProps) => {
       const animation = animate(
         scope.current,
         { opacity: 0, y: 200 },
-        { duration: 0.3, type: 'tween' }
+        transition
       );
       animation.then(next);
       return () => animation.stop();
@@ -41,7 +43,7 @@ const Layout = ({ children, header, footer }: LayoutProps) => {
       const animation = animate(
         scope.current,
         { opacity: [0, 1], y: [-50, 0] },
-        { duration: 0.3, type: 'tween' }
+        transition
       );
       animation.then(() => {
         transitioning.current = false;
@@ -58,11 +60,11 @@ const Layout = ({ children, header, footer }: LayoutProps) => {
         {header}
         <motion.main
           ref={scope}
-          className='mx-auto flex w-full max-w-5xl grow flex-col gap-y-6 overflow-hidden px-4'
+          className='mx-auto flex w-full max-w-5xl grow flex-col gap-y-6 overflow-clip px-4 has-[[data-wide]]:max-w-7xl'
           variants={variants}
           initial='hidden'
           animate='enter'
-          transition={{ duration: 0.3, type: 'tween' }}
+          transition={transition}
         >
           {children}
         </motion.main>

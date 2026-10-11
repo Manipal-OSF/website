@@ -10,10 +10,13 @@ Create `content/posts/your-post.md`:
 ---
 id: your-post
 title: Your post title
+description: One-sentence summary shown on the blog list and in link previews.
 authors:
-  - Your Name
+  - your-author-id
 publishDate: '2026-10-08'
 status: draft
+tags:
+  - open-source
 coverImage: /images/your-post.jpg
 ---
 
@@ -23,13 +26,35 @@ Write standard Markdown here, including **bold text**, links, fenced code blocks
 ```
 
 - `id` determines the URL (`/blog/your-post`), independently of the filename. IDs must be unique across drafts and published posts and contain only letters, numbers, underscores, or hyphens. Numeric IDs are supported for preserving existing URLs.
-- `title` is a non-empty string; `authors` is a non-empty array of names.
+- `title` is a non-empty string; `authors` is a non-empty array. Each entry is either an author ID from `content/authors/` (shown with an avatar and a link to their profile) or a plain name for contributors without a profile.
+- `description` and `tags` are optional. Tags are displayed as badges.
+- Reading time is calculated from the body at roughly 200 words per minute; it is not set in frontmatter.
 - `publishDate` is a quoted, valid `YYYY-MM-DD` date. Published posts sort newest first. This date is display metadata, not a publishing schedule.
 - `status` must be `draft` or `published`. Only published posts appear in the list or have public detail pages. There is no draft preview.
 - `coverImage` is optional. Place the example image in `public/images/your-post.jpg`; omit this field to display the existing placeholder. Images must use local public paths beginning with a single `/`.
 - The body supports Markdown rather than JSX or raw HTML. Start headings at `##`, since the page already renders the title as an `h1`.
 
 The directory initially contains only `.gitkeep`, so the blog shows “No posts yet.” Invalid metadata and duplicate IDs produce errors identifying the offending post or ID.
+
+## Add an author profile
+
+Create `content/authors/your-author-id.md`. The filename (without `.md`) is the author ID used in post `authors` lists and in the profile URL (`/authors/your-author-id`):
+
+```md
+---
+name: Your Name
+pronouns: they/them
+avatar: /authors/your-author-id.png
+bio: A short line about yourself.
+website: https://example.com
+github: https://github.com/your-username
+linkedin: https://www.linkedin.com/in/your-username
+twitter: https://x.com/your-username
+mail: you@example.com
+---
+```
+
+Only `name` is required. `avatar` must be a local public path (place the image in `public/authors/`); without one, the author's initial is shown. Links must use `https://`. Each post page ends with the profiles of its registered authors, and `/authors` lists everyone.
 
 ## Publish
 

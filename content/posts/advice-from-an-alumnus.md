@@ -1,8 +1,9 @@
 ---
 id: "63eb7d063716ef1a2525127d"
 title: "Advice from an Alumnus"
+description: "An MIT Manipal graduate on campus life, academics, and making the most of your time in Manipal."
 authors:
-  - Karthik Prabhu
+  - karthik-prabhu
 publishDate: "2023-02-14"
 status: published
 ---

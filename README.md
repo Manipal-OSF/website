@@ -23,7 +23,6 @@ pnpm format
 
 CI runs the production build with `pnpm build`. A deployed Node.js application starts with `pnpm start`. Configure hosting to use the repository root, with `pnpm install --frozen-lockfile` as the install command and `pnpm build` as the build command.
 
-## Blog posts
 
 See [website configuration](./WEBSITE_CONFIG.md) for the Markdown format, images, and publishing instructions. The blog initially displays “No posts yet.” Add your own content to `content/posts/`; existing hosted content is not copied automatically.
 
@@ -89,7 +88,7 @@ Use a deployment that supports the Next.js Node.js runtime when adding Route Han
 
 ## Page transitions
 
-Internal site links use `components/TransitionLink` and `next-transition-router` to finish the current page's exit animation before navigating, then reset scroll and animate the new page in. The shared header and footer stay mounted. Browser Back/Forward uses native navigation and scroll restoration without page transitions. Use the transition-aware Link with `scroll={false}` when adding site navigation; external links and Markdown anchors retain normal browser behavior.
+Internal site links use `components/common/TransitionLink` and `next-transition-router` to finish the current page's exit animation before navigating, then reset scroll and animate the new page in. The shared header and footer stay mounted. Browser Back/Forward uses native navigation and scroll restoration without page transitions. Use the transition-aware Link with `scroll={false}` when adding site navigation; external links and Markdown anchors retain normal browser behavior.
 
 ## Contributing
 
