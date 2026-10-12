@@ -8,6 +8,7 @@ export const env = createEnv({
     BETTER_AUTH_URL: z.url({ protocol: /^https?$/ }).optional(),
     RESEND_API_KEY: z.string().min(1).optional(),
     RESEND_FROM_EMAIL: z.email().optional(),
+    GITHUB_TOKEN: z.string().min(1).optional(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -15,6 +16,7 @@ export const env = createEnv({
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL,
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
   },
   emptyStringAsUndefined: true,
 });

@@ -2,6 +2,12 @@
 
 All source, public assets, and configuration are at the repository root. Run `pnpm dev` from this directory. No environment variables are needed for the existing site. Future server features can read private values from `.env.local`; never prefix secrets with `NEXT_PUBLIC_`.
 
+## Home page
+
+The home page is a bento grid (`app/page.tsx`, laid out by the `.bento` rules in `styles/globals.css`). Its statistics, language breakdown, and commit calendar come from the public GitHub API for the [Manipal-OSF](https://github.com/Manipal-OSF) organization (`lib/github.ts`). Responses are cached for a day and the page re-renders hourly; if GitHub is unreachable, those cells say so instead of failing the page. Unauthenticated requests are limited to 60 an hour, so set `GITHUB_TOKEN` in `.env.local` or the hosting environment if builds or previews run often. A fine-grained token without any permissions is enough.
+
+The map uses [MapLibre](https://maplibre.org/) with [OpenFreeMap](https://openfreemap.org/) tiles; edit `regions` in `components/home/KarnatakaMap.tsx` to change the places in its menu.
+
 ## Write a blog post
 
 Create `content/posts/your-post.md`:

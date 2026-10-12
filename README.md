@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:3000. No environment variables or separate service are required for the existing site.
+Open http://localhost:3000. No environment variables or separate service are required for the existing site; an optional `GITHUB_TOKEN` raises the GitHub API limit for the home page statistics.
 
 Development and production builds use Turbopack.
 
