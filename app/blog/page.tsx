@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import PostList from '@/components/blog/PostList';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
 import Container from '@/components/common/Container';
-import Link from '@/components/common/TransitionLink';
 import { getPublishedPosts } from '@/lib/content/posts';
 
 export const metadata: Metadata = { title: 'Blog' };
@@ -16,16 +15,7 @@ export default async function BlogPage() {
 
   return (
     <Container className='flex flex-col gap-8'>
-      <div className='flex flex-wrap items-center justify-between gap-4'>
-        <Breadcrumbs items={[{ label: 'Blog' }]} />
-        <Link
-          href='/authors'
-          scroll={false}
-          className='text-muted-foreground hover:text-foreground text-sm'
-        >
-          Authors
-        </Link>
-      </div>
+      <Breadcrumbs items={[{ label: 'Blog' }]} />
       {posts.length === 0 ? (
         <p className='text-muted-foreground text-sm'>No posts yet.</p>
       ) : (

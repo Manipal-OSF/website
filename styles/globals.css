@@ -96,3 +96,68 @@
     @apply border-border outline-ring/50 tracking-tight;
   }
 }
+
+/* Home page bento grid: two columns on small screens, four from 64rem. */
+.bento {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(10rem, auto);
+  grid-template-areas:
+    'about about'
+    'logo stats'
+    'post post'
+    'map map'
+    'map map'
+    'langs langs'
+    'activity activity'
+    'github discord'
+    'teams team';
+}
+
+@media (width >= 64rem) {
+  .bento {
+    gap: 1rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 13rem;
+    grid-template-areas:
+      'about about logo map'
+      'stats post post map'
+      'langs langs activity activity'
+      'github discord teams team';
+  }
+}
+
+/* The campus marker on the home page map. */
+.map-pin {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid var(--background);
+  border-radius: 9999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 0 var(--primary);
+  animation: map-pin-pulse 2s ease-out infinite;
+}
+
+@keyframes map-pin-pulse {
+  to {
+    box-shadow: 0 0 0 0.75rem transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-pin {
+    animation: none;
+  }
+}
+
+/* Keep the map attribution legible but unobtrusive in both themes. */
+.bento .maplibregl-ctrl-attrib {
+  background: color-mix(in srgb, var(--background) 85%, transparent);
+  color: var(--muted-foreground);
+  font-size: 0.625rem;
+}
+
+.bento .maplibregl-ctrl-attrib a {
+  color: inherit;
+}
