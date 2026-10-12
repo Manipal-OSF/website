@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import Link from '@/components/common/TransitionLink';
 import { activeNavItem, navItems } from '@/lib/site';
 
-const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
+const NavLinks = () => {
   const active = activeNavItem(usePathname());
 
   return navItems.map((item, i) => {
@@ -20,9 +20,6 @@ const NavLinks = ({ onNavigate }: { onNavigate?: () => void }) => {
         <Link
           href={item.href}
           scroll={false}
-          onClick={(event) => {
-            if (!event.defaultPrevented) onNavigate?.();
-          }}
           aria-current={isActive ? 'page' : undefined}
           className={`transition-colors ${
             isActive ? 'text-foreground' : 'hover:text-foreground'

@@ -77,9 +77,8 @@ export default async function PostPage({ params }: PostPageProps) {
         preload
         className='mx-auto aspect-[1200/630] w-full max-w-5xl rounded-xl'
       />
-      <Container className='flex flex-col gap-6'>
+      <Container>
         <PostHeader post={post} authors={authors} />
-        <PostNavigation newer={newer} older={older} />
       </Container>
       <div className='grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_48rem_minmax(0,1fr)]'>
         <aside className='hidden xl:block'>
