@@ -5,10 +5,8 @@ import CoverImage from '@/components/blog/CoverImage';
 import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
 import PostHeader from '@/components/blog/PostHeader';
 import PostNavigation from '@/components/blog/PostNavigation';
-import {
-  TableOfContentsDropdown,
-  TableOfContentsSidebar,
-} from '@/components/blog/TableOfContents';
+import MobileTableOfContents from '@/components/blog/MobileTableOfContents';
+import { TableOfContentsSidebar } from '@/components/blog/TableOfContents';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
 import Container from '@/components/common/Container';
 import { resolveAuthors } from '@/lib/content/authors';
@@ -88,7 +86,7 @@ export default async function PostPage({ params }: PostPageProps) {
           <TableOfContentsSidebar headings={post.headings} className='pr-8' />
         </aside>
         <Container className='flex flex-col gap-6'>
-          <TableOfContentsDropdown
+          <MobileTableOfContents
             headings={post.headings}
             className='xl:hidden'
           />
