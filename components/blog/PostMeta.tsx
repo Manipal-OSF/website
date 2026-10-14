@@ -1,5 +1,5 @@
 import AuthorAvatar from '@/components/authors/AuthorAvatar';
-import Link from '@/components/common/TransitionLink';
+import Link from 'next/link';
 import { formatDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { PostAuthor } from '@/types/blog';
@@ -41,7 +41,6 @@ const PostMeta = ({
         {linkAuthors && author.isRegistered ? (
           <Link
             href={`/authors/${author.id}`}
-            scroll={false}
             className='text-foreground underline-offset-4 hover:underline'
           >
             {author.name}

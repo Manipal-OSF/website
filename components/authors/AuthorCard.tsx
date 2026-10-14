@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import Link from '@/components/common/TransitionLink';
+import Link from 'next/link';
 import type { Author } from '@/types/blog';
 import AuthorAvatar from './AuthorAvatar';
 
@@ -11,7 +11,7 @@ interface AuthorCardProps {
 const AuthorCard = ({ author, linkToProfile = true }: AuthorCardProps) => {
   const profileLink = (className: string, children: ReactNode) =>
     linkToProfile ? (
-      <Link href={`/authors/${author.id}`} scroll={false} className={className}>
+      <Link href={`/authors/${author.id}`} className={className}>
         {children}
       </Link>
     ) : (

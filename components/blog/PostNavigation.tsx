@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import Link from '@/components/common/TransitionLink';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import type { BlogPost } from '@/types/blog';
 
@@ -40,7 +40,6 @@ const PostNavigation = ({ newer, older }: PostNavigationProps) => (
     {older ? (
       <Link
         href={`/blog/${older.id}`}
-        scroll={false}
         className={cn(base, 'hover:bg-muted')}
       >
         <ArrowLeft className='size-4 shrink-0 transition-transform group-hover:-translate-x-1' />
@@ -55,7 +54,6 @@ const PostNavigation = ({ newer, older }: PostNavigationProps) => (
     {newer ? (
       <Link
         href={`/blog/${newer.id}`}
-        scroll={false}
         className={cn(base, 'justify-end hover:bg-muted')}
       >
         <span className='flex flex-col items-end text-right'>

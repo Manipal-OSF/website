@@ -1,5 +1,5 @@
 import { ChevronRight, House } from 'lucide-react';
-import Link from './TransitionLink';
+import Link from 'next/link';
 
 interface BreadcrumbItem {
   label: string;
@@ -13,7 +13,6 @@ const Breadcrumbs = ({ items }: { items: BreadcrumbItem[] }) => (
       <li>
         <Link
           href='/'
-          scroll={false}
           className='hover:text-foreground'
           aria-label='Home'
         >
@@ -30,7 +29,6 @@ const Breadcrumbs = ({ items }: { items: BreadcrumbItem[] }) => (
           ) : (
             <Link
               href={item.href}
-              scroll={false}
               className='hover:text-foreground'
             >
               {item.label}

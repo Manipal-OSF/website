@@ -1,7 +1,7 @@
 import { BookMarked, GitFork, Star, Users, UsersRound } from 'lucide-react';
 import type { ReactNode } from 'react';
 import BrandIcon from '@/components/common/BrandIcon';
-import Link from '@/components/common/TransitionLink';
+import Link from 'next/link';
 import CoverImage from '@/components/blog/CoverImage';
 import ActivityCard from '@/components/home/ActivityCard';
 import BentoCell from '@/components/home/BentoCell';

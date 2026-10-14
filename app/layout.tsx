@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import ThemeScript from '@/components/common/ThemeScript';
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Layout header={<Header />} footer={<Footer />}>
           {children}
         </Layout>
+        <SpeedInsights />
       </body>
     </html>
   );
