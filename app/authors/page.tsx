@@ -3,8 +3,14 @@ import AuthorCard from '@/components/authors/AuthorCard';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
 import Container from '@/components/common/Container';
 import { getAllAuthors } from '@/lib/content/authors';
+import { pageMetadata } from '@/lib/seo';
+import { siteName } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Authors' };
+export const metadata: Metadata = pageMetadata({
+  title: 'Authors',
+  description: `The people who write for the ${siteName} blog.`,
+  path: '/authors',
+});
 
 export default async function AuthorsPage() {
   const authors = await getAllAuthors();

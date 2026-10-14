@@ -1,4 +1,4 @@
-import Link from '@/components/common/TransitionLink';
+import Link from 'next/link';
 import { resolveAuthors } from '@/lib/content/authors';
 import type { BlogPost } from '@/types/blog';
 import CoverImage from './CoverImage';
@@ -24,7 +24,6 @@ const BlogCard = async ({ post }: BlogCardProps) => {
   return (
     <Link
       href={`/blog/${post.id}`}
-      scroll={false}
       className='hover:bg-muted/50 flex flex-col gap-4 rounded-xl border p-4 transition-colors sm:flex-row'
     >
       <CoverImage

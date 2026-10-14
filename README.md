@@ -85,10 +85,6 @@ Add server endpoints as Route Handlers in `app/**/route.ts`, using the Web `Requ
 
 Use a deployment that supports the Next.js Node.js runtime when adding Route Handlers or request-time server rendering.
 
-## Page transitions
-
-Internal site links use `components/common/TransitionLink` and `next-transition-router` to finish the current page's exit animation before navigating, then reset scroll and animate the new page in. The shared header and footer stay mounted. Browser Back/Forward uses native navigation and scroll restoration without page transitions. Use the transition-aware Link with `scroll={false}` when adding site navigation; external links and Markdown anchors retain normal browser behavior.
-
 ## Contributing
 
 React, Next.js, TypeScript, Tailwind CSS, and basic HTML knowledge are useful. Contributions to content and bug reports are welcome too.

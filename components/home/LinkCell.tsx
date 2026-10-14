@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import Link from '@/components/common/TransitionLink';
+import Link from 'next/link';
 import BentoCell, { type BentoArea } from './BentoCell';
 
 interface LinkCellProps {

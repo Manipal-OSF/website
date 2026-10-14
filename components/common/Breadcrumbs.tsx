@@ -1,5 +1,7 @@
 import { ChevronRight, House } from 'lucide-react';
-import Link from './TransitionLink';
+import Link from 'next/link';
+import { absoluteUrl } from '@/lib/seo';
+import JsonLd from './JsonLd';
 
 interface BreadcrumbItem {
   label: string;
@@ -9,14 +11,22 @@ interface BreadcrumbItem {
 // The last item is the current page and is not linked.
 const Breadcrumbs = ({ items }: { items: BreadcrumbItem[] }) => (
   <nav aria-label='Breadcrumb'>
+    <JsonLd
+      data={{
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ label: 'Home', href: '/' }, ...items].map(
+          (item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.label,
+            item: item.href ? absoluteUrl(item.href) : undefined,
+          })
+        ),
+      }}
+    />
     <ol className='text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm'>
       <li>
-        <Link
-          href='/'
-          scroll={false}
-          className='hover:text-foreground'
-          aria-label='Home'
-        >
+        <Link href='/' className='hover:text-foreground' aria-label='Home'>
           <House className='size-4' />
         </Link>
       </li>
@@ -28,11 +38,7 @@ const Breadcrumbs = ({ items }: { items: BreadcrumbItem[] }) => (
               {item.label}
             </span>
           ) : (
-            <Link
-              href={item.href}
-              scroll={false}
-              className='hover:text-foreground'
-            >
+            <Link href={item.href} className='hover:text-foreground'>
               {item.label}
             </Link>
           )}

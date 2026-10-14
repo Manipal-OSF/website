@@ -1,7 +1,9 @@
 import { BookMarked, GitFork, Star, Users, UsersRound } from 'lucide-react';
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import BrandIcon from '@/components/common/BrandIcon';
-import Link from '@/components/common/TransitionLink';
+import JsonLd from '@/components/common/JsonLd';
+import Link from 'next/link';
 import CoverImage from '@/components/blog/CoverImage';
 import ActivityCard from '@/components/home/ActivityCard';
 import BentoCell from '@/components/home/BentoCell';
@@ -12,10 +14,37 @@ import Logo from '@/components/layout/Logo';
 import { getPublishedPosts } from '@/lib/content/posts';
 import { formatDate } from '@/lib/format';
 import { getOrgStats, githubOrg } from '@/lib/github';
-import { siteName, socialLinks } from '@/lib/site';
+import { absoluteUrl, pageMetadata } from '@/lib/seo';
+import { siteDescription, siteName, siteUrl, socialLinks } from '@/lib/site';
 
 // Re-render hourly; GitHub responses themselves are cached for a day.
 export const revalidate = 3600;
+
+export const metadata: Metadata = pageMetadata({
+  description: siteDescription,
+  path: '/',
+});
+
+const organization = {
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: siteName,
+  url: siteUrl,
+  logo: absoluteUrl('/logo.png'),
+  description: siteDescription,
+  sameAs: socialLinks
+    .filter(({ label }) => label === 'GitHub' || label === 'Instagram')
+    .map(({ href }) => href),
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  name: siteName,
+  url: siteUrl,
+  description: siteDescription,
+  publisher: { '@id': organization['@id'] },
+};
 
 const href = (label: (typeof socialLinks)[number]['label']) =>
   socialLinks.find((link) => link.label === label)!.href;
@@ -53,6 +82,7 @@ export default async function HomePage() {
 
   return (
     <div className='bento py-2'>
+      <JsonLd data={{ '@graph': [organization, website] }} />
       <BentoCell
         area='about'
         className='flex flex-col justify-center gap-3 p-5'

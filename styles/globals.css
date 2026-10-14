@@ -135,20 +135,45 @@
   border: 2px solid var(--background);
   border-radius: 9999px;
   background: var(--primary);
-  box-shadow: 0 0 0 0 var(--primary);
-  animation: map-pin-pulse 2s ease-out infinite;
+  cursor: pointer;
 }
 
-@keyframes map-pin-pulse {
-  to {
-    box-shadow: 0 0 0 0.75rem transparent;
-  }
+.map-pin:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .map-pin {
-    animation: none;
-  }
+.bento .maplibregl-popup-content {
+  border: 2px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  color: var(--foreground);
+  padding: 0.5rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.bento .maplibregl-popup-content p {
+  color: var(--muted-foreground);
+}
+
+.bento .maplibregl-popup-content a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bento .maplibregl-popup-tip {
+  display: none;
+}
+
+.bento .maplibregl-cooperative-gesture-screen {
+  background: color-mix(in srgb, var(--background) 75%, transparent);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 /* Keep the map attribution legible but unobtrusive in both themes. */
@@ -160,4 +185,43 @@
 
 .bento .maplibregl-ctrl-attrib a {
   color: inherit;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(.page-fade) {
+  animation: none;
+}
+
+::view-transition-old(.page-fade) {
+  animation: 150ms ease-out both page-fade-out;
+}
+
+::view-transition-new(.page-fade) {
+  animation: 200ms ease-in-out both page-fade-in;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }

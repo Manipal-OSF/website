@@ -1,3 +1,5 @@
+import { Rss } from 'lucide-react';
+import { feedPath } from '@/lib/seo';
 import { socialLinks } from '@/lib/site';
 import BrandIcon from '@/components/common/BrandIcon';
 import Logo from './Logo';
@@ -27,6 +29,15 @@ const Footer = () => {
               <BrandIcon brand={label} className='size-4' />
             </a>
           ))}
+          <a
+            href={feedPath}
+            target='_blank'
+            aria-label='RSS feed'
+            title='RSS feed'
+            className={iconButton}
+          >
+            <Rss className='size-4' />
+          </a>
         </div>
       </div>
     </footer>
