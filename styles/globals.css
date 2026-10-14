@@ -167,6 +167,15 @@
   display: none;
 }
 
+.bento .maplibregl-cooperative-gesture-screen {
+  background: color-mix(in srgb, var(--background) 75%, transparent);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
 /* Keep the map attribution legible but unobtrusive in both themes. */
 .bento .maplibregl-ctrl-attrib {
   background: color-mix(in srgb, var(--background) 85%, transparent);

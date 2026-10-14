@@ -9,12 +9,15 @@ import MobileTableOfContents from '@/components/blog/MobileTableOfContents';
 import { TableOfContentsSidebar } from '@/components/blog/TableOfContents';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
 import Container from '@/components/common/Container';
+import JsonLd from '@/components/common/JsonLd';
 import { resolveAuthors } from '@/lib/content/authors';
 import {
   getAdjacentPosts,
   getPost,
   getPublishedPosts,
 } from '@/lib/content/posts';
+import { absoluteUrl, pageMetadata } from '@/lib/seo';
+import { siteName, siteUrl } from '@/lib/site';
 
 export const dynamicParams = false;
 
@@ -38,20 +41,23 @@ export async function generateMetadata({
   const authors = await resolveAuthors(post.authors);
   const description = post.description ?? undefined;
   return {
-    title: post.title,
-    description,
+    ...pageMetadata({
+      title: post.title,
+      description,
+      path: `/blog/${post.id}`,
+      image: `/blog/${post.id}/opengraph-image`,
+      openGraph: {
+        type: 'article',
+        publishedTime: post.publishDate,
+        authors: authors.map((author) => author.name),
+        tags: post.tags,
+      },
+    }),
     authors: authors.map((author) => ({
       name: author.name,
       url: author.isRegistered ? `/authors/${author.id}` : undefined,
     })),
-    openGraph: {
-      type: 'article',
-      title: post.title,
-      description,
-      publishedTime: post.publishDate,
-      authors: authors.map((author) => author.name),
-      tags: post.tags,
-    },
+    keywords: post.tags,
   };
 }
 
@@ -61,10 +67,40 @@ export default async function PostPage({ params }: PostPageProps) {
     resolveAuthors(post.authors),
     getAdjacentPosts(post.id),
   ]);
+  const url = absoluteUrl(`/blog/${post.id}`);
 
   return (
     // data-wide widens the site's main column so the sidebar fits beside the text.
     <article data-wide className='flex w-full flex-col gap-6'>
+      <JsonLd
+        data={{
+          '@type': 'BlogPosting',
+          '@id': `${url}#article`,
+          mainEntityOfPage: url,
+          url,
+          headline: post.title,
+          description: post.description ?? undefined,
+          image: absoluteUrl(
+            post.coverImage ?? `/blog/${post.id}/opengraph-image`
+          ),
+          datePublished: post.publishDate,
+          keywords: post.tags.length ? post.tags.join(', ') : undefined,
+          inLanguage: 'en',
+          author: authors.map((author) => ({
+            '@type': 'Person',
+            name: author.name,
+            url: author.isRegistered
+              ? absoluteUrl(`/authors/${author.id}`)
+              : undefined,
+          })),
+          publisher: {
+            '@type': 'Organization',
+            '@id': `${siteUrl}/#organization`,
+            name: siteName,
+            logo: absoluteUrl('/logo.png'),
+          },
+        }}
+      />
       <Container>
         <Breadcrumbs
           items={[{ label: 'Blog', href: '/blog' }, { label: post.title }]}

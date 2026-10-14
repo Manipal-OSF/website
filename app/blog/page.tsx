@@ -3,8 +3,14 @@ import PostList from '@/components/blog/PostList';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
 import Container from '@/components/common/Container';
 import { getPublishedPosts } from '@/lib/content/posts';
+import { pageMetadata } from '@/lib/seo';
+import { siteName } from '@/lib/site';
 
-export const metadata: Metadata = { title: 'Blog' };
+export const metadata: Metadata = pageMetadata({
+  title: 'Blog',
+  description: `Articles, guides, and stories from the ${siteName} community.`,
+  path: '/blog',
+});
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();

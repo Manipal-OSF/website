@@ -8,6 +8,10 @@ The home page is a bento grid (`app/page.tsx`, laid out by the `.bento` rules in
 
 The map uses [MapLibre](https://maplibre.org/) with [OpenFreeMap](https://openfreemap.org/) tiles; edit `regions` in `components/home/KarnatakaMap.tsx` to change the places in its menu.
 
+## SEO
+
+It's added now
+
 ## Write a blog post
 
 Create `content/posts/your-post.md`:

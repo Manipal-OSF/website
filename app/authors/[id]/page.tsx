@@ -4,8 +4,10 @@ import AuthorCard from '@/components/authors/AuthorCard';
 import PostList from '@/components/blog/PostList';
 import Breadcrumbs from '@/components/common/Breadcrumbs';
 import Container from '@/components/common/Container';
+import JsonLd from '@/components/common/JsonLd';
 import { getAllAuthors, getAuthor } from '@/lib/content/authors';
 import { getPostsByAuthor } from '@/lib/content/posts';
+import { absoluteUrl, pageMetadata } from '@/lib/seo';
 
 // reference: https://pranavu.dev
 
@@ -28,10 +30,12 @@ export async function generateMetadata({
   params,
 }: AuthorPageProps): Promise<Metadata> {
   const author = await loadAuthor(params);
-  return {
+  return pageMetadata({
     title: author.name,
     description: author.bio ?? `Posts by ${author.name}.`,
-  };
+    path: `/authors/${author.id}`,
+    openGraph: { type: 'profile' },
+  });
 }
 
 export default async function AuthorPage({ params }: AuthorPageProps) {
@@ -40,6 +44,21 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
   return (
     <Container className='flex flex-col gap-6'>
+      <JsonLd
+        data={{
+          '@type': 'ProfilePage',
+          url: absoluteUrl(`/authors/${author.id}`),
+          mainEntity: {
+            '@type': 'Person',
+            name: author.name,
+            description: author.bio ?? undefined,
+            image: author.avatar ? absoluteUrl(author.avatar) : undefined,
+            sameAs: author.links
+              .filter((link) => link.href.startsWith('https://'))
+              .map((link) => link.href),
+          },
+        }}
+      />
       <Breadcrumbs
         items={[
           { label: 'Blog', href: '/blog' },

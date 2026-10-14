@@ -208,6 +208,9 @@ const KarnatakaMap = () => {
         maxZoom: 18,
         attributionControl: { compact: true },
         fadeDuration: 0,
+        // One finger (or a plain mouse wheel) scrolls the page instead of
+        // getting stuck in the map; two fingers or Ctrl/⌘ + wheel move it.
+        cooperativeGestures: true,
       });
       map.current = instance;
       // Label the canvas

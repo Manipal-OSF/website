@@ -1,5 +1,10 @@
 export const siteName = 'Manipal OSF';
 
+export const siteUrl = 'https://manipalosf.org';
+
+export const siteDescription =
+  'An open-source initiative led by the students of MIT Manipal for democratizing free software & material.';
+
 export const navItems = [
   { label: 'Home', href: '/' },
   { label: 'Team', href: '/team' },
