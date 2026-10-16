@@ -38,10 +38,7 @@ const PostNavigation = ({ newer, older }: PostNavigationProps) => (
     className='grid grid-cols-1 gap-4 sm:grid-cols-2'
   >
     {older ? (
-      <Link
-        href={`/blog/${older.id}`}
-        className={cn(base, 'hover:bg-muted')}
-      >
+      <Link href={`/blog/${older.id}`} className={cn(base, 'hover:bg-muted')}>
         <ArrowLeft className='size-4 shrink-0 transition-transform group-hover:-translate-x-1' />
         <span className='flex flex-col items-start'>
           <span className='text-muted-foreground text-xs'>Previous Post</span>

@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { z } from 'zod';
 
 export const nonEmptyString = z.string().trim().min(1, 'must not be empty');
@@ -11,7 +13,11 @@ export const slug = z
 
 export const localPublicPath = z
   .string()
-  .regex(/^\/(?!\/)/, 'must be a local public path such as /images/file.png');
+  .regex(/^\/(?!\/)/, 'must be a local public path such as /images/file.png')
+  .refine(
+    (value) => existsSync(path.join(process.cwd(), 'public', value)),
+    'must point to an existing file in public/'
+  );
 
 export const isoDate = z
   .string('must be a quoted YYYY-MM-DD string')

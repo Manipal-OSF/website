@@ -3,7 +3,6 @@ import { getAllAuthors } from '@/lib/content/authors';
 import { getPostsByAuthor, getPublishedPosts } from '@/lib/content/posts';
 import { absoluteUrl } from '@/lib/seo';
 
-// /team is left out for the time being
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, authors] = await Promise.all([
     getPublishedPosts(),
@@ -22,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: absoluteUrl('/'), changeFrequency: 'daily', priority: 1 },
+    { url: absoluteUrl('/team'), changeFrequency: 'monthly', priority: 0.6 },
     {
       url: absoluteUrl('/blog'),
       lastModified: latest,

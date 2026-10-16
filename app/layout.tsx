@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
@@ -5,6 +6,7 @@ import ThemeScript from '@/components/common/ThemeScript';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import Layout from '@/components/layout/Layout';
+import '@/lib/fonts';
 import { baseOpenGraph, feedPath } from '@/lib/seo';
 import { siteDescription, siteName, siteUrl } from '@/lib/site';
 import '@/styles/globals.css';
@@ -14,10 +16,6 @@ export const metadata: Metadata = {
   title: { template: `%s | ${siteName}`, default: siteName },
   description: siteDescription,
   applicationName: siteName,
-  icons: {
-    icon: { url: '/logo.png', type: 'image/png' },
-    apple: { url: '/logo.png', type: 'image/png' },
-  },
   alternates: { types: { 'application/rss+xml': feedPath } },
   openGraph: {
     ...baseOpenGraph,
@@ -49,6 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Layout header={<Header />} footer={<Footer />}>
           {children}
         </Layout>
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
