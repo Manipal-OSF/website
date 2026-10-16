@@ -4,8 +4,7 @@ import { env } from './env';
 export const githubOrg = 'Manipal-OSF';
 
 const API = 'https://api.github.com';
-// Responses are cached for a day, or an hour for commits so the calendar keeps
-// up with the page; only successful responses are stored.
+// Responses are cached for a day
 const REVALIDATE = 60 * 60 * 24;
 const COMMITS_REVALIDATE = 60 * 60;
 const DAY = 24 * 60 * 60 * 1000;
@@ -69,7 +68,7 @@ const languageColors: Record<string, string> = {
 const ignoredLanguages = new Set(['Rich Text Format', 'Markdown', 'TeX']);
 const MAX_LANGUAGES = 6;
 
-async function gh<T>(path: string, revalidate = REVALIDATE): Promise<T> {
+async function ghResponse(path: string, revalidate = REVALIDATE) {
   const res = await fetch(`${API}${path}`, {
     headers: {
       Accept: 'application/vnd.github+json',
@@ -79,7 +78,11 @@ async function gh<T>(path: string, revalidate = REVALIDATE): Promise<T> {
     next: { revalidate },
   });
   if (!res.ok) throw new Error(`GitHub ${path} returned ${res.status}`);
-  return res.json() as Promise<T>;
+  return res;
+}
+
+async function gh<T>(path: string, revalidate = REVALIDATE): Promise<T> {
+  return (await ghResponse(path, revalidate)).json() as Promise<T>;
 }
 
 function aggregateLanguages(
@@ -190,8 +193,17 @@ async function getActivity(repos: Repo[]) {
 }
 
 // When GitHub is unreachable or rate limited, the build renders the page
-// without statistics, but a later regeneration throws instead so Next.js keeps
+// without its data, but a later regeneration throws instead so Next.js keeps
 // serving the last good page rather than caching the empty one.
+export function duringBuild<T>(error: unknown, fallback: T, what: string): T {
+  const regenerating =
+    process.env.NODE_ENV === 'production' &&
+    process.env.NEXT_PHASE !== 'phase-production-build';
+  if (regenerating) throw error;
+  console.warn(`Failed to load ${what}:`, error);
+  return fallback;
+}
+
 export async function getOrgStats(): Promise<OrgStats | null> {
   try {
     const [org, repos] = await Promise.all([
@@ -226,11 +238,76 @@ export async function getOrgStats(): Promise<OrgStats | null> {
       ...activity,
     };
   } catch (error) {
-    const regenerating =
-      process.env.NODE_ENV === 'production' &&
-      process.env.NEXT_PHASE !== 'phase-production-build';
-    if (regenerating) throw error;
-    console.warn('Failed to load GitHub statistics:', error);
-    return null;
+    return duringBuild(error, null, 'GitHub statistics');
   }
+}
+
+interface Contributor {
+  login: string;
+  type: string;
+  contributions: number;
+}
+
+// People with commits to a repository, most commits first, without bots.
+async function contributors(repo: string): Promise<Contributor[]> {
+  const list = await ghList<Contributor>(
+    `/repos/${githubOrg}/${repo}/contributors`,
+    5
+  );
+  return list.filter((contributor) => contributor.type !== 'Bot');
+}
+
+export interface RepoHistory {
+  contributors: string[];
+  // ISO dates of the first and latest commits.
+  first: string;
+  last: string;
+  archived: boolean;
+}
+
+export async function getRepoHistory(repo: string): Promise<RepoHistory> {
+  const path = `/repos/${githubOrg}/${repo}/commits?per_page=1`;
+  type Commit = { commit: { committer: { date: string } } };
+  const [newestPage, people, { archived }] = await Promise.all([
+    ghResponse(path),
+    contributors(repo),
+    gh<{ archived: boolean }>(`/repos/${githubOrg}/${repo}`),
+  ]);
+  const [newest] = (await newestPage.json()) as Commit[];
+  const lastPage = newestPage.headers
+    .get('link')
+    ?.match(/[?&]page=(\d+)>; rel="last"/)?.[1];
+  const [oldest] = lastPage
+    ? await gh<Commit[]>(`${path}&page=${lastPage}`)
+    : [newest];
+  return {
+    contributors: people.map(({ login }) => login),
+    first: oldest.commit.committer.date,
+    last: newest.commit.committer.date,
+    archived,
+  };
+}
+
+export async function getCommunity(): Promise<string[]> {
+  const [repos, members] = await Promise.all([
+    ghList<Repo>(`/orgs/${githubOrg}/repos?type=public`, 10),
+    ghList<{ login: string }>(`/orgs/${githubOrg}/members`, 5),
+  ]);
+  const perRepo = await Promise.all(
+    repos
+      .filter((repo) => !repo.fork && repo.size > 0)
+      .map((repo) => orDefault(contributors(repo.name), []))
+  );
+
+  const totals = new Map<string, number>();
+  for (const { login, contributions } of perRepo.flat())
+    totals.set(login, (totals.get(login) ?? 0) + contributions);
+  for (const { login } of members) if (!totals.has(login)) totals.set(login, 0);
+
+  return [...totals]
+    .sort(
+      ([a, x], [b, y]) =>
+        y - x || a.localeCompare(b, 'en', { sensitivity: 'base' })
+    )
+    .map(([login]) => login);
 }

@@ -1,7 +1,18 @@
+import { Globe, Mail } from 'lucide-react';
 import type { ReactNode } from 'react';
 import Link from 'next/link';
+import BrandIcon from '@/components/common/BrandIcon';
+import { iconButton } from '@/components/layout/styles';
 import type { Author } from '@/types/blog';
 import AuthorAvatar from './AuthorAvatar';
+
+const linkIcons: Record<string, ReactNode> = {
+  Website: <Globe />,
+  GitHub: <BrandIcon brand='GitHub' />,
+  LinkedIn: <BrandIcon brand='LinkedIn' />,
+  X: <BrandIcon brand='X' />,
+  Email: <Mail />,
+};
 
 interface AuthorCardProps {
   author: Author;
@@ -47,7 +58,7 @@ const AuthorCard = ({ author, linkToProfile = true }: AuthorCardProps) => {
             )}
           </div>
           {author.links.length > 0 && (
-            <ul className='flex flex-wrap gap-2'>
+            <ul className='-ml-2 flex flex-wrap gap-1'>
               {author.links.map((link) => (
                 <li key={link.href}>
                   <a
@@ -56,9 +67,11 @@ const AuthorCard = ({ author, linkToProfile = true }: AuthorCardProps) => {
                       link.href.startsWith('mailto:') ? undefined : '_blank'
                     }
                     rel='noopener noreferrer'
-                    className='hover:bg-muted text-muted-foreground hover:text-foreground rounded-md border px-2 py-1 text-xs transition-colors'
+                    aria-label={link.label}
+                    title={link.label}
+                    className={`${iconButton} [&>svg]:size-4`}
                   >
-                    {link.label}
+                    {linkIcons[link.label] ?? link.label}
                   </a>
                 </li>
               ))}

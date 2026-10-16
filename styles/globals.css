@@ -7,10 +7,12 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme inline {
-  --font-sans: 'Cascadia Code Variable', ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono: 'Cascadia Code Variable', ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-sans: 'Cascadia Code Latin', 'Cascadia Code Variable', ui-sans-serif,
+    system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono: 'Cascadia Code Latin', 'Cascadia Code Variable', ui-monospace,
+    SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -38,6 +40,14 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --animate-marquee: marquee var(--marquee-duration, 60s) linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 /* light theme corresponds to nord palette */
@@ -62,6 +72,8 @@
   --border: #d8dee9;
   --input: #d8dee9;
   --ring: #88c0d0;
+  --awesome-from: #b21e59;
+  --awesome-to: #825000;
 }
 
 /* whereas dark is catpuccin's */
@@ -85,6 +97,8 @@
   --border: #313244;
   --input: #313244;
   --ring: #b4befe;
+  --awesome-from: #ff9592;
+  --awesome-to: #f5e147;
 }
 
 @layer base {
@@ -94,6 +108,21 @@
   ::backdrop,
   ::file-selector-button {
     @apply border-border outline-ring/50 tracking-tight;
+  }
+}
+
+/* A two-tone gradient for accent text */
+@utility text-awesome {
+  color: var(--awesome-from);
+
+  @supports (background-clip: text) {
+    background-image: linear-gradient(
+      90deg,
+      var(--awesome-from),
+      var(--awesome-to)
+    );
+    background-clip: text;
+    color: transparent;
   }
 }
 
@@ -214,6 +243,76 @@
 @keyframes page-fade-in {
   from {
     opacity: 0;
+  }
+}
+
+/* Team timeline, driven by scroll position instead of JavaScript.*/
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline {
+      view-timeline: --timeline block;
+    }
+    .timeline-fill {
+      animation: timeline-fill linear both;
+      animation-timeline: --timeline;
+      animation-range: cover 50vh cover calc(100% - 50vh);
+    }
+    .timeline-row {
+      view-timeline: --timeline-row block;
+    }
+    .timeline-dot,
+    .timeline-year {
+      animation: timeline-light linear both;
+      animation-timeline: --timeline-row;
+      animation-range: cover 45vh cover 55vh;
+    }
+    .timeline-year {
+      animation-name: timeline-dim;
+    }
+    .timeline-reveal {
+      animation: timeline-reveal ease-out both;
+      animation-timeline: view();
+      animation-range: cover 5vh cover 25vh;
+    }
+  }
+}
+
+/* The same effects where they are driven by components/team/TimelineScroll. */
+.timeline[data-scroll='script'] {
+  .timeline-fill {
+    transform: scaleY(var(--timeline-progress, 0));
+  }
+  .timeline-dot {
+    opacity: var(--timeline-row-progress, 0);
+  }
+  .timeline-year {
+    opacity: calc(0.35 + 0.65 * var(--timeline-row-progress, 0));
+  }
+}
+
+@keyframes timeline-fill {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes timeline-light {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes timeline-dim {
+  from {
+    opacity: 0.35;
+  }
+}
+
+@keyframes timeline-reveal {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+    filter: blur(4px);
   }
 }
 

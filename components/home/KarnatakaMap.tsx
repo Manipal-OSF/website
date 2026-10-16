@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import type { Map as MapLibreMap, StyleSpecification } from 'maplibre-gl';
 import { useEffect, useRef, useState } from 'react';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import { preconnect } from 'react-dom';
 
 const campuses = {
   manipal: {
@@ -59,9 +59,10 @@ const regions = [
 
 type RegionId = (typeof regions)[number]['id'];
 
-// Liberty shows buildings, landmarks and street names once zoomed in. 
-const lightStyleUrl = 'https://tiles.openfreemap.org/styles/liberty';
-const darkStyleUrl = 'https://tiles.openfreemap.org/styles/dark';
+// Liberty shows buildings, landmarks and street names once zoomed in.
+const tileOrigin = 'https://tiles.openfreemap.org';
+const lightStyleUrl = `${tileOrigin}/styles/liberty`;
+const darkStyleUrl = `${tileOrigin}/styles/dark`;
 
 type Theme = 'light' | 'dark';
 
@@ -177,6 +178,28 @@ const KarnatakaMap = () => {
   const [region, setRegion] = useState<RegionId>('manipal');
   const [loaded, setLoaded] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  // Set when the browser can't give MapLibre a WebGL2 context.
+  const [unsupported, setUnsupported] = useState(false);
+  // MapLibre is about a megabyte, so it loads once the map is nearly in view.
+  const [nearby, setNearby] = useState(false);
+
+  // The style and tiles are fetched with CORS, so warm up a matching connection.
+  preconnect(tileOrigin, { crossOrigin: 'anonymous' });
+
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setNearby(true);
+        observer.disconnect();
+      },
+      { rootMargin: '400px' }
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const sync = () =>
@@ -186,12 +209,13 @@ const KarnatakaMap = () => {
   }, []);
 
   useEffect(() => {
+    if (!nearby) return;
     let cancelled = false;
     let observer: MutationObserver | undefined;
 
     (async () => {
       const [{ Map, Marker, Popup, setWorkerUrl }, loadedStyles] =
-        await Promise.all([import('maplibre-gl'), loadStyles()]);
+        await Promise.all([import('./maplibre'), loadStyles()]);
       setWorkerUrl(
         new URL('maplibre-gl/dist/maplibre-gl-worker.mjs', import.meta.url).href
       );
@@ -199,19 +223,25 @@ const KarnatakaMap = () => {
 
       let theme = currentTheme();
       const start = regions[0];
-      const instance = new Map({
-        container: container.current,
-        style: loadedStyles[theme],
-        center: [...start.center],
-        zoom: start.zoom,
-        minZoom: 4,
-        maxZoom: 18,
-        attributionControl: { compact: true },
-        fadeDuration: 0,
-        // One finger (or a plain mouse wheel) scrolls the page instead of
-        // getting stuck in the map; two fingers or Ctrl/⌘ + wheel move it.
-        cooperativeGestures: true,
-      });
+      let instance: MapLibreMap;
+      try {
+        instance = new Map({
+          container: container.current,
+          style: loadedStyles[theme],
+          center: [...start.center],
+          zoom: start.zoom,
+          minZoom: 4,
+          maxZoom: 18,
+          attributionControl: { compact: true },
+          fadeDuration: 0,
+          // One finger (or a plain mouse wheel) scrolls the page instead of
+          // getting stuck in the map; two fingers or Ctrl/⌘ + wheel move it.
+          cooperativeGestures: true,
+        });
+      } catch {
+        setUnsupported(true);
+        return;
+      }
       map.current = instance;
       // Label the canvas
       instance
@@ -285,7 +315,7 @@ const KarnatakaMap = () => {
       map.current?.remove();
       map.current = null;
     };
-  }, []);
+  }, [nearby]);
 
   const goTo = (id: RegionId) => {
     setRegion(id);
@@ -307,6 +337,31 @@ const KarnatakaMap = () => {
     if (document.fullscreenElement) void document.exitFullscreen();
     else void root.current?.requestFullscreen();
   };
+
+  if (unsupported)
+    return (
+      <div className='bg-background absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center text-sm'>
+        <MapPin aria-hidden='true' className='text-primary size-6' />
+        <p className='text-muted-foreground max-w-xs'>
+          Your browser can&apos;t show this map (it needs WebGL2). Find our
+          campuses on OpenStreetMap instead:
+        </p>
+        <ul className='flex flex-col gap-1'>
+          {Object.values(campuses).map(({ name, lngLat }) => (
+            <li key={name}>
+              <a
+                href={`https://www.openstreetmap.org/?mlat=${lngLat[1]}&mlon=${lngLat[0]}#map=17/${lngLat[1]}/${lngLat[0]}`}
+                target='_blank'
+                rel='noreferrer'
+                className='text-primary font-medium hover:underline'
+              >
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
 
   return (
     <div ref={root} className='bg-background absolute inset-0'>
