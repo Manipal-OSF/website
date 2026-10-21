@@ -1,0 +1,25 @@
+---
+import Avatar from '@packages/ui/components/avatar';
+import type { Person } from '@/lib/timeline';
+interface Props {
+  person: Person;
+}
+const { person } = Astro.props;
+const Tag = person.href ? 'a' : 'span';
+const external = person.href?.startsWith('http');
+---
+
+<Tag
+  href={person.href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class='hover:bg-muted flex items-center gap-2 rounded-full border-2 py-0.5 pr-3 pl-0.5 text-sm transition-colors'
+>
+  <Avatar src={person.avatar} fallback={person.name[0]} size='sm' />{
+    person.name
+  }{
+    person.role && (
+      <span class='text-muted-foreground text-xs'>{person.role}</span>
+    )
+  }
+</Tag>

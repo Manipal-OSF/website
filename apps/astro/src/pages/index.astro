@@ -1,0 +1,190 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import BookMarked from '@/components/icons/BookMarked.astro';
+import GitFork from '@/components/icons/GitFork.astro';
+import Star from '@/components/icons/Star.astro';
+import Users from '@/components/icons/Users.astro';
+import UsersRound from '@/components/icons/UsersRound.astro';
+import BrandIcon from '@/components/common/BrandIcon.astro';
+import JsonLd from '@/components/common/JsonLd.astro';
+import CoverImage from '@/components/blog/CoverImage.astro';
+import ActivityCard from '@/components/home/ActivityCard.astro';
+import BentoCell from '@/components/home/BentoCell.astro';
+import KarnatakaMap from '@/components/home/KarnatakaMap.astro';
+import LanguagesCard from '@/components/home/LanguagesCard.astro';
+import LinkCell from '@/components/home/LinkCell.astro';
+import Logo from '@/components/layout/Logo.astro';
+import { getPublishedPosts } from '@/lib/content/posts';
+import { formatDate } from '@/lib/format';
+import { getOrgStats, githubOrg } from '@/lib/github';
+import { absoluteUrl, pageMetadata } from '@/lib/seo';
+import { siteDescription, siteName, siteUrl, socialLinks } from '@/lib/site';
+
+import Stat from '@/components/home/Stat.astro';
+import Unavailable from '@/components/home/Unavailable.astro';
+import { withGitHubRender } from '@/lib/github';
+export const prerender = false;
+const stats = await withGitHubRender(Astro.request, () => getOrgStats());
+if (!stats) {
+  Astro.response.status = 503;
+  Astro.response.headers.set('Cache-Control', 'no-store');
+}
+const posts = await getPublishedPosts();
+const latest = posts[0];
+const metadata = pageMetadata({ description: siteDescription, path: '/' });
+const organization = {
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: siteName,
+  url: siteUrl,
+  logo: absoluteUrl('/logo.png'),
+  description: siteDescription,
+  sameAs: socialLinks
+    .filter(({ label }) => label === 'GitHub' || label === 'Instagram')
+    .map(({ href }) => href),
+};
+const website = {
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  name: siteName,
+  url: siteUrl,
+  description: siteDescription,
+  publisher: { '@id': organization['@id'] },
+};
+const href = (label: (typeof socialLinks)[number]['label']) =>
+  socialLinks.find((link) => link.label === label)!.href;
+---
+
+<SiteLayout metadata={metadata}>
+  <div class='bento py-2'>
+    <JsonLd data={{ '@graph': [organization, website] }} /><BentoCell
+      area='about'
+      className='flex flex-col justify-center gap-3 p-5'
+      ><h1 class='text-2xl font-semibold sm:text-3xl'>
+        Hello, We are <span class='text-primary'>{siteName}</span>
+      </h1><p class='text-muted-foreground text-sm text-pretty sm:text-base'>
+        An open-source initiative led by the students of MIT for democratizing
+        free software &amp; material
+      </p></BentoCell
+    ><BentoCell
+      area='logo'
+      className='text-primary grid place-items-center'
+      note={stats
+        ? `Established & Active since ${stats.since}`
+        : 'Hello there!'}
+      noteClassName='bottom-3 left-3'
+      ><Logo
+        className='size-2/3 max-w-40 transition-transform duration-500 group-hover:-rotate-6 motion-reduce:transition-none'
+      /></BentoCell
+    ><BentoCell area='stats' className='p-3 sm:p-4'
+      >{
+        stats ? (
+          <div class='@container flex h-full flex-col justify-between gap-2'>
+            <>
+              <h2 class='text-muted-foreground text-sm sm:text-base'>
+                All time stats
+              </h2>
+              <dl class='grid grid-cols-2 gap-x-2 gap-y-2 sm:gap-x-3'>
+                <>
+                  <Stat value={stats.repos} label='repos'>
+                    <BookMarked slot='icon' />
+                  </Stat>
+                  <Stat value={stats.stars} label='stars'>
+                    <Star slot='icon' />
+                  </Stat>
+                  <Stat value={stats.forks} label='forks'>
+                    <GitFork slot='icon' />
+                  </Stat>
+                  <Stat value={stats.followers} label='followers'>
+                    <Users slot='icon' />
+                  </Stat>
+                </>
+              </dl>
+            </>
+          </div>
+        ) : (
+          <Unavailable>
+            GitHub statistics are unavailable right now.
+          </Unavailable>
+        )
+      }</BentoCell
+    ><BentoCell area='post'
+      ><a
+        href={latest ? `/blog/${latest.id}` : '/blog'}
+        class='flex h-full flex-col'
+        ><CoverImage
+          src={latest?.coverImage ?? null}
+          alt=''
+          sizes='(min-width: 64rem) 32rem, 100vw'
+          className='absolute inset-0 aspect-auto transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none'
+        /><div
+          class='from-card via-card/90 relative mt-auto flex flex-col gap-1 bg-gradient-to-t to-transparent p-4 pt-12'
+        >
+          <span class='text-primary text-xs font-medium'>Latest post </span><h2
+            class='line-clamp-2 text-lg font-medium'
+          >
+            {latest?.title ?? 'Read our blog'}
+          </h2>{
+            latest && (
+              <p class='text-muted-foreground text-xs'>
+                {`${formatDate(latest.publishDate)} · ${latest.readingTime}`}
+              </p>
+            )
+          }
+        </div></a
+      ></BentoCell
+    ><BentoCell
+      area='map'
+      note='We accept members from both campuses!'
+      noteClassName='top-3 left-3'><KarnatakaMap /></BentoCell
+    ><BentoCell area='langs'
+      >{
+        stats?.languages.length ? (
+          <LanguagesCard languages={stats.languages} />
+        ) : (
+          <Unavailable>
+            Language statistics are unavailable right now.
+          </Unavailable>
+        )
+      }</BentoCell
+    ><BentoCell area='activity'
+      >{
+        stats ? (
+          <ActivityCard
+            activity={stats.activity}
+            totalCommits={stats.totalCommits}
+          />
+        ) : (
+          <Unavailable>Commit activity is unavailable right now.</Unavailable>
+        )
+      }</BentoCell
+    ><LinkCell
+      area='github'
+      href={href('GitHub')}
+      image='/github.webp'
+      title='GitHub'
+      detail={`@${githubOrg}`}
+      note='Star a repo!'><BrandIcon brand='GitHub' slot='icon' /></LinkCell
+    ><LinkCell
+      area='discord'
+      href={href('Discord')}
+      image='/discord.png'
+      title='Discord'
+      detail='Join the server'
+      note='Come say hi!'><BrandIcon brand='Discord' slot='icon' /></LinkCell
+    ><LinkCell
+      area='teams'
+      href={href('MS Teams')}
+      image='/team.png'
+      title='MS Teams'
+      detail='Join the channel'
+      ><BrandIcon brand='MS Teams' slot='icon' /></LinkCell
+    ><LinkCell
+      area='team'
+      href='/team'
+      image='/team.jpg'
+      title='Our team'
+      detail='Meet the people behind OSF'><UsersRound slot='icon' /></LinkCell
+    >
+  </div>
+</SiteLayout>

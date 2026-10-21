@@ -1,0 +1,41 @@
+---
+import Rss from '@/components/icons/Rss.astro';
+import { feedPath } from '@/lib/seo';
+import { socialLinks } from '@/lib/site';
+import BrandIcon from '@/components/common/BrandIcon.astro';
+import Logo from './Logo.astro';
+import { iconButton } from './styles';
+const year = new Date().getFullYear();
+---
+
+<footer class='border-t'>
+  <div
+    class='mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row'
+  >
+    <div class='text-muted-foreground flex items-center gap-2 text-sm'>
+      <Logo className='size-5 shrink-0' /><p>
+        {`Copyright © ${year} - All rights reserved`}
+      </p>
+    </div><div class='flex items-center gap-1'>
+      {
+        socialLinks.map(({ href, label }) => (
+          <a
+            href={href}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label={label}
+            class={iconButton}
+          >
+            <BrandIcon brand={label} className='size-4' />
+          </a>
+        ))
+      }<a
+        href={feedPath}
+        target='_blank'
+        aria-label='RSS feed'
+        title='RSS feed'
+        class={iconButton}><Rss className='size-4' /></a
+      >
+    </div>
+  </div>
+</footer>

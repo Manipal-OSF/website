@@ -3,23 +3,23 @@
   "private": true,
   "packageManager": "pnpm@11.2.2",
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=22.22.0"
   },
   "scripts": {
     "dev": "with-env development turbo run dev --filter='./apps/*'",
     "build": "with-env production turbo run build",
-    "start": "pnpm --filter @apps/nextjs start",
+    "start": "pnpm --filter @apps/astro start",
     "lint": "turbo run lint",
     "typecheck": "with-env production turbo run typecheck",
     "test": "with-env test turbo run test",
     "email:dev": "pnpm --filter @packages/email dev",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "build:local": "pnpm --filter @apps/astro build:local"
   },
   "devDependencies": {
     "@packages/env": "workspace:*",
     "@tooling/prettier": "workspace:*",
-    "next": "catalog:",
     "prettier": "catalog:",
     "turbo": "^2.5.0"
   },

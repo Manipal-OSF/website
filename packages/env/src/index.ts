@@ -1,7 +1,9 @@
-import { createEnv } from '@t3-oss/env-nextjs';
+import { createEnv } from '@t3-oss/env-core';
 import { z } from 'zod';
 
 export const env = createEnv({
+  clientPrefix: 'PUBLIC_',
+  client: {},
   server: {
     DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }).optional(),
     BETTER_AUTH_SECRET: z.string().min(32).optional(),

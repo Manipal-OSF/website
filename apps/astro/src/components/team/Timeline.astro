@@ -1,0 +1,22 @@
+---
+import type { TimelineYear } from '@/lib/timeline';
+
+import TimelineScroll from './TimelineScroll.astro';
+
+import YearRow from './YearRow.astro';
+const { data } = Astro.props as { data: TimelineYear[] };
+---
+
+<div class='timeline relative'>
+  <TimelineScroll /><div
+    aria-hidden='true'
+    class='bg-border absolute inset-y-0 left-[calc(1rem-1px)] w-0.5 overflow-hidden rounded-full [mask-image:linear-gradient(to_bottom,black_90%,transparent)]'
+  >
+    <div
+      class='timeline-fill via-primary to-primary absolute inset-0 origin-top bg-linear-to-b from-transparent via-5%'
+    >
+    </div>
+  </div><ol class='flex flex-col gap-16 md:gap-24'>
+    {data.map((entry) => <YearRow entry={entry} />)}
+  </ol>
+</div>

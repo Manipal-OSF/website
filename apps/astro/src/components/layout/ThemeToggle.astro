@@ -1,0 +1,66 @@
+---
+import Sun from '@/components/icons/Sun.astro';
+import Moon from '@/components/icons/Moon.astro';
+import { iconButton } from './styles';
+---
+
+<button
+  type='button'
+  data-theme-toggle
+  aria-label='Switch theme'
+  class={iconButton}
+>
+  <span class='theme-sun'><Sun className='size-4' /></span>
+  <span class='theme-moon'><Moon className='size-4' /></span>
+</button>
+<style is:global>
+  :root .theme-sun {
+    display: none;
+  }
+  :root[data-theme='dark'] .theme-sun {
+    display: inline;
+  }
+  :root[data-theme='dark'] .theme-moon {
+    display: none;
+  }
+</style>
+<script>
+  import { DARK_SCHEME_QUERY, THEME_STORAGE_KEY } from '@/lib/theme';
+  const media = matchMedia(DARK_SCHEME_QUERY);
+  const buttons = document.querySelectorAll<HTMLButtonElement>(
+    '[data-theme-toggle]',
+  );
+  const apply = (theme: string) => {
+    document.documentElement.dataset.theme = theme;
+    for (const button of buttons)
+      button.setAttribute(
+        'aria-label',
+        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
+      );
+  };
+  apply(
+    document.documentElement.dataset.theme ??
+      (media.matches ? 'dark' : 'light'),
+  );
+  for (const button of buttons)
+    button.addEventListener('click', () => {
+      const theme =
+        document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      apply(theme);
+      try {
+        if (theme === (media.matches ? 'dark' : 'light'))
+          sessionStorage.removeItem(THEME_STORAGE_KEY);
+        else sessionStorage.setItem(THEME_STORAGE_KEY, theme);
+      } catch {
+        /* Storage is optional. */
+      }
+    });
+  media.addEventListener('change', () => {
+    try {
+      sessionStorage.removeItem(THEME_STORAGE_KEY);
+    } catch {
+      /* Storage is optional. */
+    }
+    apply(media.matches ? 'dark' : 'light');
+  });
+</script>

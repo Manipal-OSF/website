@@ -1,0 +1,19 @@
+---
+import Logo from './Logo.astro';
+import NavLinks from './NavLinks.astro';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class='bg-background/50 sticky top-0 z-50 border-b backdrop-blur-sm'>
+  <div
+    class='text-foreground mx-auto grid h-14 w-full max-w-5xl grid-cols-3 items-center px-4'
+  >
+    <Logo className='size-9 md:size-10' /><nav class='place-self-center'>
+      <ul
+        class='text-muted-foreground grid grid-flow-col gap-4 text-sm sm:gap-5'
+      >
+        <NavLinks />
+      </ul>
+    </nav><div class='flex items-center justify-end'><ThemeToggle /></div>
+  </div>
+</header>

@@ -1,0 +1,27 @@
+---
+import type { BlogPost, PostAuthor } from '@/types/blog';
+import PostMeta from './PostMeta.astro';
+import Tags from './Tags.astro';
+interface PostHeaderProps {
+  post: Pick<
+    BlogPost,
+    'title' | 'description' | 'publishDate' | 'readingTime' | 'tags'
+  >;
+  authors: PostAuthor[];
+}
+const { post, authors } = Astro.props as PostHeaderProps;
+---
+
+<header class='flex flex-col items-center gap-4 text-center'>
+  <h1 class='text-foreground text-3xl leading-tight font-medium sm:text-4xl'>
+    {post.title}
+  </h1>{
+    post.description && <p class='text-muted-foreground'>{post.description}</p>
+  }<PostMeta
+    authors={authors}
+    publishDate={post.publishDate}
+    readingTime={post.readingTime}
+    linkAuthors
+    className='justify-center text-sm'
+  /><Tags tags={post.tags} className='justify-center' />
+</header>

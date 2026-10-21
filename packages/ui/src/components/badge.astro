@@ -1,0 +1,19 @@
+---
+import { cn } from '../lib/utils';
+interface Props {
+  variant?: 'outline' | 'default';
+  className?: string;
+}
+const { variant = 'default', className } = Astro.props;
+---
+
+<span
+  data-slot='badge'
+  class={cn(
+    'inline-flex items-center justify-center rounded-full border px-2 py-0.5 text-xs font-medium whitespace-nowrap',
+    variant === 'outline'
+      ? 'border-border'
+      : 'border-transparent bg-primary text-primary-foreground',
+    className,
+  )}><slot /></span
+>

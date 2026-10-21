@@ -1,0 +1,45 @@
+---
+import Avatar from '@packages/ui/components/avatar';
+import type { Person } from '@/lib/timeline';
+interface Props {
+  people: Person[];
+  secondsPerPerson?: number;
+}
+const { people, secondsPerPerson = 3 } = Astro.props;
+---
+
+<div
+  class='group overflow-hidden mask-x-from-90% mask-x-to-100% py-1 motion-reduce:overflow-x-auto'
+>
+  <div
+    style={{ '--marquee-duration': `${people.length * secondsPerPerson}s` }}
+    class='animate-marquee flex w-max group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused] motion-reduce:animate-none'
+  >
+    {
+      [false, true].map((hidden) => (
+        <ul
+          aria-hidden={hidden || undefined}
+          class:list={[
+            'flex shrink-0 gap-3 pr-3',
+            hidden && 'motion-reduce:hidden',
+          ]}
+        >
+          {people.map((person) => (
+            <li>
+              <a
+                href={person.href}
+                target='_blank'
+                rel='noopener noreferrer'
+                tabindex={hidden ? -1 : undefined}
+                class='bg-card hover:border-primary/50 flex items-center gap-2 rounded-full border-2 py-1 pr-4 pl-1 text-sm whitespace-nowrap transition-colors'
+              >
+                <Avatar src={person.avatar} fallback={person.name[0]} />
+                {person.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>

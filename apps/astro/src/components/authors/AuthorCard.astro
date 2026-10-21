@@ -1,0 +1,82 @@
+---
+import type { Author } from '@/types/blog';
+import AuthorAvatar from './AuthorAvatar.astro';
+import BrandIcon from '@/components/common/BrandIcon.astro';
+import Globe from '@/components/icons/Globe.astro';
+import Mail from '@/components/icons/Mail.astro';
+import { iconButton } from '@/components/layout/styles';
+interface Props {
+  author: Author;
+  linkToProfile?: boolean;
+}
+const { author, linkToProfile = true } = Astro.props;
+const Profile = linkToProfile ? 'a' : 'span';
+---
+
+<div class='has-[a:hover]:bg-muted/50 rounded-xl border p-4 transition-colors'>
+  <div class='flex flex-wrap gap-4'>
+    <Profile
+      href={linkToProfile ? `/authors/${author.id}` : undefined}
+      class='hover:ring-primary block rounded-md transition-shadow hover:ring-2'
+      ><AuthorAvatar
+        name={author.name}
+        avatar={author.avatar}
+        sizes='8rem'
+        className='size-32 rounded-md text-4xl'
+      /></Profile
+    >
+    <div class='flex grow flex-col justify-between gap-y-4'>
+      <div>
+        <div class='flex flex-wrap items-center gap-x-2'>
+          <h3 class='text-foreground text-lg font-medium'>
+            <Profile
+              href={linkToProfile ? `/authors/${author.id}` : undefined}
+              class='hover:underline'>{author.name}</Profile
+            >
+          </h3>
+          {
+            author.pronouns && (
+              <span class='text-muted-foreground text-sm'>
+                ({author.pronouns})
+              </span>
+            )
+          }
+        </div>{
+          author.bio && (
+            <p class='text-muted-foreground text-sm'>{author.bio}</p>
+          )
+        }
+      </div>
+      {
+        author.links.length > 0 && (
+          <ul class='-ml-2 flex flex-wrap gap-1'>
+            {author.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target={
+                    link.href.startsWith('mailto:') ? undefined : '_blank'
+                  }
+                  rel='noopener noreferrer'
+                  aria-label={link.label}
+                  title={link.label}
+                  class={`${iconButton} [&>svg]:size-4`}
+                >
+                  {link.label === 'Website' ? (
+                    <Globe />
+                  ) : link.label === 'Email' ? (
+                    <Mail />
+                  ) : (
+                    <BrandIcon
+                      brand={link.label as 'GitHub' | 'LinkedIn' | 'X'}
+                    />
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</div>

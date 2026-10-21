@@ -1,22 +1,22 @@
 import { defineConfig } from 'eslint/config';
-import next from 'eslint-config-next';
+import react from 'eslint-plugin-react';
+import hooks from 'eslint-plugin-react-hooks';
 import base from './base.mjs';
-
-// Reuse the installed React and Hooks rules without Next.js application rules.
-const react = next.find((config) => config.name === 'next');
-
 export default defineConfig([
-  {
-    ...react,
-    name: 'shared/react',
-    plugins: Object.fromEntries(
-      Object.entries(react.plugins).filter(([name]) => name !== '@next/next')
-    ),
-    rules: Object.fromEntries(
-      Object.entries(react.rules).filter(
-        ([name]) => !name.startsWith('@next/next/')
-      )
-    ),
-  },
   ...base,
+  {
+    files: ['**/*.tsx'],
+    ...react.configs.flat.recommended,
+    settings: { react: { version: 'detect' } },
+    rules: {
+      ...react.configs.flat.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+    },
+  },
+  {
+    files: ['**/*.tsx'],
+    plugins: { 'react-hooks': hooks },
+    rules: hooks.configs.recommended.rules,
+  },
 ]);

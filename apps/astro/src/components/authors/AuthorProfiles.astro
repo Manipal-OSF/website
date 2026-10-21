@@ -1,0 +1,21 @@
+---
+import type { PostAuthor } from '@/types/blog';
+import AuthorCard from './AuthorCard.astro';
+interface Props {
+  authors: PostAuthor[];
+}
+const profiles = Astro.props.authors.filter((author) => author.isRegistered);
+---
+
+{
+  profiles.length > 0 && (
+    <section class='flex flex-col gap-4'>
+      <h2 class='text-foreground text-lg font-medium'>
+        {profiles.length === 1 ? 'About the author' : 'About the authors'}
+      </h2>
+      {profiles.map((author) => (
+        <AuthorCard author={author} />
+      ))}
+    </section>
+  )
+}

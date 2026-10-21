@@ -3,35 +3,24 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./components/*": "./src/components/*.tsx",
-    "./lib/*": "./src/lib/*.ts",
-    "./hooks/*": "./src/hooks/*.ts"
+    "./components/*": "./src/components/*.astro",
+    "./lib/*": "./src/lib/*.ts"
   },
   "scripts": {
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "ui:add": "shadcn add"
+    "typecheck": "astro check"
   },
   "dependencies": {
-    "@base-ui/react": "catalog:",
-    "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0"
   },
   "devDependencies": {
     "@tooling/eslint": "workspace:*",
     "@tooling/typescript": "workspace:*",
+    "@tooling/tailwind": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "shadcn": "catalog:",
-    "@tooling/tailwind": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "astro": "^7.4.1",
+    "@astrojs/check": "^0.9.11"
   }
 }

@@ -1,0 +1,60 @@
+---
+import ArrowUpRight from '@/components/icons/ArrowUpRight.astro';
+import BrandIcon from '@/components/common/BrandIcon.astro';
+import Badge from '@packages/ui/components/badge';
+import type { Milestone } from '@/lib/timeline';
+import SpotlightCard from './SpotlightCard.astro';
+
+import PersonLink from './PersonLink.astro';
+
+const { milestone } = Astro.props as { milestone: Milestone };
+---
+
+<li class='timeline-reveal'>
+  <SpotlightCard
+    ><div class='flex flex-col gap-2 p-4 sm:p-5'>
+      <div class='flex flex-wrap items-center justify-between gap-2'>
+        <span class='text-primary text-xs font-medium'>{milestone.when}</span>{
+          milestone.tags && (
+            <ul class='flex flex-wrap gap-1'>
+              {milestone.tags.map((tag) => (
+                <li>
+                  <Badge variant='outline' className='text-muted-foreground'>
+                    {tag}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div><h3 class='text-lg font-medium'>{milestone.title}</h3><p
+        class='text-muted-foreground text-sm text-pretty'
+      >
+        {milestone.description}
+      </p>{
+        milestone.people && (
+          <ul class='mt-1 flex flex-wrap gap-2'>
+            {milestone.people.map((person) => (
+              <li>
+                <PersonLink person={person} />
+              </li>
+            ))}
+          </ul>
+        )
+      }{
+        milestone.link && (
+          <a
+            href={milestone.link.href}
+            target='_blank'
+            rel='noopener noreferrer'
+            class='text-muted-foreground hover:text-primary mt-1 flex w-fit items-center gap-1.5 text-xs transition-colors'
+          >
+            <BrandIcon brand='GitHub' className='size-3.5' />
+            {milestone.link.label}
+            <ArrowUpRight className='size-3.5' />
+          </a>
+        )
+      }
+    </div></SpotlightCard
+  >
+</li>

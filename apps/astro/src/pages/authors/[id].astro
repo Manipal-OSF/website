@@ -1,0 +1,64 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import AuthorCard from '@/components/authors/AuthorCard.astro';
+import PostList from '@/components/blog/PostList.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import Container from '@/components/common/Container.astro';
+import JsonLd from '@/components/common/JsonLd.astro';
+import { getAllAuthors, getAuthor } from '@/lib/content/authors';
+import { getPostsByAuthor } from '@/lib/content/posts';
+import { absoluteUrl, pageMetadata } from '@/lib/seo';
+
+export async function getStaticPaths() {
+  return (await getAllAuthors()).map((author) => ({
+    params: { id: author.id },
+  }));
+}
+const author = await getAuthor(Astro.params.id!);
+if (!author) return Astro.redirect('/404');
+const posts = await getPostsByAuthor(author.id);
+const metadata = pageMetadata({
+  title: author.name,
+  description: author.bio ?? `Posts by ${author.name}.`,
+  path: `/authors/${author.id}`,
+  openGraph: { type: 'profile' },
+});
+---
+
+<SiteLayout metadata={metadata}>
+  <Container className='flex flex-col gap-6'
+    ><JsonLd
+      data={{
+        '@type': 'ProfilePage',
+        url: absoluteUrl(`/authors/${author.id}`),
+        mainEntity: {
+          '@type': 'Person',
+          name: author.name,
+          description: author.bio ?? undefined,
+          image: author.avatar ? absoluteUrl(author.avatar) : undefined,
+          sameAs: author.links
+            .filter((link) => link.href.startsWith('https://'))
+            .map((link) => link.href),
+        },
+      }}
+    /><Breadcrumbs
+      items={[
+        { label: 'Blog', href: '/blog' },
+        { label: 'Authors', href: '/authors' },
+        { label: author.name },
+      ]}
+    /><AuthorCard author={author} linkToProfile={false} /><h2
+      class='text-foreground text-2xl font-medium'
+    >
+      Posts by {author.name}
+    </h2>{
+      posts.length === 0 ? (
+        <p class='text-muted-foreground text-sm'>
+          No posts available from this author.
+        </p>
+      ) : (
+        <PostList posts={posts} />
+      )
+    }</Container
+  >
+</SiteLayout>

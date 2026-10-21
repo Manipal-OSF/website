@@ -4,13 +4,17 @@
   "type": "module",
   "exports": {
     "./base": "./base.mjs",
-    "./nextjs": "./nextjs.mjs",
-    "./react": "./react.mjs"
+    "./react": "./react.mjs",
+    "./astro": "./astro.mjs"
   },
   "dependencies": {
     "eslint": "catalog:",
-    "eslint-config-next": "catalog:",
-    "next": "catalog:"
+    "@eslint/js": "^9.39.0",
+    "typescript-eslint": "^8.0.0",
+    "globals": "^16.0.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-astro": "^2.0.0"
   },
   "scripts": {
     "lint": "eslint ."

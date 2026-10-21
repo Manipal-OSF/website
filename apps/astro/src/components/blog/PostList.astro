@@ -1,0 +1,16 @@
+---
+import BlogCard from './BlogCard.astro';
+import type { BlogPost } from '@/types/blog';
+type PostListProps = { posts: BlogPost[] };
+const { posts } = Astro.props as PostListProps;
+---
+
+<ul class='flex flex-col gap-4'>
+  {
+    posts.map((post) => (
+      <li>
+        <BlogCard post={post} />
+      </li>
+    ))
+  }
+</ul>

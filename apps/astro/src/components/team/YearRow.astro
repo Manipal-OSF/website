@@ -1,0 +1,35 @@
+---
+import type { TimelineYear } from '@/lib/timeline';
+
+import MilestoneCard from './MilestoneCard.astro';
+
+const { entry } = Astro.props as { entry: TimelineYear };
+---
+
+<li class='timeline-row flex gap-4 md:gap-0'>
+  <div class='sticky top-24 flex w-8 shrink-0 items-center self-start md:w-56'>
+    <span
+      class='bg-background grid size-8 shrink-0 place-items-center rounded-full border-2'
+      ><span class='bg-border relative size-3 rounded-full'
+        ><span class='timeline-dot bg-primary absolute inset-0 rounded-full'
+        ></span></span
+      ></span
+    ><h2
+      class='timeline-year hidden pl-6 text-4xl font-semibold tabular-nums md:block'
+    >
+      {entry.year}
+    </h2>
+  </div><div class='flex min-w-0 grow flex-col gap-3'>
+    <h2
+      class='timeline-year text-2xl leading-8 font-semibold tabular-nums md:hidden'
+    >
+      {entry.year}
+    </h2><ol class='flex flex-col gap-3'>
+      {
+        entry.milestones.map((milestone) => (
+          <MilestoneCard milestone={milestone} />
+        ))
+      }
+    </ol>
+  </div>
+</li>

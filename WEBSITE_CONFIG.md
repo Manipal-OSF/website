@@ -1,16 +1,16 @@
 # Website configuration
 
-The website is in `apps/nextjs/`. Source files are under `src/`, while `content/`, `public/`, and Next.js configuration are at the app root. Run `pnpm dev` from the repository root. No environment variables are needed for the public site. Shared environment files belong at the repository root; never prefix secrets with `NEXT_PUBLIC_`. Paths below are relative to `apps/nextjs/`.
+The website is in `apps/astro/`. Source files are under `src/`, while `content/`, `public/`, and Astro configuration are at the app root. Run `pnpm dev` from the repository root. No environment variables are needed for the public site. Shared environment files belong at the repository root; never prefix secrets with `PUBLIC_`. Paths below are relative to `apps/astro/`.
 
 ## Home page
 
-The home page is a bento grid (`src/app/page.tsx`, laid out by the `.bento` rules in `src/styles/globals.css`). Its statistics, language breakdown, and commit calendar come from the public GitHub API for the [Manipal-OSF](https://github.com/Manipal-OSF) organization (`src/lib/github.ts`). Responses are cached for a day and the page re-renders hourly; if GitHub is unreachable, those cells say so instead of failing the page. Unauthenticated requests are limited to 60 an hour, so set `GITHUB_TOKEN` in the repository-root `.env` or the hosting environment if builds or previews run often. A fine-grained token without any permissions is enough.
+The home page is a bento grid (`src/pages/index.astro`, laid out by the `.bento` rules in `src/styles/globals.css`). Its statistics, language breakdown, and commit calendar come from the public GitHub API for the [Manipal-OSF](https://github.com/Manipal-OSF) organization (`src/lib/github.ts`). Home and team pages use Vercel ISR with a one-hour expiration. Duplicate GitHub calls within one render share a response. If GitHub is unreachable, the website returns an uncached 503 fallback, preserving offline messaging and the authored team timeline. On Vercel, unsuccessful regeneration retains the previous cached page. Unauthenticated requests are limited to 60 an hour, so set `GITHUB_TOKEN` in the repository-root `.env` or the hosting environment if live page regeneration or previews run often. A fine-grained token without any permissions is enough.
 
-The map uses [MapLibre](https://maplibre.org/) with [OpenFreeMap](https://openfreemap.org/) tiles; edit `regions` in `src/components/home/KarnatakaMap.tsx` to change the places in its menu.
+The map uses [MapLibre](https://maplibre.org/) with [OpenFreeMap](https://openfreemap.org/) tiles; edit `regions` in `src/lib/map.ts` to change the places in its menu.
 
 ## SEO
 
-It's added now
+The shared Astro layout renders canonical URLs, social metadata, RSS discovery, icons, and the manifest. Pages retain their JSON-LD structured data. `/sitemap.xml`, `/robots.txt`, `/blog/feed.xml`, `/opengraph-image`, and each published post's `/blog/<id>/opengraph-image` are generated at build time. Social previews use a bundled Noto Sans font; its license is included beside the font.
 
 ## Write a blog post
 
@@ -68,6 +68,6 @@ Only `name` is required. `avatar` must be a local public path (place the image i
 
 ## Publish
 
-Change `status` to `published`, commit the Markdown and any images, and deploy. App Router Server Components and `generateStaticParams` generate blog pages during the production build; additions, edits, and removals require a rebuild and deployment. During development, the content loader reads files on each page request. Reload the page to see content changes; new published IDs work without restarting the dev server.
+Change `status` to `published`, commit the Markdown and any images, and deploy. Astro content collections and `getStaticPaths` generate blog and author pages during the production build; additions, edits, and removals require a rebuild and deployment. During development, Astro watches the content collections; saved changes and new published IDs work without restarting the dev server.
 
 Unknown or draft post URLs return 404. Historical hosted posts must be exported and converted to this format separately, preserving their IDs if their existing URLs need to keep working.

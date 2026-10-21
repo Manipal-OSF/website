@@ -1,5 +1,5 @@
 {
-  "extends": "@tooling/typescript/react",
-  "include": ["**/*.ts", "**/*.tsx"],
+  "extends": "astro/tsconfigs/strict",
+  "include": ["**/*.ts", "**/*.astro"],
   "exclude": ["node_modules"]
 }

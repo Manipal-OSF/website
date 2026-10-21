@@ -1,0 +1,36 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import AuthorCard from '@/components/authors/AuthorCard.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import Container from '@/components/common/Container.astro';
+import { getAllAuthors } from '@/lib/content/authors';
+import { pageMetadata } from '@/lib/seo';
+import { siteName } from '@/lib/site';
+
+const authors = await getAllAuthors();
+const metadata = pageMetadata({
+  title: 'Authors',
+  description: `The people who write for the ${siteName} blog.`,
+  path: '/authors',
+});
+---
+
+<SiteLayout metadata={metadata}>
+  <Container className='flex flex-col gap-6'
+    ><Breadcrumbs
+      items={[{ label: 'Blog', href: '/blog' }, { label: 'Authors' }]}
+    />{
+      authors.length === 0 ? (
+        <p class='text-muted-foreground text-sm'>No authors yet.</p>
+      ) : (
+        <ul class='flex flex-col gap-4'>
+          {authors.map((author) => (
+            <li>
+              <AuthorCard author={author} />
+            </li>
+          ))}
+        </ul>
+      )
+    }</Container
+  >
+</SiteLayout>

@@ -8,9 +8,8 @@ node_modules/
 # testing
 coverage/
 
-# next.js
-.next/
-out/
+# Astro
+.astro/
 
 # production
 build/
@@ -38,7 +37,6 @@ email-out/
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 /.yarn
 /.yarnrc.yml
@@ -47,3 +45,7 @@ next-env.d.ts
 .turbo/
 dist/
 .cache/
+
+# Legacy local Next build artifacts
+.next/
+next-env.d.ts

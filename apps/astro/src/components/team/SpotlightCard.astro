@@ -1,0 +1,33 @@
+---
+import { cn } from '@packages/ui/lib/utils';
+interface Props {
+  className?: string;
+}
+---
+
+<div
+  data-spotlight
+  class={cn(
+    'group/spot bg-card relative overflow-hidden rounded-xl border-2',
+    Astro.props.className,
+  )}
+>
+  <div
+    aria-hidden='true'
+    class='pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/spot:opacity-100 motion-reduce:transition-none'
+    style={{
+      background:
+        'radial-gradient(18rem circle at var(--spot-x, 50%) var(--spot-y, 50%), color-mix(in srgb, var(--primary) 14%, transparent), transparent 70%)',
+    }}
+  >
+  </div>
+  <div class='relative'><slot /></div>
+</div>
+<script>
+  for (const card of document.querySelectorAll<HTMLElement>('[data-spotlight]'))
+    card.addEventListener('pointermove', (event) => {
+      const box = card.getBoundingClientRect();
+      card.style.setProperty('--spot-x', `${event.clientX - box.left}px`);
+      card.style.setProperty('--spot-y', `${event.clientY - box.top}px`);
+    });
+</script>

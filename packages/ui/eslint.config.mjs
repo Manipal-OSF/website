@@ -1,1 +1,1 @@
-export { default } from '@tooling/eslint/react';
+export { default } from '@tooling/eslint/astro';

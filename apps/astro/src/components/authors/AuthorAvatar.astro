@@ -1,0 +1,17 @@
+---
+import Avatar from '@packages/ui/components/avatar';
+interface Props {
+  name: string;
+  avatar: string | null;
+  className?: string;
+  sizes: string;
+}
+const { name, avatar, className } = Astro.props;
+---
+
+<Avatar
+  src={avatar}
+  alt={`Avatar of ${name}`}
+  fallback={name[0]?.toUpperCase() ?? ''}
+  className={className}
+/>

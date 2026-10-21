@@ -1,8 +1,48 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
+  "framework": "astro",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm build --filter=@apps/nextjs...",
-  "devCommand": "pnpm --filter @apps/nextjs dev --port $PORT",
-  "outputDirectory": "apps/nextjs/.next"
+  "buildCommand": "pnpm build --filter=@apps/astro... && node scripts/prepare-vercel.mjs",
+  "devCommand": "pnpm --filter @apps/astro dev --port $PORT",
+  "redirects": [
+    {
+      "source": "/services",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/events",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "on"
+        }
+      ]
+    },
+    {
+      "source": "/opengraph-image",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    },
+    {
+      "source": "/blog/:uid/opengraph-image",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    }
+  ]
 }

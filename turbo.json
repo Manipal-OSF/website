@@ -9,7 +9,7 @@
     "RESEND_FROM_EMAIL",
     "GITHUB_TOKEN"
   ],
-  "globalPassThroughEnv": ["CI", "VERCEL", "VERCEL_*", "NEXT_PRIVATE_*"],
+  "globalPassThroughEnv": ["CI", "VERCEL", "VERCEL_*", "ASTRO_TARGET"],
   "tasks": {
     "topo": {
       "dependsOn": ["^topo"]
@@ -20,7 +20,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".vercel/output/**", ".astro/**"]
     },
     "lint": {
       "dependsOn": ["^topo"],
