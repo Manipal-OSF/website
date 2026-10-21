@@ -1,0 +1,12 @@
+{
+  "name": "@tooling/typescript",
+  "private": true,
+  "exports": {
+    "./base": "./base.json",
+    "./nextjs": "./nextjs.json",
+    "./react": "./react.json"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

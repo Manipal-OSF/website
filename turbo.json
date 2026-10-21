@@ -1,0 +1,38 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalDependencies": [".env*"],
+  "globalEnv": [
+    "DATABASE_URL",
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "GITHUB_TOKEN"
+  ],
+  "globalPassThroughEnv": ["CI", "VERCEL", "VERCEL_*", "NEXT_PRIVATE_*"],
+  "tasks": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "lint": {
+      "dependsOn": ["^topo"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^topo"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^topo"],
+      "outputs": []
+    }
+  }
+}

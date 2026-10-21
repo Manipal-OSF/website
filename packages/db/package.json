@@ -1,0 +1,26 @@
+{
+  "name": "@packages/db",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "catalog:",
+    "@neondatabase/serverless": "^1.2.0",
+    "@packages/env": "workspace:*"
+  },
+  "devDependencies": {
+    "@tooling/eslint": "workspace:*",
+    "@tooling/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "drizzle-kit": "^0.31.11"
+  }
+}

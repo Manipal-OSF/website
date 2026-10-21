@@ -1,12 +1,12 @@
 # Website configuration
 
-All source, public assets, and configuration are at the repository root. Run `pnpm dev` from this directory. No environment variables are needed for the existing site. Future server features can read private values from `.env.local`; never prefix secrets with `NEXT_PUBLIC_`.
+The website is in `apps/nextjs/`. Source files are under `src/`, while `content/`, `public/`, and Next.js configuration are at the app root. Run `pnpm dev` from the repository root. No environment variables are needed for the public site. Shared environment files belong at the repository root; never prefix secrets with `NEXT_PUBLIC_`. Paths below are relative to `apps/nextjs/`.
 
 ## Home page
 
-The home page is a bento grid (`app/page.tsx`, laid out by the `.bento` rules in `styles/globals.css`). Its statistics, language breakdown, and commit calendar come from the public GitHub API for the [Manipal-OSF](https://github.com/Manipal-OSF) organization (`lib/github.ts`). Responses are cached for a day and the page re-renders hourly; if GitHub is unreachable, those cells say so instead of failing the page. Unauthenticated requests are limited to 60 an hour, so set `GITHUB_TOKEN` in `.env.local` or the hosting environment if builds or previews run often. A fine-grained token without any permissions is enough.
+The home page is a bento grid (`src/app/page.tsx`, laid out by the `.bento` rules in `src/styles/globals.css`). Its statistics, language breakdown, and commit calendar come from the public GitHub API for the [Manipal-OSF](https://github.com/Manipal-OSF) organization (`src/lib/github.ts`). Responses are cached for a day and the page re-renders hourly; if GitHub is unreachable, those cells say so instead of failing the page. Unauthenticated requests are limited to 60 an hour, so set `GITHUB_TOKEN` in the repository-root `.env` or the hosting environment if builds or previews run often. A fine-grained token without any permissions is enough.
 
-The map uses [MapLibre](https://maplibre.org/) with [OpenFreeMap](https://openfreemap.org/) tiles; edit `regions` in `components/home/KarnatakaMap.tsx` to change the places in its menu.
+The map uses [MapLibre](https://maplibre.org/) with [OpenFreeMap](https://openfreemap.org/) tiles; edit `regions` in `src/components/home/KarnatakaMap.tsx` to change the places in its menu.
 
 ## SEO
 
@@ -44,7 +44,7 @@ Write standard Markdown here, including **bold text**, links, fenced code blocks
 - `coverImage` is optional. Place the example image in `public/images/your-post.jpg`; omit this field to display the existing placeholder. Images must use local public paths beginning with a single `/`.
 - The body supports Markdown rather than JSX or raw HTML. Start headings at `##`, since the page already renders the title as an `h1`.
 
-The directory initially contains only `.gitkeep`, so the blog shows “No posts yet.” Invalid metadata and duplicate IDs produce errors identifying the offending post or ID.
+Invalid metadata and duplicate IDs produce errors identifying the offending post or ID.
 
 ## Add an author profile
 

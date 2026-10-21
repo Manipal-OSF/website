@@ -1,0 +1,29 @@
+{
+  "name": "@packages/env",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./load": "./load.mjs"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "^0.13.11",
+    "@next/env": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tooling/eslint": "workspace:*",
+    "@tooling/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "bin": {
+    "with-env": "./bin/with-env.mjs"
+  }
+}

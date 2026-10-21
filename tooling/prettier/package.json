@@ -1,0 +1,17 @@
+{
+  "name": "@tooling/prettier",
+  "private": true,
+  "type": "module",
+  "exports": "./index.cjs",
+  "dependencies": {
+    "prettier": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@tooling/eslint": "workspace:*",
+    "eslint": "catalog:"
+  }
+}

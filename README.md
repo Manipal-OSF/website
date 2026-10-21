@@ -1,90 +1,104 @@
 # Manipal OSF website
 
-The official Manipal OSF website is a single Next.js application at the repository root. It uses TypeScript, React, Tailwind CSS, and the App Router. Blog posts live in the repository as Markdown files.
+The Manipal OSF website lives in a pnpm and Turborepo monorepo modeled on [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo). Next.js uses Turbopack for development and production builds.
 
 ## Development
 
-Use Node.js 24 LTS (minimum 22) and PNPM 11.2.2. Run commands from the repository root:
+Use Node.js 24 LTS (minimum 22.18 for native TypeScript test execution) and pnpm 11.2.2. Run commands from the repository root:
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-Open http://localhost:3000. No environment variables or separate service are required for the existing site; an optional `GITHUB_TOKEN` raises the GitHub API limit for the home page statistics.
-
-Development and production builds use Turbopack.
+Open http://localhost:3000. The public website needs no service credentials. An optional `GITHUB_TOKEN` increases the GitHub API rate limit for statistics.
 
 ```sh
 pnpm typecheck
 pnpm lint
+pnpm test
+pnpm build
+pnpm start
 pnpm format
 ```
 
-CI runs the production build with `pnpm build`. A deployed Node.js application starts with `pnpm start`. Configure hosting to use the repository root, with `pnpm install --frozen-lockfile` as the install command and `pnpm build` as the build command.
+`dev` starts workspaces under `apps/`. `build`, `lint`, `typecheck`, and `test` use Turbo's dependency graph and cache. Development servers and email previews are uncached. Build artifacts exclude `.next/cache` from Turbo storage. Environment changes invalidate task caches.
 
-See [website configuration](./WEBSITE_CONFIG.md) for the Markdown format, images, and publishing instructions. The blog initially displays “No posts yet.” Add your own content to `content/posts/`; existing hosted content is not copied automatically.
-
-The `@next/mdx` component registry lives in `mdx-components.tsx` at the repository root, beside `app/`, as required by Next.js. Keep it there when adding MDX components. The filesystem blog continues to render Markdown using `MarkdownRenderer`.
-
-## UI components
-
-shadcn/ui is configured with the Base UI Nova style, TypeScript, React Server Components, Lucide icons, and the `@/*` import alias pointing to the repository root. Its CSS variables extend the existing Nord light and Catppuccin dark themes, using the existing `data-theme` switch.
-
-Import the initial Button from `@/components/ui/button` and shared class helpers from `@/lib/utils`. Add more components from the repository root:
+To target the website directly:
 
 ```sh
-pnpm exec shadcn add input
+pnpm --filter @apps/nextjs dev
+pnpm build --filter=@apps/nextjs...
+pnpm --filter @apps/nextjs ui:add input
 ```
 
-`components.json` points to `styles/globals.css`; Tailwind v4 does not need a separate Tailwind configuration file. Keep the existing palettes and `data-theme` convention when adding theme tokens.
+## Workspace structure
+
+| Location         | Package           | Responsibility                                                     |
+| ---------------- | ----------------- | ------------------------------------------------------------------ |
+| `apps/nextjs`    | `@apps/nextjs`    | App Router website, content, public assets, and site-specific code |
+| `packages/env`   | `@packages/env`   | T3 Env validation and root environment loading                     |
+| `packages/db`    | `@packages/db`    | Lazy Neon HTTP / Drizzle database clients                          |
+| `packages/auth`  | `@packages/auth`  | Configurable Better Auth factory                                   |
+| `packages/ui`    | `@packages/ui`    | Shared Base UI components and class helpers                        |
+| `packages/email` | `@packages/email` | React Email templates and local preview server                     |
+| `tooling/*`      | `@tooling/*`      | ESLint, Prettier, TypeScript, and Tailwind configuration           |
+
+Workspace imports use real package exports and `workspace:*` dependencies. The website's `@/*` alias refers to its `src/` directory. Shared dependencies are versioned centrally in the pnpm catalog.
+
+See [website configuration](./WEBSITE_CONFIG.md) for posts, authors, images, and publishing. Content lives under `apps/nextjs/content/`. The MDX registry lives in `apps/nextjs/src/mdx-components.tsx`, beside `src/app/`.
 
 ## Environment variables
 
-The public site runs without service credentials. When preparing backend features, copy the example file:
+Keep environment files at the repository root:
 
 ```sh
-cp .env.example .env.local
+cp .env.example .env
 ```
 
-`lib/env.ts` uses T3 Env and Zod to validate settings during development and builds. Service settings are optional, and blank values are treated as unset. Values supplied must be valid. Import `env` from `@/lib/env` in server code instead of reading `process.env` directly. All settings below are server variables; do not expose credentials using `NEXT_PUBLIC_`.
+`with-env` loads root environment files before running Turbo or an application command. It uses Next.js environment loading, resolving the root from the loader's location rather than the current directory. Existing process variables win, followed by `.env.<mode>.local`, `.env.local`, `.env.<mode>`, and `.env`. Test mode skips `.env.local`. Vercel supplies process variables through project settings and needs no committed environment file.
 
-| Variable             | Purpose                                                                                |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| `DATABASE_URL`       | Neon PostgreSQL connection string (`postgres://` or `postgresql://`).                  |
-| `BETTER_AUTH_SECRET` | Future auth secret of at least 32 characters; generate with `openssl rand -base64 32`. |
-| `BETTER_AUTH_URL`    | Future auth server origin, such as `http://localhost:3000`.                            |
-| `RESEND_API_KEY`     | API key required when calling `getResend()`.                                           |
-| `RESEND_FROM_EMAIL`  | Plain sender email address on a Resend-verified domain, for future sending features.   |
+Import `env` from `@packages/env` in server code. T3 Env and Zod validate supplied values, treat empty strings as unset, and prevent access to server variables in browser code. The filesystem loader is separate at `@packages/env/load`; do not import it into application runtime code.
 
-Real `.env*` files are ignored by Git; `.env.example` contains no credentials and is tracked.
+| Variable             | Purpose                                                         |
+| -------------------- | --------------------------------------------------------------- |
+| `DATABASE_URL`       | Optional Neon PostgreSQL URL (`postgres://` or `postgresql://`) |
+| `BETTER_AUTH_SECRET` | Optional auth secret, at least 32 characters                    |
+| `BETTER_AUTH_URL`    | Optional auth origin for a future app instance                  |
+| `RESEND_API_KEY`     | Required when calling the website's `getResend()`               |
+| `RESEND_FROM_EMAIL`  | Optional sender address on a verified Resend domain             |
+| `GITHUB_TOKEN`       | Optional higher GitHub API rate limit                           |
+
+All current variables are server-side. Keep `.env*` ignored except the credential-free example. When adding variables, update the shared validation schema, example file, and Turbo environment inputs together. Future apps can compose their own validation from this package as their requirements diverge.
 
 ## Database and authentication
 
-Drizzle ORM, Drizzle Kit, the Neon serverless driver, Better Auth, and its Drizzle adapter are installed for later use. Database clients, application/auth schemas, migrations, auth routes, and login pages are deferred. The blog still uses repository Markdown files.
+`@packages/db` exports `createDb(url, schema?)` and `getDb()`. Constructing a client does not execute a query. `getDb()` lazily creates a shared schema-less client from `env.DATABASE_URL`, with a clear error when it is unset. Use `createDb` when supplying a typed schema or a different database URL. These APIs are server-only. Neon HTTP supports individual queries and non-interactive batches; interactive transactions require a different driver.
 
-When implementing these features, configure a Neon PostgreSQL database with the validated `DATABASE_URL`, use `drizzle-orm/neon-http` for HTTP queries (or `drizzle-orm/neon-serverless` when interactive transactions are needed), and connect Better Auth through `@better-auth/drizzle-adapter` with PostgreSQL provider `pg`. Generate the auth schema from the final auth configuration before creating Drizzle migrations. Add the auth Route Handler under `app/api/auth/[...all]/route.ts` and keep client auth code separate from server credentials.
+`@packages/auth` exports `createAuth({ db, schema, options })`. Supply an explicit Drizzle auth schema and app-specific `secret`, `baseURL`, and `trustedOrigins`; `options` also accepts Better Auth providers, plugins, and session configuration. The factory preserves plugin and additional-field inference, uses the PostgreSQL Drizzle adapter, and disables interactive transactions. It does not establish a global auth singleton or shared cookie domain.
 
-Drizzle Kit runs outside the Next.js runtime. Before adding its configuration, use `@next/env` to load the root `.env*` files so CLI commands follow the same environment loading rules as Next.js.
+The website does not instantiate auth or mount auth endpoints. Auth tables, login methods, schema generation, migrations, and login pages remain deferred. When implementing them, generate the schema from the final auth configuration, keep tables and migrations in `packages/db`, and mount the framework-specific handler inside the consuming app. Set each app's URL and trusted origins explicitly. Drizzle Kit is owned by the database package; migration commands will be added with the actual schema.
+
+## Shared UI and Tailwind
+
+Import components from `@packages/ui/components/button` (or `badge` / `avatar`) and `cn` from `@packages/ui/lib/utils`. Add shadcn components from the website workspace using `pnpm --filter @apps/nextjs ui:add <component>`; its aliases route shared primitives to the UI package.
+
+`@tooling/tailwind/styles.css` provides Tailwind v4, shared animation imports, theme tokens, the `data-theme` dark variant, common base styles, and shared UI source registration. Applications import this CSS and register their own source directory with `@source`. App-specific layout and typography remain local. `@tooling/tailwind/postcss` exports the PostCSS configuration. Keep the existing Nord light and Catppuccin dark palettes.
 
 ## Email templates
-
-Resend and React Email are ready for future email features. Components and rendering utilities use the current `react-email` package; `@react-email/ui` provides local previews.
 
 ```sh
 pnpm email:dev
 ```
 
-Open http://localhost:3001 to preview `emails/example.tsx`. Previews need no API key and send no email.
+Open http://localhost:3001 to preview `packages/email/templates/example.tsx`. Previews need no API key and send no email. Apps can import the template from `@packages/email/example`.
 
-Server code can import `getResend` from `@/lib/resend` to obtain a lazily initialized Resend client. It throws a clear error if `RESEND_API_KEY` is unset when called. When adding a sending feature, pass a verified sender, recipient, subject, and React Email template to `getResend().emails.send(...)`, and handle the returned `error`. There are no sending endpoints or automatic email triggers yet.
+The website retains its lazy `getResend()` helper at `@/lib/resend`. There are no sending endpoints or automatic email triggers.
 
-## Server features
+## Vercel and additional apps
 
-Add server endpoints as Route Handlers in `app/**/route.ts`, using the Web `Request` and `Response` APIs or Next.js `NextRequest` and `NextResponse`. Keep private environment variables server-side and put reusable server logic in `lib/`. Async Server Components, post metadata, and `generateStaticParams` call the server-only filesystem blog loader directly; it does not make HTTP calls.
+The root `vercel.json` deploys `@apps/nextjs` using pnpm, a filtered Turbo build, and `apps/nextjs/.next` as the output directory. Keep the existing Vercel project's Root Directory at the repository root (empty/default), select Node.js 24, and enable [Corepack](https://vercel.com/docs/builds/configure-a-build#corepack) (`ENABLE_EXPERIMENTAL_COREPACK=1`) so Vercel uses the package-manager version pinned in `package.json`. Remove conflicting dashboard command overrides. A matching root Next.js dependency supports framework detection with pnpm's isolated installation.
 
-Use a deployment that supports the Next.js Node.js runtime when adding Route Handlers or request-time server rendering.
+Add future applications under `apps/`, name them `@apps/<name>`, declare shared packages using `workspace:*`, and extend shared tooling. Each future app should have its own Vercel project, environment values, and app-specific deployment configuration. The root config remains specific to the current website; it does not deploy every app. For a project rooted in a new app directory, enable access to files outside that root so shared packages are available. Do not reuse the website's root build and output settings for another app.
 
-## Contributing
-
-React, Next.js, TypeScript, Tailwind CSS, and basic HTML knowledge are useful. Contributions to content and bug reports are welcome too.
+GitHub Actions installs with the frozen lockfile and runs typecheck, lint, service-package tests, and the production build. No live database, migration, email, or deployment is required for these checks.
