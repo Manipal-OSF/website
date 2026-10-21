@@ -1,0 +1,114 @@
+---
+import Plus from '@/components/icons/Plus.astro';
+import Minus from '@/components/icons/Minus.astro';
+import Maximize from '@/components/icons/Maximize.astro';
+import Minimize from '@/components/icons/Minimize.astro';
+import MapPin from '@/components/icons/MapPin.astro';
+import { campuses, regions } from '@/lib/map';
+const controlClassName =
+  'text-foreground hover:bg-muted hover:text-primary focus-visible:ring-ring/50 flex size-9 cursor-pointer items-center justify-center transition-colors outline-none focus-visible:ring-3 disabled:cursor-default disabled:opacity-50 [&>svg]:size-5';
+---
+
+<link
+  rel='preconnect'
+  href='https://tiles.openfreemap.org'
+  crossorigin='anonymous'
+/>
+<campus-map class='bg-background absolute inset-0 block'>
+  <div
+    data-map-canvas
+    data-loaded='false'
+    class='h-full w-full transition-opacity duration-500 data-[loaded=false]:opacity-0'
+  >
+  </div>
+  <div
+    data-map-controls
+    class='bg-background absolute top-2 right-2 z-10 flex flex-col divide-y-2 overflow-hidden rounded-lg border-2 shadow-md'
+  >
+    <button
+      data-zoom='in'
+      type='button'
+      aria-label='Zoom in'
+      title='Zoom in'
+      disabled
+      class={controlClassName}><Plus /></button
+    >
+    <button
+      data-zoom='out'
+      type='button'
+      aria-label='Zoom out'
+      title='Zoom out'
+      disabled
+      class={controlClassName}><Minus /></button
+    >
+    <button
+      data-map-fullscreen
+      type='button'
+      aria-label='Fullscreen'
+      title='Fullscreen'
+      class={controlClassName}
+      ><span data-maximize><Maximize /></span><span data-minimize hidden
+        ><Minimize /></span
+      ></button
+    >
+  </div>
+  <label
+    data-map-picker
+    class='bg-background/85 absolute bottom-2 left-2 z-10 flex items-center gap-1.5 rounded-lg border-2 px-2 py-1 text-xs backdrop-blur-sm'
+    ><MapPin className='text-primary size-3.5' /><span
+      class='text-muted-foreground'>Show</span
+    ><select
+      aria-label='Show campus or region'
+      disabled
+      class='bg-background text-foreground cursor-pointer font-medium outline-none focus-visible:ring-2'
+      >{
+        regions.map((region) => (
+          <option value={region.id}>{region.label}</option>
+        ))
+      }</select
+    ></label
+  >
+  <div
+    data-map-fallback
+    hidden
+    class='bg-background absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center text-sm'
+  >
+    <MapPin className='text-primary size-6' /><p
+      class='text-muted-foreground max-w-xs'
+    >
+      This map is unavailable. Find our campuses on OpenStreetMap:
+    </p><ul class='flex flex-col gap-1'>
+      {
+        Object.values(campuses).map((campus) => (
+          <li>
+            <a
+              href={`https://www.openstreetmap.org/?mlat=${campus.lngLat[1]}&mlon=${campus.lngLat[0]}#map=17/${campus.lngLat[1]}/${campus.lngLat[0]}`}
+              target='_blank'
+              rel='noreferrer'
+              class='text-primary font-medium hover:underline'
+            >
+              {campus.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <noscript
+    ><div
+      class='bg-background absolute inset-0 grid place-content-center gap-2 p-4 text-center text-sm'
+    >
+      <p>Find our campuses on OpenStreetMap:</p>{
+        Object.values(campuses).map((campus) => (
+          <a
+            class='text-primary hover:underline'
+            href={`https://www.openstreetmap.org/?mlat=${campus.lngLat[1]}&mlon=${campus.lngLat[0]}`}
+          >
+            {campus.name}
+          </a>
+        ))
+      }
+    </div></noscript
+  >
+</campus-map>
+<script src='../../scripts/campus-map.ts'></script>

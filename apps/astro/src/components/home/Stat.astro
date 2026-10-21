@@ -1,0 +1,15 @@
+---
+interface Props {
+  value: number;
+  label: string;
+}
+const { value, label } = Astro.props;
+---
+
+<div class='flex flex-col'>
+  <dt
+    class='text-muted-foreground order-last flex items-center gap-1 text-xs [&>svg]:hidden [&>svg]:size-3 [&>svg]:shrink-0 @[9rem]:[&>svg]:block'
+  >
+    <slot name='icon' />{label}
+  </dt><dd class='text-2xl font-semibold tabular-nums sm:text-3xl'>{value}</dd>
+</div>

@@ -1,0 +1,11 @@
+{
+  "name": "@tooling/typescript",
+  "private": true,
+  "exports": {
+    "./base": "./base.json",
+    "./react": "./react.json"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

@@ -1,3 +1,11 @@
-build
-node_modules
-.next
+**/node_modules
+**/.next
+**/.turbo
+**/.react-email
+**/build
+**/dist
+**/next-env.d.ts
+**/*.tsbuildinfo
+pnpm-lock.yaml
+**/.astro
+**/.vercel

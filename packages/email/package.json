@@ -1,0 +1,29 @@
+{
+  "name": "@packages/email",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./example": "./templates/example.tsx"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "dev": "with-env development email dev --dir templates --port 3001"
+  },
+  "dependencies": {
+    "react-email": "^6.11.1"
+  },
+  "devDependencies": {
+    "@tooling/eslint": "workspace:*",
+    "@tooling/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "@react-email/ui": "^6.11.1",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@packages/env": "workspace:*"
+  }
+}

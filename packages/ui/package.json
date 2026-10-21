@@ -1,0 +1,26 @@
+{
+  "name": "@packages/ui",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./components/*": "./src/components/*.astro",
+    "./lib/*": "./src/lib/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "cn": "^0.4.0"
+  },
+  "devDependencies": {
+    "@tooling/eslint": "workspace:*",
+    "@tooling/typescript": "workspace:*",
+    "@tooling/tailwind": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "astro": "^7.4.1",
+    "@astrojs/check": "^0.9.11"
+  }
+}

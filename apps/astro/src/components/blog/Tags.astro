@@ -1,0 +1,21 @@
+---
+import Hash from '@/components/icons/Hash.astro';
+import { cn } from '@packages/ui/lib/utils';
+const { tags, className } = Astro.props as {
+  tags: string[];
+  className?: string;
+};
+---
+
+{
+  tags.length > 0 ? (
+    <ul class={cn('flex flex-wrap gap-2', className)}>
+      {tags.map((tag) => (
+        <li class='bg-muted text-muted-foreground flex items-center gap-x-1 rounded-md px-2 py-0.5 text-xs'>
+          <Hash className='size-3' />
+          {tag}
+        </li>
+      ))}
+    </ul>
+  ) : null
+}

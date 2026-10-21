@@ -1,0 +1,36 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PostList from '@/components/blog/PostList.astro';
+import Breadcrumbs from '@/components/common/Breadcrumbs.astro';
+import Container from '@/components/common/Container.astro';
+import { getPublishedPosts } from '@/lib/content/posts';
+import { pageMetadata } from '@/lib/seo';
+import { siteName } from '@/lib/site';
+
+const posts = await getPublishedPosts();
+const postsByYear = Map.groupBy(posts, (post) => post.publishDate.slice(0, 4));
+const metadata = pageMetadata({
+  title: 'Blog',
+  description: `Articles, guides, and stories from the ${siteName} community.`,
+  path: '/blog',
+});
+---
+
+<SiteLayout metadata={metadata}>
+  <Container className='flex flex-col gap-8'
+    ><Breadcrumbs items={[{ label: 'Blog' }]} />{
+      posts.length === 0 ? (
+        <p class='text-muted-foreground text-sm'>No posts yet.</p>
+      ) : (
+        [...postsByYear].map(([year, yearPosts]) => (
+          <section class='flex flex-col gap-4'>
+            <>
+              <h2 class='text-foreground font-medium'>{year}</h2>
+              <PostList posts={yearPosts} />
+            </>
+          </section>
+        ))
+      )
+    }</Container
+  >
+</SiteLayout>

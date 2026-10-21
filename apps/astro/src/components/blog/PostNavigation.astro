@@ -1,0 +1,54 @@
+---
+import ArrowLeft from '@/components/icons/ArrowLeft.astro';
+import ArrowRight from '@/components/icons/ArrowRight.astro';
+import { cn } from '@packages/ui/lib/utils';
+import type { BlogPost } from '@/types/blog';
+type PostLink = Pick<BlogPost, 'id' | 'title'>;
+interface PostNavigationProps {
+  newer: PostLink | null;
+  older: PostLink | null;
+}
+const base =
+  'group flex size-full items-center gap-2 rounded-lg border p-3 transition-colors';
+import Placeholder from './Placeholder.astro';
+const { newer, older } = Astro.props as PostNavigationProps;
+---
+
+<nav aria-label='Post navigation' class='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+  {
+    older ? (
+      <a href={`/blog/${older.id}`} class={cn(base, 'hover:bg-muted')}>
+        <>
+          <ArrowLeft className='size-4 shrink-0 transition-transform group-hover:-translate-x-1' />
+          <span class='flex flex-col items-start'>
+            <>
+              <span class='text-muted-foreground text-xs'>Previous Post</span>
+              <span class='text-sm text-balance'>{older.title}</span>
+            </>
+          </span>
+        </>
+      </a>
+    ) : (
+      <Placeholder align='start' text="You're at the oldest post!" />
+    )
+  }{
+    newer ? (
+      <a
+        href={`/blog/${newer.id}`}
+        class={cn(base, 'hover:bg-muted justify-end')}
+      >
+        <>
+          <span class='flex flex-col items-end text-right'>
+            <>
+              <span class='text-muted-foreground text-xs'>Next Post</span>
+              <span class='text-sm text-balance'>{newer.title}</span>
+            </>
+          </span>
+          <ArrowRight className='size-4 shrink-0 transition-transform group-hover:translate-x-1' />
+        </>
+      </a>
+    ) : (
+      <Placeholder align='end' text="You're at the newest post!" />
+    )
+  }
+</nav>

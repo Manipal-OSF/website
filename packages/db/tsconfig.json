@@ -1,0 +1,5 @@
+{
+  "extends": "@tooling/typescript/base",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

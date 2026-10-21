@@ -1,0 +1,18 @@
+---
+import { activeNavItem, navItems } from '@/lib/site';
+const active = activeNavItem(Astro.url.pathname);
+---
+
+{
+  navItems.map((item) => (
+    <li>
+      <a
+        href={item.href}
+        aria-current={item === active ? 'page' : undefined}
+        class={`transition-colors ${item === active ? 'text-foreground' : 'hover:text-foreground'}`}
+      >
+        {item.label}
+      </a>
+    </li>
+  ))
+}

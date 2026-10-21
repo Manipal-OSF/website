@@ -1,0 +1,63 @@
+---
+import HeadingList from './HeadingList.astro';
+import ChevronDown from '@/components/icons/ChevronDown.astro';
+import type { PostHeading } from '@/types/blog';
+import { cn } from '@packages/ui/lib/utils';
+interface Props {
+  headings: PostHeading[];
+  className?: string;
+}
+const { headings, className } = Astro.props;
+const circumference = 2 * Math.PI * 10;
+---
+
+{
+  headings.length > 0 && (
+    <details
+      data-mobile-toc
+      class={cn(
+        'group bg-background/80 sticky top-14 z-40 -mx-4 border-b px-4 py-3 backdrop-blur-sm sm:mx-0 sm:rounded-xl sm:border',
+        className,
+      )}
+    >
+      <summary class='flex cursor-pointer list-none items-center gap-2 text-sm [&::-webkit-details-marker]:hidden'>
+        <svg
+          data-reading-ring
+          viewBox='0 0 24 24'
+          class='size-4 shrink-0 -rotate-90'
+          role='img'
+          aria-label='0% read'
+        >
+          <circle
+            cx='12'
+            cy='12'
+            r='10'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            class='text-primary/20'
+          />
+          <circle
+            data-reading-progress
+            cx='12'
+            cy='12'
+            r='10'
+            fill='none'
+            stroke='currentColor'
+            stroke-width='2'
+            stroke-dasharray={circumference}
+            stroke-dashoffset={circumference}
+            class='text-primary'
+          />
+        </svg>
+        <span data-reading-section class='text-muted-foreground grow truncate'>
+          Overview
+        </span>
+        <ChevronDown className='text-muted-foreground size-4 shrink-0 transition-transform group-open:rotate-180' />
+      </summary>
+      <div class='mt-3 max-h-[50vh] overflow-y-auto'>
+        <HeadingList headings={headings} />
+      </div>
+    </details>
+  )
+}

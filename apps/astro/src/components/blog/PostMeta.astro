@@ -1,0 +1,52 @@
+---
+import AuthorAvatar from '@/components/authors/AuthorAvatar.astro';
+import { formatDate } from '@/lib/format';
+import { cn } from '@packages/ui/lib/utils';
+import type { PostAuthor } from '@/types/blog';
+interface PostMetaProps {
+  authors: PostAuthor[];
+  publishDate: string;
+  readingTime: string;
+  linkAuthors?: boolean;
+  className?: string;
+}
+import Separator from './Separator.astro';
+const {
+  authors,
+  publishDate,
+  readingTime,
+  linkAuthors = false,
+  className,
+} = Astro.props as PostMetaProps;
+---
+
+<div
+  class={cn(
+    'text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1 text-xs',
+    className,
+  )}
+>
+  {
+    authors.map((author) => (
+      <span class='flex items-center gap-x-1.5'>
+        <AuthorAvatar
+          name={author.name}
+          avatar={author.avatar}
+          sizes='1.25rem'
+          className='size-5 text-[0.625rem]'
+        />
+        {linkAuthors && author.isRegistered ? (
+          <a
+            href={`/authors/${author.id}`}
+            class='text-foreground underline-offset-4 hover:underline'
+          >
+            {author.name}
+          </a>
+        ) : (
+          <span>{author.name}</span>
+        )}
+      </span>
+    ))
+  }<Separator /><time datetime={publishDate}>{formatDate(publishDate)}</time
+  ><Separator /><span>{readingTime}</span>
+</div>

@@ -1,0 +1,50 @@
+---
+import ChevronRight from '@/components/icons/ChevronRight.astro';
+import House from '@/components/icons/House.astro';
+import { absoluteUrl } from '@/lib/seo';
+import JsonLd from './JsonLd.astro';
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+const { items } = Astro.props as { items: BreadcrumbItem[] };
+---
+
+<nav aria-label='Breadcrumb'>
+  <JsonLd
+    data={{
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ label: 'Home', href: '/' }, ...items].map(
+        (item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.label,
+          item: item.href ? absoluteUrl(item.href) : undefined,
+        }),
+      ),
+    }}
+  /><ol
+    class='text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm'
+  >
+    <li>
+      <a href='/' class='hover:text-foreground' aria-label='Home'
+        ><House className='size-4' /></a
+      >
+    </li>{
+      items.map((item, index) => (
+        <li class='flex min-w-0 items-center gap-1.5'>
+          <ChevronRight aria-hidden className='size-3.5 shrink-0' />
+          {index === items.length - 1 || !item.href ? (
+            <span aria-current='page' class='text-foreground truncate'>
+              {item.label}
+            </span>
+          ) : (
+            <a href={item.href} class='hover:text-foreground'>
+              {item.label}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

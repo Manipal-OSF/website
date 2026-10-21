@@ -1,0 +1,47 @@
+---
+import { cn } from '../lib/utils';
+interface Props {
+  src?: string | null;
+  alt?: string;
+  fallback: string;
+  size?: 'sm' | 'default';
+  className?: string;
+}
+const { src, alt = '', fallback, size = 'default', className } = Astro.props;
+---
+
+<span
+  data-avatar
+  data-slot='avatar'
+  class={cn(
+    'bg-muted text-muted-foreground relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full font-medium',
+    size === 'sm' ? 'size-6 text-xs' : 'size-8 text-sm',
+    className,
+  )}
+>
+  <span aria-hidden='true'>{fallback}</span>
+  {
+    src && (
+      <img
+        data-avatar-image
+        src={src}
+        alt={alt}
+        width='128'
+        height='128'
+        loading='lazy'
+        class='absolute inset-0 size-full object-cover'
+      />
+    )
+  }
+</span>
+<script>
+  for (const image of document.querySelectorAll<HTMLImageElement>(
+    '[data-avatar-image]',
+  )) {
+    const fallback = () => {
+      image.hidden = true;
+    };
+    image.addEventListener('error', fallback, { once: true });
+    if (image.complete && image.naturalWidth === 0) fallback();
+  }
+</script>

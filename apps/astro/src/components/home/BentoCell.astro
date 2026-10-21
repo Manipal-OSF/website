@@ -1,0 +1,33 @@
+---
+import { cn } from '@packages/ui/lib/utils';
+interface Props {
+  area: string;
+  note?: string;
+  noteClassName?: string;
+  className?: string;
+}
+const { area, note, noteClassName, className } = Astro.props;
+---
+
+<section
+  style={{ gridArea: area }}
+  class={cn(
+    'group bg-card relative overflow-hidden rounded-xl border-2',
+    className,
+  )}
+>
+  <slot />
+  {
+    note && (
+      <p
+        aria-hidden='true'
+        class={cn(
+          'bg-background text-foreground pointer-events-none absolute z-20 max-w-[80%] rounded-lg border-2 px-2.5 py-1 text-xs text-pretty opacity-0 shadow-sm transition-[opacity,translate] duration-200 group-hover:-translate-y-0.5 group-hover:opacity-100 motion-reduce:transition-none sm:text-sm',
+          noteClassName,
+        )}
+      >
+        {note}
+      </p>
+    )
+  }
+</section>

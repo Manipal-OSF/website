@@ -1,0 +1,26 @@
+---
+import type { PostHeading } from '@/types/blog';
+interface Props {
+  headings: PostHeading[];
+}
+const { headings } = Astro.props;
+const indent = { 2: '', 3: 'ml-4', 4: 'ml-8' };
+---
+
+<ol class='flex flex-col gap-y-2 text-sm'>
+  {
+    headings.map((heading) => (
+      <li class={indent[heading.depth]}>
+        <a
+          data-toc-link
+          data-heading={heading.slug}
+          href={`#${heading.slug}`}
+          class='text-foreground/60 underline decoration-transparent underline-offset-[3px] transition-colors hover:decoration-inherit'
+        >
+          {heading.text}
+        </a>
+      </li>
+    ))
+  }
+</ol>
+<script src='../../scripts/reading.ts'></script>

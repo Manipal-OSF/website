@@ -1,0 +1,26 @@
+---
+import { Image } from 'astro:assets';
+import { cn } from '@packages/ui/lib/utils';
+interface Props {
+  src: string | null;
+  alt: string;
+  sizes: string;
+  preload?: boolean;
+  className?: string;
+}
+const { src, alt, sizes, preload, className } = Astro.props;
+---
+
+<div class={cn('relative aspect-video overflow-hidden', className)}>
+  <Image
+    src={src ?? '/placeholder.png'}
+    alt={src ? alt : ''}
+    width={1200}
+    height={675}
+    sizes={sizes}
+    widths={[400, 800, 1200]}
+    loading={preload ? 'eager' : 'lazy'}
+    fetchpriority={preload ? 'high' : 'auto'}
+    class='absolute inset-0 size-full object-cover'
+  />
+</div>
