@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 import { authErrorMessage } from '@/lib/auth-errors';
 import { safeForumReturn } from '@/lib/forum-validation';
+import { authHref } from '@/lib/auth-links';
 
 const inputClassName =
   'border-input bg-background placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 h-10 w-full rounded-lg border px-3 text-sm outline-none focus-visible:ring-3 disabled:opacity-50';
@@ -53,14 +55,20 @@ export default function AuthForm({
           username: String(values.get('username') ?? '').trim(),
           email: String(values.get('email') ?? '').trim(),
           password,
+          callbackURL: destination,
         });
       } else {
         const identifier = String(values.get('identifier') ?? '').trim();
         result = identifier.includes('@')
-          ? await authClient.signIn.email({ email: identifier, password })
+          ? await authClient.signIn.email({
+              email: identifier,
+              password,
+              callbackURL: destination,
+            })
           : await authClient.signIn.username({
               username: identifier,
               password,
+              callbackURL: destination,
             });
       }
 
@@ -69,7 +77,11 @@ export default function AuthForm({
         return;
       }
 
-      router.replace(destination);
+      router.replace(
+        signup
+          ? `${authHref('/verify-email', destination)}&sent=1`
+          : destination,
+      );
       router.refresh();
     } catch {
       setError(
@@ -197,6 +209,14 @@ export default function AuthForm({
               </p>
             )}
           </div>
+          {!signup && (
+            <Link
+              href={authHref('/forgot-password', destination)}
+              className='text-primary text-sm'
+            >
+              Forgot password?
+            </Link>
+          )}
           <Button type='submit' size='lg' className='mt-1 w-full'>
             {busy
               ? signup
@@ -219,6 +239,23 @@ export default function AuthForm({
           ) : null}
         </div>
       </form>
+      <div className='mt-5 flex flex-col gap-3 text-sm'>
+        <p className='text-muted-foreground'>
+          {signup ? 'Already have an account? ' : 'New to Manipal OSF? '}
+          <Link
+            href={authHref(signup ? '/login' : '/signup', destination)}
+            className='text-primary'
+          >
+            {signup ? 'Log in' : 'Create an account'}
+          </Link>
+        </p>
+        <Link
+          href={authHref('/verify-email', destination)}
+          className='text-primary'
+        >
+          Request another verification email
+        </Link>
+      </div>
     </section>
   );
 }

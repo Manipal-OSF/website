@@ -189,6 +189,9 @@ importers:
       '@packages/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@packages/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@packages/env':
         specifier: workspace:*
         version: link:../../packages/env
@@ -219,6 +222,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
+      resend:
+        specifier: ^6.32.1
+        version: 6.32.1(@react-email/render@2.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))
       server-only:
         specifier: 0.0.1
         version: 0.0.1
@@ -333,6 +339,12 @@ importers:
 
   packages/email:
     dependencies:
+      react:
+        specifier: 'catalog:'
+        version: 19.3.0
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.3.0(react@19.3.0)
       react-email:
         specifier: ^6.11.1
         version: 6.11.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -361,12 +373,6 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 9.39.5(jiti@2.7.0)
-      react:
-        specifier: 'catalog:'
-        version: 19.3.0
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.3.0(react@19.3.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3

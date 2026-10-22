@@ -2,7 +2,8 @@ import 'server-only';
 import { createAuth } from '@packages/auth';
 import * as schema from '@packages/db/schema/auth';
 import { env } from '@packages/env';
-import { authOptions } from './auth-options';
+import { authOptionsWithEmail } from './auth-options';
+import { sendAuthEmail } from './auth-email';
 import { getDb } from './db';
 
 export class AuthConfigurationError extends Error {
@@ -21,7 +22,7 @@ function createForumAuth() {
     db: getDb(),
     schema,
     options: {
-      ...authOptions,
+      ...authOptionsWithEmail(sendAuthEmail),
       secret: env.BETTER_AUTH_SECRET,
       baseURL: env.BETTER_AUTH_URL,
       trustedOrigins: [new URL(env.BETTER_AUTH_URL).origin],

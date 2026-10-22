@@ -72,8 +72,8 @@ Import `env` from `@packages/env` in server code. T3 Env and Zod validate suppli
 | `PROD_DATABASE_URL`  | Direct production connection for migrations/moderator commands                                              |
 | `PUBLIC_FORUM_URL`   | Full forum URL shown in Astro navigation; development defaults to `http://localhost:3000/forum`             |
 | `PUBLIC_SITE_URL`    | Forum link back to Astro; defaults to local Astro in development and `https://manipalosf.org` in production |
-| `RESEND_API_KEY`     | Required when calling the website's `getResend()`                                                           |
-| `RESEND_FROM_EMAIL`  | Optional sender address on a verified Resend domain                                                         |
+| `RESEND_API_KEY`     | Required for forum signup, verification emails, and password recovery                                       |
+| `RESEND_FROM_EMAIL`  | Required sender address on a verified Resend domain for forum authentication emails                         |
 | `GITHUB_TOKEN`       | Optional higher GitHub API rate limit                                                                       |
 
 Only the two `PUBLIC_` link settings are public; credentials remain server-side. Migration URLs are read only by database tooling and never by application runtime code. Keep `.env*` ignored except the credential-free example. When adding variables, update the shared validation schema, example file, and Turbo environment inputs together. Future apps can compose their own validation from this package as their requirements diverge.
@@ -88,16 +88,18 @@ Astro does not mount authentication. The Next.js app instantiates the shared fac
 
 ### Forum setup
 
-Set `DATABASE_URL`, `BETTER_AUTH_SECRET`, and `BETTER_AUTH_URL` at the repository root, with runtime and migration connections pointing to the same database. Set `DEV_DATABASE_URL` to the direct development connection, then run:
+Set `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `RESEND_API_KEY`, and `RESEND_FROM_EMAIL` at the repository root, with runtime and migration connections pointing to the same database. Use an address on a verified Resend domain for `RESEND_FROM_EMAIL`. Set `DEV_DATABASE_URL` to the direct development connection, then run:
 
 ```sh
 pnpm db:migrate:dev
 pnpm dev
 ```
 
-Open `/signup` or `/login` directly on the Next.js origin. Signup requires a name, email, unique username (3–30 letters, digits, underscores, or dots), and an 8–128 character password. Login accepts email or username. Successful authentication returns to a validated local forum destination. Login/signup links are intentionally absent throughout the UI, including the auth forms. Signed-in members see their username and Logout. Anonymous visitors can read, but participation requires a session.
+Use **Log in** in the forum header, then **Create an account** to sign up. Signup requires a name, email, unique username (3–30 letters, digits, underscores, or dots), and an 8–128 character password. Signup sends a verification email and does not create a session. Members must verify their email before logging in with email or username; existing unverified members must verify before their next login. Verification links expire after one hour. `/verify-email` provides resend instructions and confirmation; after verification, members log in explicitly. Unverified login attempts also send a fresh verification email. Successful authentication returns to a validated local forum destination. Signed-in members see their username and Logout. Anonymous visitors can read, but participation requires a session.
 
-The auth handler lives at `/api/auth/[...all]`. Cookies are scoped to the forum host; the two apps do not share sessions. OAuth, password recovery, email verification, and profile editing are not included. Without database credentials, forum pages display an unavailable message and auth endpoints return a sanitized 503. Both apps still build.
+**Forgot password?** on login opens `/forgot-password`. Requests display the same confirmation for known and unknown addresses. The email opens `/reset-password`, where members enter and confirm an 8–128 character password. Reset links expire after one hour and can be used once. A successful reset revokes all existing sessions and requires a new login; it does not mark an unverified email as verified. Existing sessions otherwise remain valid until logout or expiry. Email callbacks use React Email templates and Resend; missing email configuration returns a sanitized 503 for email-dependent operations while forum reads and existing sessions remain available. Delivery failures offer retry instructions, and an account created before a failed verification email can request a new link.
+
+The auth handler lives at `/api/auth/[...all]`, including Better Auth's verification and password reset endpoints and rate limiting. Cookies are scoped to the forum host; the two apps do not share sessions. OAuth and profile editing are not included. Without database credentials, forum pages display an unavailable message and auth endpoints return a sanitized 503. Both apps still build without credentials. The existing auth tables support verification and recovery; no additional migration is needed.
 
 ### Forum behavior
 
@@ -143,9 +145,11 @@ The website ships Astro HTML with small browser modules for theme switching, map
 pnpm email:dev
 ```
 
-Open http://localhost:3001 to preview `packages/email/templates/example.tsx`. Previews need no API key and send no email. Apps can import the template from `@packages/email/example`.
+Open http://localhost:3001 to preview the email verification and password reset templates. Previews use sample links, need no API key, and send no email. Apps can import templates from `@packages/email/verify-email` and `@packages/email/reset-password`. `@packages/email/render` renders auth emails to HTML and plain text.
 
-The website retains its lazy `getResend()` helper at `@/lib/resend`. There are no sending endpoints or automatic email triggers.
+All templates use Nord light colors and switch to Catppuccin Mocha in clients that support dark-mode email styles. Inline Nord colors provide a fallback for clients that strip embedded CSS.
+
+The forum lazily creates its own server-only Resend client for authentication emails using `RESEND_API_KEY` and `RESEND_FROM_EMAIL`. Automatic sends are limited to auth flows; there is no general-purpose public email endpoint. The Astro website retains its separate lazy `getResend()` helper at `@/lib/resend`. Auth integration tests capture emails locally and exercise PostgreSQL migrations with PGlite; they never send live mail.
 
 ## Vercel and additional apps
 

@@ -1,13 +1,17 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 import { authErrorMessage } from '@/lib/auth-errors';
+import { authHref } from '@/lib/auth-links';
 
 export default function AuthNav() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { data: session, isPending } = authClient.useSession();
   const submitting = useRef(false);
   const [busy, setBusy] = useState(false);
@@ -57,7 +61,14 @@ export default function AuthNav() {
             {busy ? 'Logging out…' : 'Logout'}
           </Button>
         </>
-      ) : null}
+      ) : (
+        <Link
+          href={authHref('/login', `${pathname}?${searchParams}`)}
+          className='text-primary px-2 text-sm'
+        >
+          Log in
+        </Link>
+      )}
       {error && (
         <p
           role='alert'

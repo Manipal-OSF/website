@@ -1,5 +1,8 @@
 // Keep server/database details out of form errors, including unexpected failures.
 export function authErrorMessage(error: { code?: string; status?: number }) {
+  if (error.code === 'EMAIL_UNAVAILABLE') {
+    return 'Email is currently unavailable. Please try again later.';
+  }
   if (error.status === 503 || error.code === 'AUTH_UNAVAILABLE') {
     return 'Authentication is currently unavailable. Please try again later.';
   }
@@ -8,6 +11,13 @@ export function authErrorMessage(error: { code?: string; status?: number }) {
   }
 
   switch (error.code) {
+    case 'EMAIL_NOT_VERIFIED':
+      return 'Verify your email before logging in. Check your inbox or request another verification link.';
+    case 'EMAIL_DELIVERY_FAILED':
+      return 'We could not send your email. Request another link or try again later.';
+    case 'INVALID_TOKEN':
+    case 'TOKEN_EXPIRED':
+      return 'This link is invalid or has expired. Please request a new one.';
     case 'USER_ALREADY_EXISTS':
     case 'USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL':
       return 'An account with this email already exists. Try logging in.';

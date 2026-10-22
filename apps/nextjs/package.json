@@ -17,6 +17,7 @@
     "@fontsource-variable/cascadia-code": "5.3.0",
     "@packages/auth": "workspace:*",
     "@packages/db": "workspace:*",
+    "@packages/email": "workspace:*",
     "@packages/env": "workspace:*",
     "@packages/ui": "workspace:*",
     "better-auth": "1.7.7",
@@ -27,6 +28,7 @@
     "next": "16.4.0",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "resend": "^6.32.1",
     "server-only": "0.0.1",
     "zod": "catalog:"
   },

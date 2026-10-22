@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { env } from '@packages/env';
 import AuthNav from '@/components/auth/AuthNav';
@@ -46,7 +47,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </Link>
             </nav>
             <div className='flex items-center gap-3'>
-              <AuthNav />
+              <Suspense
+                fallback={
+                  <Link href='/login' className='text-primary px-2 text-sm'>
+                    Log in
+                  </Link>
+                }
+              >
+                <AuthNav />
+              </Suspense>
               <ThemeToggle />
             </div>
           </header>

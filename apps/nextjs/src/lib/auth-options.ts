@@ -1,15 +1,26 @@
 import type { BetterAuthOptions } from 'better-auth';
 import { APIError, createAuthMiddleware } from 'better-auth/api';
 import { username } from 'better-auth/plugins';
+import { verificationEmailUrl } from './auth-links';
+import { trackAuthEmailDelivery } from './auth-email-status';
 
 // Shared with schema generation; credentials and the database belong in auth.ts.
 export const authOptions = {
   appName: 'Manipal OSF',
   emailAndPassword: {
     enabled: true,
-    autoSignIn: true,
+    autoSignIn: false,
+    requireEmailVerification: true,
+    resetPasswordTokenExpiresIn: 3600,
+    revokeSessionsOnPasswordReset: true,
     minPasswordLength: 8,
     maxPasswordLength: 128,
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: false,
+    expiresIn: 3600,
   },
   plugins: [
     username({
@@ -39,3 +50,46 @@ export const authOptions = {
     }),
   },
 } satisfies BetterAuthOptions;
+
+export type AuthEmail = {
+  kind: 'verify-email' | 'reset-password';
+  to: string;
+  name: string;
+  url: string;
+};
+
+// Keep delivery injectable so integration tests exercise the production options
+// without sending mail or needing provider credentials.
+export function authOptionsWithEmail(
+  send: (email: AuthEmail) => Promise<void>,
+) {
+  return {
+    ...authOptions,
+    emailAndPassword: {
+      ...authOptions.emailAndPassword,
+      sendResetPassword: async ({ user, url }) => {
+        await trackAuthEmailDelivery(() =>
+          send({
+            kind: 'reset-password',
+            to: user.email,
+            name: user.name,
+            url,
+          }),
+        );
+      },
+    },
+    emailVerification: {
+      ...authOptions.emailVerification,
+      sendVerificationEmail: async ({ user, url }) => {
+        await trackAuthEmailDelivery(() =>
+          send({
+            kind: 'verify-email',
+            to: user.email,
+            name: user.name,
+            url: verificationEmailUrl(url),
+          }),
+        );
+      },
+    },
+  } satisfies BetterAuthOptions;
+}
