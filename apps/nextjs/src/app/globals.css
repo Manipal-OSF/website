@@ -1,0 +1,131 @@
+@import '@tooling/tailwind/styles.css';
+@import '../styles/fonts.css';
+@source '../';
+
+/* Forum styles stay within the community surface and reuse the site palettes. */
+.forum-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.5rem;
+  padding: 0.65rem 0.8rem;
+  border-block: 1px solid var(--border);
+  background: var(--secondary);
+  font-size: 0.8rem;
+}
+.forum a:hover,
+.forum summary:hover,
+.forum-controls button:hover {
+  text-decoration: underline;
+}
+.forum a:focus-visible,
+.forum button:focus-visible,
+.forum summary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.forum-post {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+.forum-title {
+  overflow-wrap: anywhere;
+}
+.forum-title:visited {
+  color: var(--muted-foreground);
+}
+.forum-meta {
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.forum-vote {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.forum-vote:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.forum-body {
+  font-size: 0.85rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.forum-body a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.forum-comment {
+  scroll-margin-top: 9rem;
+  border-inline-start: 1px solid var(--border);
+  padding-inline-start: 0.65rem;
+}
+.forum-comment:target {
+  border-inline-start: 2px solid var(--primary);
+}
+.forum-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+}
+.forum-controls details[open] {
+  flex-basis: 100%;
+}
+.forum summary {
+  cursor: pointer;
+  width: fit-content;
+}
+.forum-reply {
+  margin-top: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.forum-form {
+  margin-top: 0.75rem;
+  max-width: 42rem;
+  color: var(--foreground);
+}
+.forum-form label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+}
+.forum-form input:not([type='hidden']),
+.forum-form textarea,
+.forum-form select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--input);
+  border-radius: 0.25rem;
+  background: var(--background);
+  color: var(--foreground);
+  padding: 0.5rem;
+  font: inherit;
+}
+.forum-form input:focus-visible,
+.forum-form textarea:focus-visible,
+.forum-form select:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.forum-form textarea {
+  resize: vertical;
+}
+.forum-search input {
+  min-width: 0;
+  max-width: 100%;
+}

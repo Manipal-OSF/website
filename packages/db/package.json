@@ -3,12 +3,21 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./schema/auth": "./src/schema/auth.ts",
+    "./schema/forum": "./src/schema/forum.ts"
   },
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/*.test.ts"
+    "test": "tsx --test tests/*.test.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:check": "drizzle-kit check",
+    "db:migrate": "pnpm db:migrate:dev",
+    "db:migrate:dev": "drizzle-kit migrate --config=drizzle-dev.config.ts",
+    "db:migrate:prod": "drizzle-kit migrate --config=drizzle-prod.config.ts",
+    "forum:moderator": "node scripts/forum-moderator.mjs"
   },
   "dependencies": {
     "drizzle-orm": "catalog:",
@@ -21,6 +30,7 @@
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
-    "drizzle-kit": "^0.31.11"
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15"
   }
 }

@@ -15,7 +15,19 @@
     "email:dev": "pnpm --filter @packages/email dev",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "build:local": "pnpm --filter @apps/astro build:local"
+    "build:local": "pnpm --filter @apps/astro build:local",
+    "dev:forum": "pnpm --filter @apps/nextjs dev",
+    "start:forum": "pnpm --filter @apps/nextjs start",
+    "auth:generate": "pnpm --filter @apps/nextjs auth:generate",
+    "test:forum": "pnpm --filter @apps/nextjs test",
+    "test:auth": "pnpm --filter @apps/nextjs exec tsx --test tests/auth.test.ts",
+    "test:db": "pnpm --filter @packages/db test",
+    "db:generate": "pnpm --filter @packages/db db:generate",
+    "db:check": "pnpm --filter @packages/db db:check",
+    "db:migrate": "pnpm --filter @packages/db db:migrate",
+    "db:migrate:dev": "pnpm --filter @packages/db db:migrate:dev",
+    "db:migrate:prod": "pnpm --filter @packages/db db:migrate:prod",
+    "forum:moderator": "pnpm --filter @packages/db forum:moderator"
   },
   "devDependencies": {
     "@packages/env": "workspace:*",

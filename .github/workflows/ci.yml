@@ -22,6 +22,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test
+      - run: pnpm db:check
       - run: pnpm build
       - run: node scripts/prepare-vercel.mjs
       - run: node scripts/verify-vercel.mjs
