@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <a href={siteUrl} className='font-semibold'>
                 Manipal OSF
               </a>
-              <Link href='/forum' className='text-primary'>
+              <Link href='/' className='text-primary'>
                 Forum
               </Link>
             </nav>

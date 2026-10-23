@@ -22,7 +22,7 @@ export default function ForumTopics({
             : 'No discussions yet. Share something interesting with the community.'}
         </p>
         <Link
-          href='/forum/submit'
+          href='/submit'
           className='text-primary mt-3 inline-block underline'
         >
           Submit a discussion →

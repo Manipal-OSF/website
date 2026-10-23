@@ -4,7 +4,9 @@ import { env } from '@packages/env';
 const active = activeNavItem(Astro.url.pathname);
 const forumUrl =
   env.PUBLIC_FORUM_URL ??
-  (import.meta.env.DEV ? 'http://localhost:3000/forum' : undefined);
+  (import.meta.env.DEV
+    ? 'http://localhost:3000/'
+    : 'https://forum.manipalosf.org/');
 ---
 
 {

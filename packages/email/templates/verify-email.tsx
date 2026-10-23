@@ -16,5 +16,5 @@ export default function VerifyEmail(props: AuthEmailProps) {
 
 VerifyEmail.PreviewProps = {
   name: 'OSF member',
-  url: 'https://forum.example.com/api/auth/verify-email?token=preview',
+  url: 'https://forum.manipalosf.org/api/auth/verify-email?token=preview',
 } satisfies AuthEmailProps;

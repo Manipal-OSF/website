@@ -4,7 +4,7 @@ import { Vote } from './ForumControls';
 
 export function MemberLink({ username }: { username: string | null }) {
   return username ? (
-    <Link href={`/forum/user/${encodeURIComponent(username.toLowerCase())}`}>
+    <Link href={`/user/${encodeURIComponent(username.toLowerCase())}`}>
       {username}
     </Link>
   ) : (
@@ -71,7 +71,7 @@ export function PostRow({
   rank?: number;
   viewer?: boolean;
 }) {
-  const path = `/forum/item/${post.id}`;
+  const path = `/item/${post.id}`;
   let domain = '';
   try {
     domain = post.url ? new URL(post.url).hostname.replace(/^www\./, '') : '';
@@ -128,7 +128,7 @@ export function PostRow({
           {post.category !== 'general' && (
             <>
               {' | '}
-              <Link href={`/forum?view=${post.category}`}>{post.category}</Link>
+              <Link href={`/?view=${post.category}`}>{post.category}</Link>
             </>
           )}
           {post.locked && <span>{' | '}locked</span>}

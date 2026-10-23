@@ -18,7 +18,7 @@ export async function forumAction(form: FormData): Promise<ForumActionResult> {
     switch (input.action) {
       case 'post': {
         const id = await store.createPost(viewer, input);
-        location = `/forum/item/${id}`;
+        location = `/item/${id}`;
         break;
       }
       case 'comment': {
@@ -26,7 +26,7 @@ export async function forumAction(form: FormData): Promise<ForumActionResult> {
           ...input,
           parentId: input.parentId || undefined,
         });
-        location = `/forum/item/${input.postId}#comment-${id}`;
+        location = `/item/${input.postId}#comment-${id}`;
         success = 'Comment posted.';
         break;
       }
@@ -53,7 +53,7 @@ export async function forumAction(form: FormData): Promise<ForumActionResult> {
       default:
         return { error: 'Unknown forum action.' };
     }
-    revalidatePath('/forum', 'layout');
+    revalidatePath('/(forum)', 'layout');
     return { success, location };
   } catch (error) {
     if (error instanceof z.ZodError)

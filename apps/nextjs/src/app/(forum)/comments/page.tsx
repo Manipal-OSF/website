@@ -26,7 +26,7 @@ export default async function CommentsPage({
         moderator={moderator}
         threaded={false}
       />
-      <ForumPagination {...result} path='/forum/comments' />
+      <ForumPagination {...result} path='/comments' />
     </>
   );
 }

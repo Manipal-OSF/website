@@ -19,25 +19,25 @@ export default async function ForumLayout({
   return (
     <section className='forum w-full' aria-label='Community forum'>
       <div className='forum-bar'>
-        <Link href='/forum' className='font-bold'>
+        <Link href='/' className='font-bold'>
           OSF Forum
         </Link>
         <nav
           aria-label='Forum navigation'
           className='flex flex-wrap gap-x-3 gap-y-1'
         >
-          <Link href='/forum'>top</Link>
-          <Link href='/forum?view=new'>new</Link>
-          <Link href='/forum?view=ask'>ask</Link>
-          <Link href='/forum?view=show'>show</Link>
-          <Link href='/forum/comments'>comments</Link>
-          <Link href='/forum/submit'>submit</Link>
-          {moderator && <Link href='/forum/moderation'>moderation</Link>}
+          <Link href='/'>top</Link>
+          <Link href='/?view=new'>new</Link>
+          <Link href='/?view=ask'>ask</Link>
+          <Link href='/?view=show'>show</Link>
+          <Link href='/comments'>comments</Link>
+          <Link href='/submit'>submit</Link>
+          {moderator && <Link href='/moderation'>moderation</Link>}
         </nav>
       </div>
       <div className='py-5'>{children}</div>
       <form
-        action='/forum'
+        action='/'
         className='forum-search mt-6 flex flex-wrap items-center gap-2 border-t pt-4'
       >
         <label htmlFor='forum-search' className='text-muted-foreground text-xs'>

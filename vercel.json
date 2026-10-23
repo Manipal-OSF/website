@@ -1,48 +1,71 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "astro",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm build --filter=@apps/astro... && node scripts/prepare-vercel.mjs",
-  "devCommand": "pnpm --filter @apps/astro dev --port $PORT",
-  "redirects": [
-    {
-      "source": "/services",
-      "destination": "/",
-      "permanent": false
+  "services": {
+    "website": {
+      "root": "apps/astro",
+      "framework": "astro",
+      "installCommand": "pnpm install --frozen-lockfile",
+      "buildCommand": "pnpm run build && node ../../scripts/prepare-vercel.mjs",
+      "devCommand": "pnpm exec with-env development astro dev --port $PORT",
+      "redirects": [
+        {
+          "source": "/services",
+          "destination": "/",
+          "permanent": false
+        },
+        {
+          "source": "/events",
+          "destination": "/",
+          "permanent": false
+        }
+      ],
+      "headers": [
+        {
+          "source": "/(.*)",
+          "headers": [
+            {
+              "key": "X-DNS-Prefetch-Control",
+              "value": "on"
+            }
+          ]
+        },
+        {
+          "source": "/opengraph-image",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "image/png"
+            }
+          ]
+        },
+        {
+          "source": "/blog/:uid/opengraph-image",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "image/png"
+            }
+          ]
+        }
+      ]
     },
-    {
-      "source": "/events",
-      "destination": "/",
-      "permanent": false
+    "forum": {
+      "root": "apps/nextjs",
+      "framework": "nextjs",
+      "installCommand": "pnpm install --frozen-lockfile",
+      "buildCommand": "pnpm run build:vercel",
+      "devCommand": "pnpm exec with-env development next dev --port $PORT"
     }
-  ],
-  "headers": [
+  },
+  "rewrites": [
     {
       "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-DNS-Prefetch-Control",
-          "value": "on"
-        }
-      ]
+      "has": [{ "type": "host", "value": { "eq": "forum.manipalosf.org" } }],
+      "destination": { "service": "forum" }
     },
     {
-      "source": "/opengraph-image",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "image/png"
-        }
-      ]
-    },
-    {
-      "source": "/blog/:uid/opengraph-image",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "image/png"
-        }
-      ]
+      "source": "/(.*)",
+      "destination": { "service": "website" }
     }
   ]
 }

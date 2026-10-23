@@ -23,7 +23,7 @@ export default async function UserPage({
   if (!store) return <ForumUnavailable />;
   const member = await store.member(username);
   if (!member) notFound();
-  const path = `/forum/user/${encodeURIComponent(username)}`;
+  const path = `/user/${encodeURIComponent(username)}`;
   const submissions = tab !== 'comments';
   const posts = submissions
     ? await store.feed({ username, viewer, page, view: 'new' })

@@ -32,7 +32,7 @@ export default async function ForumPage({
     q,
     page: forumPage(params.page),
   });
-  const path = `/forum?${new URLSearchParams({ view, ...(q ? { q } : {}) })}`;
+  const path = `/?${new URLSearchParams({ view, ...(q ? { q } : {}) })}`;
   return (
     <>
       <h1 className='mb-5 text-sm font-semibold'>

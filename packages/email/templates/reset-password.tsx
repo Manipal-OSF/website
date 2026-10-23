@@ -16,5 +16,5 @@ export default function ResetPasswordEmail(props: AuthEmailProps) {
 
 ResetPasswordEmail.PreviewProps = {
   name: 'OSF member',
-  url: 'https://forum.example.com/api/auth/reset-password/preview?callbackURL=%2Freset-password',
+  url: 'https://forum.manipalosf.org/api/auth/reset-password/preview?callbackURL=%2Freset-password',
 } satisfies AuthEmailProps;

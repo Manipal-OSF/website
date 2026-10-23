@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import { forumAction } from '@/app/forum/actions';
+import { forumAction } from '@/app/(forum)/actions';
 import { Button } from '@/components/ui/button';
 
 export default function ForumForm({

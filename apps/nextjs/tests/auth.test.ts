@@ -18,7 +18,7 @@ import { renderAuthEmail } from '@packages/email/render';
 import * as schema from '@packages/db/schema';
 import * as authSchema from '@packages/db/schema/auth';
 
-const origin = 'http://localhost:3000';
+const origin = 'https://forum.manipalosf.org';
 const password = ' a real test password! ';
 const secret = 'test-only-secret-at-least-thirty-two-characters';
 
@@ -91,7 +91,7 @@ test('authentication with the committed PostgreSQL migrations', async (t) => {
     username: 'Community.Member_1',
     email: 'member@example.com',
     password,
-    callbackURL: '/forum?view=new',
+    callbackURL: '/?view=new',
   };
   let signupCookie = '';
 
@@ -287,6 +287,11 @@ test('authentication with the committed PostgreSQL migrations', async (t) => {
         signupCookie = cookies(response);
         assert.match(signupCookie, /better-auth\.session_token=/);
         assert.match(response.headers.get('set-cookie') ?? '', /HttpOnly/i);
+        assert.match(response.headers.get('set-cookie') ?? '', /; Secure/i);
+        assert.doesNotMatch(
+          response.headers.get('set-cookie') ?? '',
+          /; Domain=/i,
+        );
         const session = await (
           await request('/get-session', undefined, cookies(response))
         ).json();
@@ -575,7 +580,7 @@ test('authentication with the committed PostgreSQL migrations', async (t) => {
 });
 
 test('auth destinations are preserved and unsafe destinations fall back to the forum', () => {
-  const destination = '/forum?view=new&q=hello%20world';
+  const destination = '/?view=new&q=hello%20world';
   for (const path of [
     '/login',
     '/signup',
@@ -587,6 +592,12 @@ test('auth destinations are preserved and unsafe destinations fall back to the f
       new URL(authHref(path, destination), origin).searchParams.get('next'),
       destination,
     );
+    assert.equal(
+      new URL(authHref(path, `/forum${destination}`), origin).searchParams.get(
+        'next',
+      ),
+      destination,
+    );
     for (const unsafe of [
       'https://evil.example/forum',
       '//evil.example/forum',
@@ -595,7 +606,7 @@ test('auth destinations are preserved and unsafe destinations fall back to the f
     ]) {
       assert.equal(
         new URL(authHref(path, unsafe), origin).searchParams.get('next'),
-        '/forum',
+        '/',
       );
     }
   }
@@ -607,7 +618,7 @@ test('auth destinations are preserved and unsafe destinations fall back to the f
   assert.equal(link.searchParams.get('token'), 'secret');
   const callback = new URL(link.searchParams.get('callbackURL')!);
   assert.equal(callback.origin, origin);
-  assert.equal(callback.searchParams.get('next'), '/forum');
+  assert.equal(callback.searchParams.get('next'), '/');
 });
 
 test('email delivery status is isolated between concurrent auth requests and sanitizes errors', async () => {
@@ -642,7 +653,7 @@ test('email delivery status is isolated between concurrent auth requests and san
 
 test('React Email templates render escaped HTML and plain text with the action URL', async () => {
   for (const kind of ['verify-email', 'reset-password'] as const) {
-    const url = `${origin}/api/auth/${kind}?token=test&callbackURL=%2Fforum`;
+    const url = `${origin}/api/auth/${kind}?token=test&callbackURL=%2F`;
     const { html, text } = await renderAuthEmail({
       kind,
       name: '<script>bad</script>',

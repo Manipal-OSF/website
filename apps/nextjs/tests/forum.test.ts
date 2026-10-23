@@ -509,12 +509,31 @@ test('login returns only to local forum URLs', () => {
     '/forum/../login',
     '/forum\\evil',
     '/forum\n',
+    '/login',
+    '/signup',
+    '/verify-email',
+    '/forgot-password',
+    '/reset-password',
+    '/api/auth/sign-out',
+    '/item/invalid',
+    '/user/a',
+    '/%2f%2fevil.test',
+    '/forum//evil.test',
+    'comments',
     null,
   ])
-    assert.equal(safeForumReturn(value), '/forum');
-  assert.equal(
-    safeForumReturn('/forum/item/abcdefghijklmnop#comment-abcdefghijklmnop'),
-    '/forum/item/abcdefghijklmnop#comment-abcdefghijklmnop',
-  );
-  assert.equal(safeForumReturn('/forum?view=new'), '/forum?view=new');
+    assert.equal(safeForumReturn(value), '/', String(value));
+  for (const path of [
+    '/',
+    '/?view=new&q=hello%20world&page=2',
+    '/comments?page=2',
+    '/submit',
+    '/moderation',
+    '/user/Community.Member_1?tab=comments',
+    '/item/abcdefghijklmnop#comment-abcdefghijklmnop',
+  ]) {
+    assert.equal(safeForumReturn(path), path);
+    const legacy = path === '/' ? '/forum' : `/forum${path}`;
+    assert.equal(safeForumReturn(legacy), path);
+  }
 });

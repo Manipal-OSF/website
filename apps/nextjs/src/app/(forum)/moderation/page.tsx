@@ -31,7 +31,7 @@ export default async function ModerationPage({
           <article key={report.id} className='border-b pb-6'>
             <Link
               className='text-sm font-semibold underline'
-              href={`/forum/item/${report.postId}${
+              href={`/item/${report.postId}${
                 report.target === 'comment' ? `#comment-${report.targetId}` : ''
               }`}
             >
@@ -57,7 +57,7 @@ export default async function ModerationPage({
           </article>
         ))}
       </div>
-      <ForumPagination more={more} page={page} path='/forum/moderation' />
+      <ForumPagination more={more} page={page} path='/moderation' />
     </>
   );
 }

@@ -1,6 +1,6 @@
 # Manipal OSF website
 
-The Manipal OSF website lives in a pnpm and Turborepo monorepo modeled on [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo). The public website uses Astro components and TypeScript browser scripts, with Vercel ISR for live GitHub data. A separate Next.js app hosts the community forum.
+The Manipal OSF website lives in a pnpm and Turborepo monorepo modeled on [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo). The public website uses Astro components and TypeScript browser scripts, with Vercel ISR for live GitHub data. A Next.js app hosts the community forum at https://forum.manipalosf.org/. Both apps deploy together through Vercel Services.
 
 ## Development
 
@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:4321 for the public site or http://localhost:3000/forum for the forum. The public website needs no service credentials. An optional `GITHUB_TOKEN` increases the GitHub API rate limit for statistics.
+Open http://localhost:4321 for the public site or http://localhost:3000/ for the forum. The public website needs no service credentials. An optional `GITHUB_TOKEN` increases the GitHub API rate limit for statistics.
 
 ```sh
 pnpm typecheck
@@ -63,18 +63,18 @@ cp .env.example .env
 
 Import `env` from `@packages/env` in server code. T3 Env and Zod validate supplied values, treat empty strings as unset, and prevent access to server variables in browser code. The filesystem loader is separate at `@packages/env/load`; do not import it into application runtime code.
 
-| Variable             | Purpose                                                                                                     |
-| -------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`       | Optional Neon PostgreSQL URL (`postgres://` or `postgresql://`)                                             |
-| `BETTER_AUTH_SECRET` | Optional auth secret, at least 32 characters                                                                |
-| `BETTER_AUTH_URL`    | Forum auth origin, such as `http://localhost:3000`                                                          |
-| `DEV_DATABASE_URL`   | Direct development connection for migrations/moderator commands                                             |
-| `PROD_DATABASE_URL`  | Direct production connection for migrations/moderator commands                                              |
-| `PUBLIC_FORUM_URL`   | Full forum URL shown in Astro navigation; development defaults to `http://localhost:3000/forum`             |
-| `PUBLIC_SITE_URL`    | Forum link back to Astro; defaults to local Astro in development and `https://manipalosf.org` in production |
-| `RESEND_API_KEY`     | Required for forum signup, verification emails, and password recovery                                       |
-| `RESEND_FROM_EMAIL`  | Required sender address on a verified Resend domain for forum authentication emails                         |
-| `GITHUB_TOKEN`       | Optional higher GitHub API rate limit                                                                       |
+| Variable             | Purpose                                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`       | Optional Neon PostgreSQL URL (`postgres://` or `postgresql://`)                                                      |
+| `BETTER_AUTH_SECRET` | Optional auth secret, at least 32 characters                                                                         |
+| `BETTER_AUTH_URL`    | Forum auth origin: `http://localhost:3000` locally, `https://forum.manipalosf.org` in production                     |
+| `DEV_DATABASE_URL`   | Direct development connection for migrations/moderator commands                                                      |
+| `PROD_DATABASE_URL`  | Direct production connection for migrations/moderator commands                                                       |
+| `PUBLIC_FORUM_URL`   | Forum navigation URL; defaults to `http://localhost:3000/` locally and `https://forum.manipalosf.org/` in production |
+| `PUBLIC_SITE_URL`    | Forum link back to Astro; defaults to local Astro in development and `https://manipalosf.org` in production          |
+| `RESEND_API_KEY`     | Required for forum signup, verification emails, and password recovery                                                |
+| `RESEND_FROM_EMAIL`  | Required sender address on a verified Resend domain for forum authentication emails                                  |
+| `GITHUB_TOKEN`       | Optional higher GitHub API rate limit                                                                                |
 
 Only the two `PUBLIC_` link settings are public; credentials remain server-side. Migration URLs are read only by database tooling and never by application runtime code. Keep `.env*` ignored except the credential-free example. When adding variables, update the shared validation schema, example file, and Turbo environment inputs together. Future apps can compose their own validation from this package as their requirements diverge.
 
@@ -151,22 +151,44 @@ All templates use Nord light colors and switch to Catppuccin Mocha in clients th
 
 The forum lazily creates its own server-only Resend client for authentication emails using `RESEND_API_KEY` and `RESEND_FROM_EMAIL`. Automatic sends are limited to auth flows; there is no general-purpose public email endpoint. The Astro website retains its separate lazy `getResend()` helper at `@/lib/resend`. Auth integration tests capture emails locally and exercise PostgreSQL migrations with PGlite; they never send live mail.
 
-## Vercel and additional apps
+## Vercel deployment
 
-The root `vercel.json` deploys `@apps/astro` using a filtered Turbo build and the Vercel adapter's Build Output API artifacts. The deployment command copies `apps/astro/.vercel/output` into the root `.vercel/output` expected by Vercel, including functions, hourly ISR configuration, redirects, and PNG content types. Keep the Vercel project's Root Directory at the repository root, select Node.js 24, and enable Corepack (`ENABLE_EXPERIMENTAL_COREPACK=1`) to use the pinned pnpm version. Remove conflicting dashboard command overrides. No root framework dependency is needed.
+The repository-root `vercel.json` deploys both applications as one Vercel project using [Vercel Services](https://vercel.com/docs/services), currently in beta. The `website` service builds Astro from `apps/astro`; the `forum` service builds Next.js from `apps/nextjs`. Each service owns its framework and build settings in this single configuration file. Both apps deploy and roll back together.
+
+Top-level hostname routing sends every request on `forum.manipalosf.org` to the forum, including `/api/auth`, Server Actions, and `/_next` assets. Remaining hosts, including the default Vercel deployment URL, serve Astro. Website redirects and image headers are scoped to the website service. The forum feed lives at `/`, with discussions at `/item/:publicId`, profiles at `/user/:username`, and `/comments`, `/submit`, and `/moderation` alongside them. Legacy `/forum` and `/forum/*` URLs permanently redirect to their new paths and retain query strings.
+
+### Project and domains
+
+Use one Vercel project with its Root Directory at the repository root, select Node.js 24, and enable Corepack (`ENABLE_EXPERIMENTAL_COREPACK=1`) to use the pinned pnpm version. Allow workspace files outside service directories and remove old dashboard framework/build/output overrides; `services` in the root configuration owns the per-app settings. An existing project rooted at `apps/nextjs` is no longer required.
+
+Attach `manipalosf.org` and `forum.manipalosf.org` to this project under Settings → Domains, then configure the DNS records Vercel supplies. Reassign the forum hostname from any previous forum project. Domain ownership and DNS setup are managed in Vercel and your DNS provider, rather than in `vercel.json`.
+
+Set these environment values in the project's **Production** environment:
+
+| Variable                       | Value                                                          |
+| ------------------------------ | -------------------------------------------------------------- |
+| `ENABLE_EXPERIMENTAL_COREPACK` | `1`                                                            |
+| `BETTER_AUTH_URL`              | `https://forum.manipalosf.org`                                 |
+| `PUBLIC_SITE_URL`              | `https://manipalosf.org`                                       |
+| `PUBLIC_FORUM_URL`             | Optional override; defaults to `https://forum.manipalosf.org/` |
+| `DATABASE_URL`                 | Forum runtime connection to the production database            |
+| `PROD_DATABASE_URL`            | Direct migration connection to the same production database    |
+| `BETTER_AUTH_SECRET`           | Auth secret, at least 32 characters                            |
+| `RESEND_API_KEY`               | Resend API key                                                 |
+| `RESEND_FROM_EMAIL`            | Sender address on a verified Resend domain                     |
+
+Preview deployment URLs default to Astro; continue using port 3000 for local forum development. A forum preview requires an explicitly assigned preview hostname, an additional forum host condition in the root configuration, and a matching preview `BETTER_AUTH_URL`. Preview database settings must use a development database: set `DEV_DATABASE_URL` and point preview `DATABASE_URL` to that same database. Keep secrets in Vercel environment settings and never commit them. Cross-app navigation uses ordinary links, and cookies remain scoped to the forum host.
+
+### Builds, migrations, and validation
+
+Astro's service build runs `pnpm run build` inside `apps/astro`, then `scripts/prepare-vercel.mjs` finalizes its own `apps/astro/.vercel/output`. It preserves packaged dependencies, hourly ISR, redirects, PNG content types, and authored offline responses. No output is copied to the repository root or merged with Next.js artifacts.
 
 Content pages, feeds, metadata, and social preview PNGs are prerendered. Home and team pages render on demand and use a 3,600-second ISR expiration; after expiry, a request triggers regeneration. Failed GitHub loads return an uncached 503 page with offline messaging or the authored timeline so failed regeneration does not replace successful cached content. Actual Vercel cache hits and regeneration must be verified on a deployment; local Node runs do not emulate the platform cache.
 
+The forum service runs its `build:vercel` script: history check, database migrations, then the Next.js build. `VERCEL_ENV=production` selects `PROD_DATABASE_URL`; `preview` and `development` select `DEV_DATABASE_URL`. Missing/unknown environments, missing migration URLs, and failed steps stop deployment. Ordinary `pnpm build` and CI builds never migrate live databases. Migrations remain applied if either service's build later fails, so keep changes compatible with the prior deployment.
+
+GitHub Actions installs with the frozen lockfile and runs typecheck, lint, tests, migration-history checks, both production builds, and Astro service-output verification. No live database, migration, email, or deployment is required for CI. On Vercel, verify hostname isolation, forum routes and legacy redirects, authentication and email origins, assets, and Astro ISR before considering the rollout complete.
+
 For a local production server, run `pnpm build:local`, then `pnpm start`. The local build explicitly selects `@astrojs/node`; the default `pnpm build` selects `@astrojs/vercel`. You can override the local server's interface and port using `HOST` and `PORT`.
 
-Add future applications under `apps/`, name them `@apps/<name>`, declare shared packages using `workspace:*`, and extend shared tooling. Each app has its own Vercel project, environment values, and app-specific deployment configuration. The root config remains specific to the current website; it does not deploy every app. For a project rooted in a new app directory, enable access to files outside that root so shared packages are available. Do not reuse the website's root build and output settings for another app.
-
-### Forum deployment
-
-Create a separate Vercel project with Root Directory `apps/nextjs`, framework Next.js, Node.js 24, and access to files outside the root directory enabled. Use its app-local `vercel.json`; the repository-root configuration deploys Astro. Set `ENABLE_EXPERIMENTAL_COREPACK=1` and the forum's database/auth settings. `BETTER_AUTH_URL` must match the browser-facing forum origin; use HTTPS in production.
-
-The forum's `build:vercel` script runs the shared history check, migrations, and the Next.js build in order. `VERCEL_ENV=production` selects `PROD_DATABASE_URL`; `preview` and `development` select `DEV_DATABASE_URL`. Missing/unknown environments, missing migration URLs, and failed steps stop deployment. Ordinary `pnpm build`, CI builds, and Astro deployments never migrate live databases. Migrations remain applied if a later build fails, so keep changes compatible with the prior deployment.
-
-Set `PUBLIC_FORUM_URL` on the Astro project to the deployed forum's full `/forum` URL. Without it, production Astro omits the Forum link; development uses localhost. `PUBLIC_SITE_URL` customizes the forum's link back to the public site. Cross-app navigation uses ordinary links; no proxy or shared cookie domain is needed.
-
-GitHub Actions installs with the frozen lockfile and runs typecheck, lint, tests, migration-history checks, both production builds, and the existing Astro packaged-function checks. No live database, migration, email, or deployment is required for CI. Live deployment and Neon validation require separately configured infrastructure.
+Add future applications under `apps/`, name them `@apps/<name>`, declare shared packages using `workspace:*`, and add their service and routing rules to the root `vercel.json` when they should share this deployment.

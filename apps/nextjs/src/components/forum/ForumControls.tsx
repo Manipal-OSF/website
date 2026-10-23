@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { forumAction } from '@/app/forum/actions';
+import { forumAction } from '@/app/(forum)/actions';
 import type { ForumPost, ForumTarget } from '@/types/forum';
 import ForumForm from './ForumForm';
 

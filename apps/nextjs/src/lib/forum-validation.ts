@@ -93,17 +93,23 @@ export const moderationInput = targetInput
 export function safeForumReturn(value: unknown): string {
   // Reject control characters before parsing a user-supplied redirect URL.
   // eslint-disable-next-line no-control-regex
-  if (typeof value !== 'string' || /[\\\s\x00-\x1f]/.test(value))
-    return '/forum';
+  if (typeof value !== 'string' || /[\\\s\x00-\x1f]/.test(value)) return '/';
+  if (!value.startsWith('/') || value.startsWith('//')) return '/';
   try {
     const url = new URL(value, 'https://forum.invalid');
+    const path = url.pathname.replace(/^\/forum(?=\/|$)/, '') || '/';
     if (
       url.origin !== 'https://forum.invalid' ||
-      !(url.pathname === '/forum' || url.pathname.startsWith('/forum/'))
+      !(
+        path === '/' ||
+        /^\/(comments|submit|moderation)\/?$/.test(path) ||
+        /^\/item\/[a-z0-9]{16}\/?$/.test(path) ||
+        /^\/user\/[a-zA-Z0-9_.]{3,30}\/?$/.test(path)
+      )
     )
-      return '/forum';
-    return `${url.pathname}${url.search}${url.hash}`;
+      return '/';
+    return `${path}${url.search}${url.hash}`;
   } catch {
-    return '/forum';
+    return '/';
   }
 }

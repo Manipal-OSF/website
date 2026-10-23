@@ -61,7 +61,7 @@ export default function ForumComments({
       {rows
         .filter((row) => !row.ancestors.some((id) => collapsed.has(id)))
         .map(({ comment: c, depth }) => {
-          const path = `/forum/item/${c.postId}#comment-${c.id}`;
+          const path = `/item/${c.postId}#comment-${c.id}`;
           const unavailable = c.deleted || c.hidden;
           return (
             <article

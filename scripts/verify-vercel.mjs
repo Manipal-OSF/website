@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const output = new URL('../.vercel/output/', import.meta.url);
+const output = new URL('../apps/astro/.vercel/output/', import.meta.url);
 const config = JSON.parse(
   await readFile(new URL('config.json', output), 'utf8'),
 );

@@ -29,7 +29,7 @@ export default function AuthNav() {
         setError(authErrorMessage(result.error));
         return;
       }
-      router.replace('/forum');
+      router.replace('/');
       router.refresh();
     } catch {
       setError('Could not log out. Please try again.');
