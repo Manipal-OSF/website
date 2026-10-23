@@ -7,7 +7,9 @@
     "BETTER_AUTH_URL",
     "RESEND_API_KEY",
     "RESEND_FROM_EMAIL",
-    "GITHUB_TOKEN"
+    "GITHUB_TOKEN",
+    "PUBLIC_FORUM_URL",
+    "PUBLIC_SITE_URL"
   ],
   "globalPassThroughEnv": ["CI", "VERCEL", "VERCEL_*", "ASTRO_TARGET"],
   "tasks": {
@@ -20,7 +22,13 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vercel/output/**", ".astro/**"]
+      "outputs": [
+        "dist/**",
+        ".vercel/output/**",
+        ".astro/**",
+        ".next/**",
+        "!.next/cache/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^topo"],

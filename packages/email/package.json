@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./example": "./templates/example.tsx"
+    "./verify-email": "./templates/verify-email.tsx",
+    "./reset-password": "./templates/reset-password.tsx",
+    "./render": "./src/render.tsx"
   },
   "scripts": {
     "lint": "eslint .",
@@ -11,7 +13,9 @@
     "dev": "with-env development email dev --dir templates --port 3001"
   },
   "dependencies": {
-    "react-email": "^6.11.1"
+    "react-email": "^6.11.1",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@tooling/eslint": "workspace:*",
@@ -20,8 +24,6 @@
     "eslint": "catalog:",
     "typescript": "catalog:",
     "@react-email/ui": "^6.11.1",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@packages/env": "workspace:*"

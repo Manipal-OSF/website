@@ -1,0 +1,50 @@
+{
+  "name": "@apps/nextjs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "with-env development next dev --port 3000",
+    "build": "with-env production next build",
+    "build:vercel": "node scripts/vercel-build.mjs",
+    "start": "with-env production next start --port 3000",
+    "lint": "eslint .",
+    "typecheck": "with-env production next typegen && tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "auth:generate": "pnpm dlx auth@1.7.7 generate --config ./auth-schema.config.ts --adapter drizzle --dialect postgresql --output ../../packages/db/src/schema/auth.ts --yes"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.8.0",
+    "@fontsource-variable/cascadia-code": "5.3.0",
+    "@packages/auth": "workspace:*",
+    "@packages/db": "workspace:*",
+    "@packages/email": "workspace:*",
+    "@packages/env": "workspace:*",
+    "@packages/ui": "workspace:*",
+    "better-auth": "1.7.7",
+    "class-variance-authority": "0.7.1",
+    "drizzle-orm": "catalog:",
+    "lucide-react": "1.52.0",
+    "nanoid": "6.0.2",
+    "next": "16.4.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "resend": "^6.32.1",
+    "server-only": "0.0.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@better-auth/drizzle-adapter": "1.7.7",
+    "@electric-sql/pglite": "0.5.10",
+    "@next/eslint-plugin-next": "16.4.0",
+    "@tooling/eslint": "workspace:*",
+    "@tooling/tailwind": "workspace:*",
+    "@tooling/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "eslint": "catalog:",
+    "postcss": "catalog:",
+    "tsx": "4.23.15",
+    "typescript": "catalog:"
+  }
+}
